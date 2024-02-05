@@ -1,0 +1,32 @@
+{
+  "name": "docs",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "clean": "rm -rf _site",
+    "dev": "eleventy --serve & npx tailwindcss -i ./src/assets/styles.css -o ./_site/assets/styles.css --watch",
+    "build": "ELEVENTY_PRODUCTION=true eleventy && NODE_ENV=production npx tailwindcss -i ./src/input.css -o ./_site/assets/styles.css --minify"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pages-cms/docs.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/pages-cms/docs/issues"
+  },
+  "homepage": "https://github.com/pages-cms/docs#readme",
+  "devDependencies": {
+    "@11ty/eleventy": "^2.0.1",
+    "@tailwindcss/forms": "^0.5.7",
+    "markdown-it-anchor": "^8.6.7",
+    "tailwindcss": "^3.4.0"
+  },
+  "dependencies": {
+    "@grimlink/eleventy-plugin-lucide-icons": "^2.0.0",
+    "eleventy-plugin-toc": "^1.1.5"
+  }
+}
