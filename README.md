@@ -2,7 +2,7 @@
 
 This is the official website for Pages CMS, deployed at [PagesCMS.org](PagesCMS.org). It includes [the official documentation](https://pagescms.org/docs).
 
-It is built with 11ty and Tailwind, it's hosted with Cloudflare Pages.
+It is built with 11ty + Tailwind and is hosted on Cloudflare Pages.
 
 ## Install & Run
 
