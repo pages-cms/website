@@ -104,3 +104,46 @@ content:
         type: image
         description: Image used in the social preview on social networks (e.g. Facebook, Twitter...)
 ```
+
+## Hugo blog
+
+A Hugo blog with the posts on `content/posts` and the media on the `assets` folder.
+
+```
+media:
+  input: assets
+  output: static
+content:
+  - name: posts
+    label: Post
+    type: collection
+    path: content/posts
+    view:
+      fields: [title, date, author]
+    fields:
+      - name: title
+        label: Title
+        type: string
+        description: Title for the post
+      - name: description
+        label: Description
+        type: string
+        description: Brief summary or description of the post
+      - name: author
+        label: Author 
+        type: string
+        description: Author of the post
+      - name: date
+        label: Date
+        type: date
+        description: Creation or published date
+      - name: draft
+        label: Draft
+        type: boolean
+        default: true
+        description: If this is set, the post won't appear on the blog
+      - name: body
+        label: Body
+        type: rich-text
+        description: The actual blog post
+```
