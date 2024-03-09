@@ -2,14 +2,13 @@
 title: Examples
 order: 3
 ---
-
 A few examples of [configuration files](/docs/configuration).
 
 ## Jekyll blog
 
-A simple Jekyll blog with posts in the `_posts` folder and media in `media`. It also expose the Jekyll config file (`_config.yml `), allowing the user to adjust a few global values (e.g. website title).
+A simple Jekyll blog with posts in the `_posts` folder and media in `media`. It also expose the Jekyll config file (`_config.yml` ), allowing the user to adjust a few global values (e.g. website title).
 
-```yaml
+```
 media: media
 content:
   - name: posts
@@ -58,7 +57,7 @@ content:
 
 An 11ty blog with all of the code (content, templates, ...) in the `src` subfolder. It sets one collection for blog posts in `src/posts`, and one single file to manage the global site data at `src/_data/site.json` (for things like website title, description, etc).
 
-```yaml
+```
 media:
   input: src/media
   output: /media
