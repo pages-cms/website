@@ -9,4 +9,4 @@ It is built with 11ty + Tailwind and is hosted on Cloudflare Pages.
 1. Clone the repo: `git clone git@github.com:pages-cms/website.git`
 2. Install the dependencies: `cd website && npm install`
 3. Run it: `npm run dev`
-4. Visit it: `http://localhost:8082/
+4. Visit it: `http://localhost:8080/
