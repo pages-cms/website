@@ -177,7 +177,7 @@ view:
   default:
     search: 'author:Patricia'
     sort: date
-    sort: desc
+    order: desc
 ```
 
 The `author:Patricia` syntax [comes from lunr.js](https://lunrjs.com/guides/searching.html#fields), the search library used by Pages CMS under the hood. Other syntax will work too (wildcards, boosts, fuzzy matches and term presence).
