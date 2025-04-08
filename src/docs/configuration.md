@@ -10,10 +10,11 @@ To configure Pages CMS you just need to add a `.pages.yml` file to the repositor
 
 You can have different configuration files on separate branches. The Pages CMS interface allows you to navigate between them (click on the name of repository at the top of the sidebar and then select the branch in the dropdown menu).
 
-The `.pages.yml` file contains mainly 2 sections:
+The `.pages.yml` file contains mainly 3 sections:
 
 - **media**: the settings for media (images, videos, etc). [See the "Media" section below](#media).
 - **content**: an array defining the content types. [See the "Content" section below](#content).
+- **blocks**: reusable groups of fields that can be used within content types. [See the "Blocks" section below](#blocks).
 
 <p class="aspect-video">
   <iframe class="h-full w-full rounded-lg" src="https://youtube.com/embed/KtoapCOT1j4" width="100%" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
@@ -31,11 +32,11 @@ With media, you can configure how to handle files you want to upload, attach to 
 | - | - | - |
 | **`name`** | `string` | **Required if media is an array. Must be unique across the media array**. Machine name for the media entry. |
 | **`label`** | `string` | Display name for the media. This will be displayed in the main menu. |
-| **`input`**| `string` | The path to the media folder relative to the root of the repo (e.g. `src/files/media`). This path is what allows us to find the files in Pages CMS to manage content and media. |
+| **`input`** | `string` | The path to the media folder relative to the root of the repo (e.g. `src/files/media`). This path is what allows us to find the files in Pages CMS to manage content and media. |
 | **`output`** | `string` | The path to the media folder relative to the root of the website (e.g. `files/media`). This path will prefix all media saved in our content, which will be used by your static site generator. |
 | **`path`** | `string` | The default path to present the user (e.g. when opening the media browser on an [Image Field](/docs/configuration/image-field)). |
-| **`extensions`** | `string` | An array of file extensions that should be displayed. If provided, any file with an extension not included in this list will not be shown to the user. |
-| **`categories`** | `string` | Similar to `media.extensions`, but using categories of files: `image` (`jpg`, `jpeg`, `png`, `gif`, `svg`, `bmp`, `tif`, `tiff`), `document` (`pdf`, `doc`, `docx`, `ppt`, `pptx`, `vxls`, `xlsx`, `txt`, `rtf`), `video` (`mp4`, `avi`, `mov`, `wmv`, `flv`), `audio` (`mp3`, `wav`, `aac`, `ogg`, `flac`) and `compressed` (`zip`, `rar`, `7z`, `tar`, `gz`, `tgz`). If both `media.extensions` and `media.categories` are provided, `media.categories` will be ignored. |
+| **`extensions`** | `array` | An array of file extensions (strings) that should be displayed (e.g., `[png, jpg]`). If provided, any file with an extension not included in this list will not be shown to the user. |
+| **`categories`** | `array` | An array of category names (strings) to allow specific file types: `image` (`jpg`, `jpeg`, `png`, `gif`, `svg`, `bmp`, `tif`, `tiff`), `document` (`pdf`, `doc`, `docx`, `ppt`, `pptx`, `vxls`, `xlsx`, `txt`, `rtf`), `video` (`mp4`, `avi`, `mov`, `wmv`, `flv`), `audio` (`mp3`, `wav`, `aac`, `ogg`, `flac`) and `compressed` (`zip`, `rar`, `7z`, `tar`, `gz`, `tgz`). If both `extensions` and `categories` are provided, `categories` might be combined or `extensions` might take precedence depending on the field. |
 
 If `media` is set to a `string`, it is equivalent to settings both `media.input` and `media.output` to that value, prefixed with `/` for `media.output`.
 
@@ -82,7 +83,7 @@ media:
     input: files/documents
     output: /files/documents
     categories: [ document ]
-  - label: images
+  - name: images # Note: 'name' key is required here
     label: Images
     input: images
     output: /images
@@ -103,12 +104,11 @@ Each content entry can define the following keys:
 | - | - | - |
 | **`name`** | `string` | **Required and must be unique across the content array**. Machine name for the content entry. |
 | **`label`** | `string` | Display name for the collection or single file. This will be displayed in the main menu. |
-| **`type`**| `string` | **Required**. `collection` or `file`, depending on whether the content entry is a collection of files with an identical schema (e.g. blog posts) or a single file (e.g. home page). |
-| **`path`** | `string` | **Required**. Path to the folder where the files are stored if it's a collection (e.g. `path: src/posts`, otherwise the path to the single file (e.g. `path: src/index.md`). |
-| **`icon`** | `string` | Name of a [Lucide icon](https://lucide.dev/icons/) to display in the main navigation (e.g. `map-pinned`). You can use Kebab, Pascal or Camel case (e.g. `map-pinned`, `MapPinned` or `mapPinned`). |
-| **`fields`** | `string` | The list of fields defining the schema of the content entry (e.g. title, date, author, body, etc). [See the "Fields" section below](#fields). |
+| **`type`** | `string` | **Required**. `collection` or `file`, depending on whether the content entry is a collection of files with an identical schema (e.g. blog posts) or a single file (e.g. home page). |
+| **`path`** | `string` | **Required**. Path to the folder where the files are stored if it's a collection (e.g. `path: src/posts`), otherwise the path to the single file (e.g. `path: src/index.md`). |
+| **`fields`** | `array` | The list of fields defining the schema of the content entry (e.g. title, date, author, body, etc). [See the "Fields" section below](#fields). |
 | **`filename`** | `string` | The pattern to generate the filename when creating a new file. You can use the value of any field (e.g. `fields.title`) including nested values (e.g. `fields.tags[0].label`). You can also use a few date tokens (`{year}`, `{month}`, `{day}`) and time (`{hour}`, `{minute}`, `{second}`) and `{primary}` for the primary field as defined in the `view` key. By default this is set to `'{year}-{month}-{day}-{primary}.md'`. |
-| **`exclude`** | `array` | An array of files to exclude from the collection (e.g. `[ README.md ]`). This is only valid for collections.
+| **`exclude`** | `array` | An array of files to exclude from the collection (e.g. `[ README.md ]`). This is only valid for collections. |
 | **`view`** | `object` | **Only valid for collections**. This object defines the various options for the collection view; visible fields, sorting options and defaults, fields indexed for the search... [See the "View" section below](#view). |
 | **`format`** | `string` | The format of the file, used to set up the editor to edit the content: `yaml-frontmatter`, `json-frontmatter`, `toml-frontmatter`, `yaml`, `json`, `toml`, `datagrid`, `code` or `raw`. It defaults to `yaml-frontmatter`. |
 | **`subfolders`** | `boolean` | Whether or not the collection should display subfolders. Default to `true`. Set to `false` if you want to force the collection of files to be "flat". |
@@ -124,13 +124,13 @@ content:
     path: src/_posts
     type: collection
     fields:
-      (...)
+      # ... fields defined here ...
   - name: authors
     label: Authors
     path: src/_data/authors.json
     type: file
     fields:
-      (...)
+      # ... fields defined here ...
 ```
 
 ### View
@@ -178,38 +178,122 @@ view:
   default:
     search: 'author:Patricia'
     sort: date
-    sort: desc
+    order: desc
 ```
 
 The `author:Patricia` syntax [comes from lunr.js](https://lunrjs.com/guides/searching.html#fields), the search library used by Pages CMS under the hood. Other syntax will work too (wildcards, boosts, fuzzy matches and term presence).
 
-### Fields
+## Blocks
 
-#### Keys
+Blocks allow you to define reusable groups of fields. They act like templates that can be used within your content entries, especially useful with [Mixed Types](#mixed-types).
+
+Blocks are defined under a top-level `blocks` key in your `.pages.yml` file. Each block definition follows the same structure as a standard field definition, typically using `type: object` with its own `fields` array, or defining a specific primitive type with custom options.
+
+### Keys
+
+The keys used to define a block are the same as those used for [Fields](#fields), with the addition of a unique `name` for each block.
 
 | Key | Type | Description |
 | - | - | - |
-| **`name`** | `string` | **Required and must be unique across the fields array**. Machine name for the field. **`body` is reserved for the body of the file when dealing with a frontmatter file (e.g. YAML frontmatter)**. |
-| **`label`** | `string` | Display name for the field. This is what is displayed in the edit form. |
-| **`description`** | `string` | Default value. |
-| **`type`** | `string` | Defines the type of field: **[boolean](/docs/configuration/boolean-field)**, **[code](/docs/configuration/code-field)**, **[date](/docs/configuration/date-field)**, **[image](/docs/configuration/image-field)**, **[number](/docs/configuration/number-field)**, **[object](/docs/configuration/object-field)**, **[rich-text](/docs/configuration/rich-text-field)**, **[select](/docs/configuration/select-field)**, **[string](/docs/configuration/string-field)** or **[text](/docs/configuration/text-field)**. If undefined or set to a field that doesn't exist, it defaults to `text`. |
-| **`default`** | | Default value. |
-| **`list`** | `boolean` or `object` | If truthy, the field is an array of values (of the type defined for the field). [See the "View" section below](#view). |
-| **`hidden`** | `boolean` | If `true`, the field will not be displayed in the form but will be saved. It is usually used with `default` to set a required field that shouldn't be edited by users, like for example the language of a post (`lang: en-US`). |
-| **`required`** | `boolean` | If `true`, the field can't be empty. |
-| **`pattern`** | `string` or `object` | A regular expression to validate the field. A custom message for the error can be provided by defining an object with `regex` and `message` attributes (e.g. `pattern: { regex: 'This must be a valid email address (e.g. hello@example.com).', message: '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$' }`) |
-| **`fields`** | `array` | **Only valid for object fields**. List of the fields in that object. |
-| **`options`** | `object` | Options for that field. Refer to the field specific details below. |
+| **`name`** | `string` | **Required and must be unique across the blocks array**. Machine name used to reference the block. |
+| **`label`** | `string` | Display name for the block when presented as a choice (e.g., in a mixed type field). |
+| **`type`** | `string` | The underlying base type of the block (e.g., `object`, `text`, `image`). Often `object` when grouping fields. Defaults to `text`. |
+| **`fields`** | `array` | **Required if `type` is `object`**. The list of fields contained within this block. These follow the standard [Field](#fields) definition structure. |
+| ... | ... | Other standard field keys like `description`, `default`, `list`, `hidden`, `required`, `pattern`, `options` can be used to configure the block itself. |
 
-#### List
+### Examples
+
+Here's an example defining two blocks: a `hero` block with a headline and cover image, and a simple `callToAction` block with text and a URL.
+
+```yaml
+blocks:
+  - name: hero
+    label: Hero Section
+    type: object
+    fields:
+      - name: headline
+        label: Headline
+        type: text
+        required: true
+      - name: cover
+        label: Cover Image
+        type: image
+  - name: callToAction
+    label: Call to Action
+    type: object
+    fields:
+      - name: text
+        label: Button Text
+        type: string
+        required: true
+      - name: url
+        label: Button URL
+        type: string
+        required: true
+        pattern: '^https?://.+' # Example pattern for URL
+```
+
+These blocks can then be referenced by their `name` within the `fields` definition of your content types, particularly when using [Mixed Types](#mixed-types).
+
+## Fields
+
+Fields define the structure and data types for your content entries or [blocks](#blocks).
+
+### Keys
+
+| Key | Type | Description |
+| - | - | - |
+| **`name`** | `string` | **Required and must be unique within its parent fields array**. Machine name for the field. **`body` is reserved for the main content of the file when dealing with a frontmatter format** (e.g., YAML frontmatter). |
+| **`label`** | `string` | Display name for the field. This is what is displayed in the edit form. If omitted, the `name` is used. |
+| **`description`** | `string` | Help text displayed below the field in the form. |
+| **`type`** | `string` or `array` | Defines the type of field. Can be a single type name: **[boolean](/docs/configuration/boolean-field)**, **[code](/docs/configuration/code-field)**, **[date](/docs/configuration/date-field)**, **[file](/docs/configuration/file-field)**, **[image](/docs/configuration/image-field)**, **[number](/docs/configuration/number-field)**, **[object](/docs/configuration/object-field)**, **[reference](/docs/configuration/reference-field)**, **[rich-text](/docs/configuration/rich-text-field)**, **[select](/docs/configuration/select-field)**, **[string](/docs/configuration/string-field)** or **[text](/docs/configuration/text-field)**. If undefined or set to a field that doesn't exist, it defaults to `text`. It can also be a **reference to a defined [Block](#blocks)** by using the block's `name`. Additionally, `type` can be an **array of strings**, enabling **[Mixed Types](#mixed-types)**. |
+| **`default`** | (any) | Default value for the field when a new entry is created. |
+| **`list`** | `boolean` or `object` | If truthy, the field is an array of values (of the type defined for the field). [See the "List" section below](#list). |
+| **`hidden`** | `boolean` | If `true`, the field will not be displayed in the form but will be saved. It is usually used with `default` to set a required field that shouldn't be edited by users, like for example the language of a post (`lang: en-US`). |
+| **`required`** | `boolean` | If `true`, the field cannot be empty or unselected. Validation rules depend on the field type. |
+| **`pattern`** | `string` or `object` | A regular expression to validate the field (primarily for string-based types). A custom error message can be provided by defining an object with `regex` and `message` attributes (e.g. `pattern: { regex: '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$', message: 'This must be a valid email address (e.g. hello@example.com).' }`). |
+| **`fields`** | `array` | **Only valid for `type: object` fields**. Defines the nested fields within the object. |
+| **`options`** | `object` | Contains type-specific configuration options for the field. Refer to the documentation for each [Field Type](#field-types) for available options. |
+
+### Mixed Types
+
+By setting the `type` key to an **array of strings**, you can allow users to choose between different kinds of content for a single field instance. Each string in the array can be either:
+
+1.  A standard field type name (e.g., `image`, `text`).
+2.  The `name` of a [Block](#blocks) defined in your configuration (e.g., `hero`, `cta`).
+
+This is particularly powerful within a `list` field, allowing creation of flexible page builders where users can add different content blocks in any order.
+
+**Example:**
+
+```yaml
+content:
+  - name: page
+    label: Page
+    type: file
+    path: src/content/page.md
+    fields:
+      - name: title
+        label: Title
+        type: string
+        required: true
+      - name: sections
+        label: Page Sections
+        type: [ hero, cta, rich-text, image ] # Array of block names and field types
+        list: true # Allow multiple sections
+```
+
+In the UI, when adding an entry to the "Page Sections" list, the user would be presented with a choice between adding a "Hero Section", a "Call to Action", a "Rich Text" area, or a single "Image".
+
+### List
 
 Any field with a truthy `list` key will be stored as an array of that field type. For example:
 
 ```yaml
-name: images
-label: Images
-type: image
-list: true
+- name: images
+  label: Images
+  type: image
+  list: true
 ```
 
 Will allow the user to save multiple image paths:
@@ -223,27 +307,31 @@ images:
 `list` can be an object with `min`, `max` and `default` keys. `min` and `max` define the minimum and maximum number of entries in the array. For example:
 
 ```yaml
-name: images
-label: Images
-type: image
-list:
-  min: 1
-  max: 4
+- name: tags
+  label: Tags
+  type: string
+  list:
+    min: 1 # Must have at least one tag
+    max: 5 # Can have up to five tags
+    default: [news] # Default value when creating new entry
 ```
 
-This will force the user to enter at least 1 image and at most 4.
+This will force the user to enter at least 1 tag and at most 5.
 
-Certain fields (e.g. the [image field(/docs/configuration/image-field)]) implement their own list logic. If you want to use the default list widget, you may set `default` to true.
+Certain fields (e.g. the [image field](/docs/configuration/image-field)) implement their own list logic (e.g., multi-select UI). If you want to use the default list widget (which allows drag-and-drop reordering and adding/removing items individually), you might need specific configuration depending on the field type, though often setting `list: true` is sufficient.
 
-#### Types
+### Field Types
 
 - [Boolean field](/docs/configuration/boolean-field)
 - [Code field](/docs/configuration/code-field)
 - [Date field](/docs/configuration/date-field)
+- [File field](/docs/configuration/file-field)
 - [Image field](/docs/configuration/image-field)
 - [Number field](/docs/configuration/number-field)
 - [Object field](/docs/configuration/object-field)
+- [Reference field](/docs/configuration/reference-field)
 - [Rich-text field](/docs/configuration/rich-text-field)
 - [Select field](/docs/configuration/select-field)
 - [String field](/docs/configuration/string-field)
 - [Text field](/docs/configuration/text-field)
+- [UUID field](/docs/configuration/uuid-field)
