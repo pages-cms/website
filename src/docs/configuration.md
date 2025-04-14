@@ -14,10 +14,10 @@ The `.pages.yml` file contains mainly 3 sections:
 
 - **media**: the settings for media (images, videos, etc). [See the "Media" section below](#media).
 - **content**: an array defining the content types. [See the "Content" section below](#content).
-- **blocks**: reusable groups of fields that can be used within content types. [See the "Blocks" section below](#blocks).
+- **components**: an object defining reusable groups of fields. [See the "Components" section below](#components).
 
 <p class="aspect-video">
-  <iframe class="h-full w-full rounded-lg" src="https://youtube.com/embed/KtoapCOT1j4" width="100%" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<iframe class="h-full w-full rounded-lg" src="https://youtube.com/embed/KtoapCOT1j4" width="100%" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 </p>
 
 ## Media
@@ -44,8 +44,8 @@ For example, `media: files/media` would be equivalent to:
 
 ```yaml
 media:
-  input: files/media
-  output: /files/media
+input: files/media
+output: /files/media
 ```
 
 If we want to define multiple media configurations, we can use an array (see examples below).
@@ -62,32 +62,32 @@ Now, if the content for this website was in a `src/` subfolder, it could look li
 
 ```yaml
 media:
-  input: src/media
-  output: media
+input: src/media
+output: media
 ```
 
 Let's assume now that I'm hosting my website in a subfolder (e.g. hosted at `http://example.com/my-website/`), I may want to do the following:
 
 ```yaml
 media:
-  input: src/media
-  output: /my-website/media
+input: src/media
+output: /my-website/media
 ```
 
 Now, if I want to use a `files/documents` folder only for document uploads (e.g. pdf, doc, ppt) and another `images` folder with my photos that must be in `.png` or `.webp` formats, we could do the following:
 
 ```yaml
 media:
-  - name: files
-    label: Files
-    input: files/documents
-    output: /files/documents
-    categories: [ document ]
-  - name: images # Note: 'name' key is required here
-    label: Images
-    input: images
-    output: /images
-    extensions: [ png, webp ]
+- name: files
+  label: Files
+  input: files/documents
+  output: /files/documents
+  categories: [ document ]
+- name: images # Note: 'name' key is required here
+  label: Images
+  input: images
+  output: /images
+  extensions: [ png, webp ]
 ```
 
 ## Content
@@ -119,18 +119,18 @@ Let's assume we have a simple collection of blog posts all saved in the `src/_po
 
 ```yaml
 content:
-  - name: posts
-    label: Posts
-    path: src/_posts
-    type: collection
-    fields:
-      # ... fields defined here ...
-  - name: authors
-    label: Authors
-    path: src/_data/authors.json
-    type: file
-    fields:
-      # ... fields defined here ...
+- name: posts
+  label: Posts
+  path: src/_posts
+  type: collection
+  fields:
+    # ... fields defined here ...
+- name: authors
+  label: Authors
+  path: src/_data/authors.json
+  type: file
+  fields:
+    # ... fields defined here ...
 ```
 
 ### View
@@ -153,13 +153,13 @@ Assuming you have a `date` field and `title` is the primary field, your default 
 
 ```yaml
 view:
-  fields: [ title ]
-  primary: title
-  sort: [ date, title ]
-  default:
-    search: ''
-    sort: title
-    order: desc
+fields: [ title ]
+primary: title
+sort: [ date, title ]
+default:
+  search: ''
+  sort: title
+  order: desc
 ```
 
 This would display the title of each post and sort them by title in descendant order (start with special characters and numbers, all the way to `z`).
@@ -173,117 +173,139 @@ Let's set the view to only display the posts from `Patricia`, display title, dat
 
 ```yaml
 view:
-  fields: [ title, date, published ] # title is the first entry and thus will be set to primary
-  sort: [ date, title, published ]
-  default:
-    search: 'author:Patricia'
-    sort: date
-    order: desc
+fields: [ title, date, published ] # title is the first entry and thus will be set to primary
+sort: [ date, title, published ]
+default:
+  search: 'author:Patricia'
+  sort: date
+  order: desc
 ```
 
 The `author:Patricia` syntax [comes from lunr.js](https://lunrjs.com/guides/searching.html#fields), the search library used by Pages CMS under the hood. Other syntax will work too (wildcards, boosts, fuzzy matches and term presence).
 
-## Blocks
+## Components
 
-Blocks allow you to define reusable groups of fields. They act like templates that can be used within your content entries, especially useful with [Mixed Types](#mixed-types).
+Components allow you to define reusable groups of fields or field configurations. They act like templates that can be referenced within your content entries.
 
-Blocks are defined under a top-level `blocks` key in your `.pages.yml` file. Each block definition follows the same structure as a standard field definition, typically using `type: object` with its own `fields` array, or defining a specific primitive type with custom options.
+Components are defined under a top-level `components` key in your `.pages.yml` file. This key holds an *object* where each key is a unique component name, and the value is the component definition. A component definition follows the same structure as a standard [Field definition](#fields) but without the `name` key.
 
-### Keys
+### Component Definition Keys
 
-The keys used to define a block are the same as those used for [Fields](#fields), with the addition of a unique `name` for each block.
+The keys used to define a component are the same as those used for [Fields](#fields), **except** the `name` key (which is defined by the key in the `components` object).
 
 | Key | Type | Description |
 | - | - | - |
-| **`name`** | `string` | **Required and must be unique across the blocks array**. Machine name used to reference the block. |
-| **`label`** | `string` | Display name for the block when presented as a choice (e.g., in a mixed type field). |
-| **`type`** | `string` | The underlying base type of the block (e.g., `object`, `text`, `image`). Often `object` when grouping fields. Defaults to `text`. |
-| **`fields`** | `array` | **Required if `type` is `object`**. The list of fields contained within this block. These follow the standard [Field](#fields) definition structure. |
-| ... | ... | Other standard field keys like `description`, `default`, `list`, `hidden`, `required`, `pattern`, `options` can be used to configure the block itself. |
+| **`label`** | `string` | Display name for the component. Primarily used for documentation or if referenced directly in certain UI contexts. |
+| **`type`** | `string` | The underlying base type of the component (e.g., `object`, `text`, `image`). Often `object` when grouping fields. If undefined but `fields` is present, defaults to `object`. |
+| **`fields`** | `array` | If `type` is `object`, this lists the fields contained within this component. These follow the standard [Field](#fields) definition structure. |
+| **`component`** | `string` | Allows a component to inherit from *another* component. The value should be the name (key) of the component to inherit from. Properties from the inheriting component will override the base component. |
+| ... | ... | Other standard field keys like `description`, `default`, `list`, `hidden`, `required`, `pattern`, `options` can be used to configure the component itself. |
 
 ### Examples
 
-Here's an example defining two blocks: a `hero` block with a headline and cover image, and a simple `callToAction` block with text and a URL.
+Here's an example defining two components: a `hero` component with a headline and cover image, and a simple `email` component defining a reusable string field with pattern validation.
 
 ```yaml
-blocks:
-  - name: hero
-    label: Hero Section
-    type: object
-    fields:
-      - name: headline
-        label: Headline
-        type: text
-        required: true
-      - name: cover
-        label: Cover Image
-        type: image
-  - name: callToAction
-    label: Call to Action
-    type: object
-    fields:
-      - name: text
-        label: Button Text
-        type: string
-        required: true
-      - name: url
-        label: Button URL
-        type: string
-        required: true
-        pattern: '^https?://.+' # Example pattern for URL
+components:
+hero: # 'hero' is the component name/key
+  label: Hero Section
+  type: object
+  fields:
+    - name: headline
+      label: Headline
+      type: text
+      required: true
+    - name: cover
+      label: Cover Image
+      type: image
+email: # 'email' is the component name/key
+  label: Email Address
+  type: string
+  pattern:
+    regex: '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
+    message: 'This must be a valid email address (e.g. hello@example.com).'
 ```
 
-These blocks can then be referenced by their `name` within the `fields` definition of your content types, particularly when using [Mixed Types](#mixed-types).
+These components can then be referenced by their name using the `component` key within the `fields` definition of your content types or even within other components.
 
 ## Fields
 
-Fields define the structure and data types for your content entries or [blocks](#blocks).
+Fields define the structure and data types for your content entries or [components](#components).
 
 ### Keys
 
 | Key | Type | Description |
 | - | - | - |
-| **`name`** | `string` | **Required and must be unique within its parent fields array**. Machine name for the field. **`body` is reserved for the main content of the file when dealing with a frontmatter format** (e.g., YAML frontmatter). |
+| **`name`** | `string` | **Required** (unless defining a component directly under the `components` key) **and must be unique within its parent fields array**. Machine name for the field. **`body` is reserved for the main content of the file when dealing with a frontmatter format** (e.g., YAML frontmatter). |
 | **`label`** | `string` | Display name for the field. This is what is displayed in the edit form. If omitted, the `name` is used. |
 | **`description`** | `string` | Help text displayed below the field in the form. |
-| **`type`** | `string` or `array` | Defines the type of field. Can be a single type name: **[boolean](/docs/configuration/boolean-field)**, **[code](/docs/configuration/code-field)**, **[date](/docs/configuration/date-field)**, **[file](/docs/configuration/file-field)**, **[image](/docs/configuration/image-field)**, **[number](/docs/configuration/number-field)**, **[object](/docs/configuration/object-field)**, **[reference](/docs/configuration/reference-field)**, **[rich-text](/docs/configuration/rich-text-field)**, **[select](/docs/configuration/select-field)**, **[string](/docs/configuration/string-field)** or **[text](/docs/configuration/text-field)**. If undefined or set to a field that doesn't exist, it defaults to `text`. It can also be a **reference to a defined [Block](#blocks)** by using the block's `name`. Additionally, `type` can be an **array of strings**, enabling **[Mixed Types](#mixed-types)**. |
+| **`type`** | `string` | Defines the type of field. Can be a single type name: **[boolean](/docs/configuration/boolean-field)**, **[code](/docs/configuration/code-field)**, **[date](/docs/configuration/date-field)**, **[file](/docs/configuration/file-field)**, **[image](/docs/configuration/image-field)**, **[number](/docs/configuration/number-field)**, **[object](/docs/configuration/object-field)**, **[reference](/docs/configuration/reference-field)**, **[rich-text](/docs/configuration/rich-text-field)**, **[select](/docs/configuration/select-field)**, **[string](/docs/configuration/string-field)**, **[text](/docs/configuration/text-field)** or **[uuid](/docs/configuration/uuid-field)**. If undefined, it defaults to `text` unless `fields` is defined (then it defaults to `object`). Crucially, `type` can also be **`block`**, which enables a field that can hold one of several different structures defined in its `blocks` attribute. [See "Block Field Type" below](#block-field-type). |
+| **`component`** | `string` | Allows a field to inherit its properties (like `type`, `label`, nested `fields`, `options`, etc.) from a defined [Component](#components). The value should be the name (key) of the component to inherit from. Properties defined directly on the field (like `name`, `label`, `required`) will override those inherited from the component. The `type` inherited from the component takes precedence over any `type` defined on the field itself. |
 | **`default`** | (any) | Default value for the field when a new entry is created. |
 | **`list`** | `boolean` or `object` | If truthy, the field is an array of values (of the type defined for the field). [See the "List" section below](#list). |
 | **`hidden`** | `boolean` | If `true`, the field will not be displayed in the form but will be saved. It is usually used with `default` to set a required field that shouldn't be edited by users, like for example the language of a post (`lang: en-US`). |
 | **`required`** | `boolean` | If `true`, the field cannot be empty or unselected. Validation rules depend on the field type. |
 | **`pattern`** | `string` or `object` | A regular expression to validate the field (primarily for string-based types). A custom error message can be provided by defining an object with `regex` and `message` attributes (e.g. `pattern: { regex: '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$', message: 'This must be a valid email address (e.g. hello@example.com).' }`). |
-| **`fields`** | `array` | **Only valid for `type: object` fields**. Defines the nested fields within the object. |
+| **`fields`** | `array` | **Required if `type` is `object` and no `component` is defined**. Defines the nested fields within the object. Each element follows the standard Field definition structure. |
+| **`blocks`** | `array` | **Required if `type` is `block`**. An array of block definitions allowed within this field. Each element in the array is an object following the [Field](#fields) definition structure (it must have a unique `name` and can optionally use `component` or define its own `fields`). |
+| **`blockKey`** | `string` | **Only valid if `type` is `block`**. Specifies the key used to identify the chosen block type within the data object. Defaults to `_block`. For example, if `blockKey: block_type`, the chosen block's data would look like `{ block_type: 'hero', ... }`. |
 | **`options`** | `object` | Contains type-specific configuration options for the field. Refer to the documentation for each [Field Type](#field-types) for available options. |
 
-### Mixed Types
+### Block Field Type (`type: block`)
 
-By setting the `type` key to an **array of strings**, you can allow users to choose between different kinds of content for a single field instance. Each string in the array can be either:
+Setting `type: 'block'` allows a field to represent one of several possible structures. This is ideal for creating flexible content layouts or page builders.
 
-1.  A standard field type name (e.g., `image`, `text`).
-2.  The `name` of a [Block](#blocks) defined in your configuration (e.g., `hero`, `cta`).
-
-This is particularly powerful within a `list` field, allowing creation of flexible page builders where users can add different content blocks in any order.
+A field with `type: 'block'` **must** also define a `blocks` key. The `blocks` key takes an array of *block definitions*. Each block definition in this array is structured like a standard field:
+- It **must** have a unique `name`. This name is stored in the data (using the key specified by `blockKey`, defaulting to `_block`) to identify which block was chosen.
+- It usually defines its structure using `fields` (implicitly `type: 'object'`) or by referencing a component with `component: 'componentName'`.
+- It can have a `label` which is shown to the user when choosing which block to add.
 
 **Example:**
 
 ```yaml
+components:
+hero:
+  label: Hero Section
+  type: object
+  fields:
+    - name: headline
+      # ...
+cta:
+  label: Call to Action
+  type: object
+  fields:
+    - name: buttonText
+      # ...
 content:
-  - name: page
-    label: Page
-    type: file
-    path: src/content/page.md
-    fields:
-      - name: title
-        label: Title
-        type: string
-        required: true
-      - name: sections
-        label: Page Sections
-        type: [ hero, cta, rich-text, image ] # Array of block names and field types
-        list: true # Allow multiple sections
+- name: page
+  label: Page
+  type: file
+  path: src/content/page.md
+  fields:
+    - name: title
+      label: Title
+      type: string
+      required: true
+    - name: sections
+      label: Page Sections
+      type: block # Allows choosing different structures
+      list: true # Allow multiple sections
+      blocks: # Define the allowed structures
+        - name: hero # Machine name for this choice
+          label: Add Hero # Label shown in UI
+          component: hero # Inherit structure from 'hero' component
+        - name: cta # Machine name for this choice
+          label: Add Call to Action
+          component: cta # Inherit structure from 'cta' component
+        - name: customText # Machine name for this choice
+          label: Add Custom Text
+          # Define structure directly (implicitly type: object)
+          fields:
+            - name: content
+              type: rich-text
 ```
 
-In the UI, when adding an entry to the "Page Sections" list, the user would be presented with a choice between adding a "Hero Section", a "Call to Action", a "Rich Text" area, or a single "Image".
+In the UI, when adding an entry to the "Page Sections" list, the user would be presented with a choice between "Add Hero", "Add Call to Action", or "Add Custom Text". The saved data for a chosen hero block would look like `{ _block: 'hero', headline: '...', ... }`.
 
 ### List
 
@@ -291,29 +313,29 @@ Any field with a truthy `list` key will be stored as an array of that field type
 
 ```yaml
 - name: images
-  label: Images
-  type: image
-  list: true
+label: Images
+type: image
+list: true
 ```
 
 Will allow the user to save multiple image paths:
 
 ```yaml
 images:
-  - media/image-1.png
-  - media/image-2.png
+- media/image-1.png
+- media/image-2.png
 ```
 
 `list` can be an object with `min`, `max` and `default` keys. `min` and `max` define the minimum and maximum number of entries in the array. For example:
 
 ```yaml
 - name: tags
-  label: Tags
-  type: string
-  list:
-    min: 1 # Must have at least one tag
-    max: 5 # Can have up to five tags
-    default: [news] # Default value when creating new entry
+label: Tags
+type: string
+list:
+  min: 1 # Must have at least one tag
+  max: 5 # Can have up to five tags
+  default: [news] # Default value when creating new entry
 ```
 
 This will force the user to enter at least 1 tag and at most 5.
