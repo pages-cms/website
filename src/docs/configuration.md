@@ -44,8 +44,8 @@ For example, `media: files/media` would be equivalent to:
 
 ```yaml
 media:
-input: files/media
-output: /files/media
+  input: files/media
+  output: /files/media
 ```
 
 If we want to define multiple media configurations, we can use an array (see examples below).
@@ -62,32 +62,32 @@ Now, if the content for this website was in a `src/` subfolder, it could look li
 
 ```yaml
 media:
-input: src/media
-output: media
+  input: src/media
+  output: media
 ```
 
 Let's assume now that I'm hosting my website in a subfolder (e.g. hosted at `http://example.com/my-website/`), I may want to do the following:
 
 ```yaml
 media:
-input: src/media
-output: /my-website/media
+  input: src/media
+  output: /my-website/media
 ```
 
 Now, if I want to use a `files/documents` folder only for document uploads (e.g. pdf, doc, ppt) and another `images` folder with my photos that must be in `.png` or `.webp` formats, we could do the following:
 
 ```yaml
 media:
-- name: files
-  label: Files
-  input: files/documents
-  output: /files/documents
-  categories: [ document ]
-- name: images # Note: 'name' key is required here
-  label: Images
-  input: images
-  output: /images
-  extensions: [ png, webp ]
+  - name: files
+    label: Files
+    input: files/documents
+    output: /files/documents
+    categories: [ document ]
+  - name: images # Note: 'name' key is required here
+    label: Images
+    input: images
+    output: /images
+    extensions: [ png, webp ]
 ```
 
 ## Content
@@ -119,18 +119,18 @@ Let's assume we have a simple collection of blog posts all saved in the `src/_po
 
 ```yaml
 content:
-- name: posts
-  label: Posts
-  path: src/_posts
-  type: collection
-  fields:
-    # ... fields defined here ...
-- name: authors
-  label: Authors
-  path: src/_data/authors.json
-  type: file
-  fields:
-    # ... fields defined here ...
+  - name: posts
+    label: Posts
+    path: src/_posts
+    type: collection
+    fields:
+      # ... fields defined here ...
+  - name: authors
+    label: Authors
+    path: src/_data/authors.json
+    type: file
+    fields:
+      # ... fields defined here ...
 ```
 
 ### View
@@ -153,13 +153,13 @@ Assuming you have a `date` field and `title` is the primary field, your default 
 
 ```yaml
 view:
-fields: [ title ]
-primary: title
-sort: [ date, title ]
-default:
-  search: ''
-  sort: title
-  order: desc
+  fields: [ title ]
+  primary: title
+  sort: [ date, title ]
+  default:
+    search: ''
+    sort: title
+    order: desc
 ```
 
 This would display the title of each post and sort them by title in descendant order (start with special characters and numbers, all the way to `z`).
@@ -173,12 +173,12 @@ Let's set the view to only display the posts from `Patricia`, display title, dat
 
 ```yaml
 view:
-fields: [ title, date, published ] # title is the first entry and thus will be set to primary
-sort: [ date, title, published ]
-default:
-  search: 'author:Patricia'
-  sort: date
-  order: desc
+  fields: [ title, date, published ] # title is the first entry and thus will be set to primary
+  sort: [ date, title, published ]
+  default:
+    search: 'author:Patricia'
+    sort: date
+    order: desc
 ```
 
 The `author:Patricia` syntax [comes from lunr.js](https://lunrjs.com/guides/searching.html#fields), the search library used by Pages CMS under the hood. Other syntax will work too (wildcards, boosts, fuzzy matches and term presence).
@@ -207,23 +207,23 @@ Here's an example defining two components: a `hero` component with a headline an
 
 ```yaml
 components:
-hero: # 'hero' is the component name/key
-  label: Hero Section
-  type: object
-  fields:
-    - name: headline
-      label: Headline
-      type: text
-      required: true
-    - name: cover
-      label: Cover Image
-      type: image
-email: # 'email' is the component name/key
-  label: Email Address
-  type: string
-  pattern:
-    regex: '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
-    message: 'This must be a valid email address (e.g. hello@example.com).'
+  hero: # 'hero' is the component name/key
+    label: Hero Section
+    type: object
+    fields:
+      - name: headline
+        label: Headline
+        type: text
+        required: true
+      - name: cover
+        label: Cover Image
+        type: image
+  email: # 'email' is the component name/key
+    label: Email Address
+    type: string
+    pattern:
+      regex: '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
+      message: 'This must be a valid email address (e.g. hello@example.com).'
 ```
 
 These components can then be referenced by their name using the `component` key within the `fields` definition of your content types or even within other components.
@@ -264,45 +264,45 @@ A field with `type: 'block'` **must** also define a `blocks` key. The `blocks` k
 
 ```yaml
 components:
-hero:
-  label: Hero Section
-  type: object
-  fields:
-    - name: headline
-      # ...
-cta:
-  label: Call to Action
-  type: object
-  fields:
-    - name: buttonText
-      # ...
+  hero:
+    label: Hero Section
+    type: object
+    fields:
+      - name: headline
+        # ...
+  cta:
+    label: Call to Action
+    type: object
+    fields:
+      - name: buttonText
+        # ...
 content:
-- name: page
-  label: Page
-  type: file
-  path: src/content/page.md
-  fields:
-    - name: title
-      label: Title
-      type: string
-      required: true
-    - name: sections
-      label: Page Sections
-      type: block # Allows choosing different structures
-      list: true # Allow multiple sections
-      blocks: # Define the allowed structures
-        - name: hero # Machine name for this choice
-          label: Add Hero # Label shown in UI
-          component: hero # Inherit structure from 'hero' component
-        - name: cta # Machine name for this choice
-          label: Add Call to Action
-          component: cta # Inherit structure from 'cta' component
-        - name: customText # Machine name for this choice
-          label: Add Custom Text
-          # Define structure directly (implicitly type: object)
-          fields:
-            - name: content
-              type: rich-text
+  - name: page
+    label: Page
+    type: file
+    path: src/content/page.md
+    fields:
+      - name: title
+        label: Title
+        type: string
+        required: true
+      - name: sections
+        label: Page Sections
+        type: block # Allows choosing different structures
+        list: true # Allow multiple sections
+        blocks: # Define the allowed structures
+          - name: hero # Machine name for this choice
+            label: Add Hero # Label shown in UI
+            component: hero # Inherit structure from 'hero' component
+          - name: cta # Machine name for this choice
+            label: Add Call to Action
+            component: cta # Inherit structure from 'cta' component
+          - name: customText # Machine name for this choice
+            label: Add Custom Text
+            # Define structure directly (implicitly type: object)
+            fields:
+              - name: content
+                type: rich-text
 ```
 
 In the UI, when adding an entry to the "Page Sections" list, the user would be presented with a choice between "Add Hero", "Add Call to Action", or "Add Custom Text". The saved data for a chosen hero block would look like `{ _block: 'hero', headline: '...', ... }`.
@@ -313,29 +313,29 @@ Any field with a truthy `list` key will be stored as an array of that field type
 
 ```yaml
 - name: images
-label: Images
-type: image
-list: true
+  label: Images
+  type: image
+  list: true
 ```
 
 Will allow the user to save multiple image paths:
 
 ```yaml
 images:
-- media/image-1.png
-- media/image-2.png
+  - media/image-1.png
+  - media/image-2.png
 ```
 
 `list` can be an object with `min`, `max` and `default` keys. `min` and `max` define the minimum and maximum number of entries in the array. For example:
 
 ```yaml
 - name: tags
-label: Tags
-type: string
-list:
-  min: 1 # Must have at least one tag
-  max: 5 # Can have up to five tags
-  default: [news] # Default value when creating new entry
+  label: Tags
+  type: string
+  list:
+    min: 1 # Must have at least one tag
+    max: 5 # Can have up to five tags
+    default: [news] # Default value when creating new entry
 ```
 
 This will force the user to enter at least 1 tag and at most 5.
