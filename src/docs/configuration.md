@@ -239,7 +239,7 @@ Fields define the structure and data types for your content entries or [componen
 | **`name`** | `string` | **Required** (unless defining a component directly under the `components` key) **and must be unique within its parent fields array**. Machine name for the field. **`body` is reserved for the main content of the file when dealing with a frontmatter format** (e.g., YAML frontmatter). |
 | **`label`** | `string` | Display name for the field. This is what is displayed in the edit form. If omitted, the `name` is used. |
 | **`description`** | `string` | Help text displayed below the field in the form. |
-| **`type`** | `string` | Defines the type of field. Can be a single type name: **[boolean](/docs/configuration/boolean-field)**, **[code](/docs/configuration/code-field)**, **[date](/docs/configuration/date-field)**, **[file](/docs/configuration/file-field)**, **[image](/docs/configuration/image-field)**, **[number](/docs/configuration/number-field)**, **[object](/docs/configuration/object-field)**, **[reference](/docs/configuration/reference-field)**, **[rich-text](/docs/configuration/rich-text-field)**, **[select](/docs/configuration/select-field)**, **[string](/docs/configuration/string-field)**, **[text](/docs/configuration/text-field)** or **[uuid](/docs/configuration/uuid-field)**. If undefined, it defaults to `text` unless `fields` is defined (then it defaults to `object`). Crucially, `type` can also be **`block`**, which enables a field that can hold one of several different structures defined in its `blocks` attribute. [See "Block Field Type" below](#block-field-type). |
+| **`type`** | `string` | Defines the type of field. Can be a single type name: **[block](/docs/configuration/block-field)**, **[boolean](/docs/configuration/boolean-field)**, **[code](/docs/configuration/code-field)**, **[date](/docs/configuration/date-field)**, **[file](/docs/configuration/file-field)**, **[image](/docs/configuration/image-field)**, **[number](/docs/configuration/number-field)**, **[object](/docs/configuration/object-field)**, **[reference](/docs/configuration/reference-field)**, **[rich-text](/docs/configuration/rich-text-field)**, **[select](/docs/configuration/select-field)**, **[string](/docs/configuration/string-field)**, **[text](/docs/configuration/text-field)** or **[uuid](/docs/configuration/uuid-field)**. If undefined, it defaults to `text` unless `fields` is defined (then it defaults to `object`). |
 | **`component`** | `string` | Allows a field to inherit its properties (like `type`, `label`, nested `fields`, `options`, etc.) from a defined [Component](#components). The value should be the name (key) of the component to inherit from. Properties defined directly on the field (like `name`, `label`, `required`) will override those inherited from the component. The `type` inherited from the component takes precedence over any `type` defined on the field itself. |
 | **`default`** | (any) | Default value for the field when a new entry is created. |
 | **`list`** | `boolean` or `object` | If truthy, the field is an array of values (of the type defined for the field). [See the "List" section below](#list). |
@@ -250,62 +250,6 @@ Fields define the structure and data types for your content entries or [componen
 | **`blocks`** | `array` | **Required if `type` is `block`**. An array of block definitions allowed within this field. Each element in the array is an object following the [Field](#fields) definition structure (it must have a unique `name` and can optionally use `component` or define its own `fields`). |
 | **`blockKey`** | `string` | **Only valid if `type` is `block`**. Specifies the key used to identify the chosen block type within the data object. Defaults to `_block`. For example, if `blockKey: block_type`, the chosen block's data would look like `{ block_type: 'hero', ... }`. |
 | **`options`** | `object` | Contains type-specific configuration options for the field. Refer to the documentation for each [Field Type](#field-types) for available options. |
-
-### Block Field Type (`type: block`)
-
-Setting `type: 'block'` allows a field to represent one of several possible structures. This is ideal for creating flexible content layouts or page builders.
-
-A field with `type: 'block'` **must** also define a `blocks` key. The `blocks` key takes an array of *block definitions*. Each block definition in this array is structured like a standard field:
-- It **must** have a unique `name`. This name is stored in the data (using the key specified by `blockKey`, defaulting to `_block`) to identify which block was chosen.
-- It usually defines its structure using `fields` (implicitly `type: 'object'`) or by referencing a component with `component: 'componentName'`.
-- It can have a `label` which is shown to the user when choosing which block to add.
-
-**Example:**
-
-```yaml
-components:
-  hero:
-    label: Hero Section
-    type: object
-    fields:
-      - name: headline
-        # ...
-  cta:
-    label: Call to Action
-    type: object
-    fields:
-      - name: buttonText
-        # ...
-content:
-  - name: page
-    label: Page
-    type: file
-    path: src/content/page.md
-    fields:
-      - name: title
-        label: Title
-        type: string
-        required: true
-      - name: sections
-        label: Page Sections
-        type: block # Allows choosing different structures
-        list: true # Allow multiple sections
-        blocks: # Define the allowed structures
-          - name: hero # Machine name for this choice
-            label: Add Hero # Label shown in UI
-            component: hero # Inherit structure from 'hero' component
-          - name: cta # Machine name for this choice
-            label: Add Call to Action
-            component: cta # Inherit structure from 'cta' component
-          - name: customText # Machine name for this choice
-            label: Add Custom Text
-            # Define structure directly (implicitly type: object)
-            fields:
-              - name: content
-                type: rich-text
-```
-
-In the UI, when adding an entry to the "Page Sections" list, the user would be presented with a choice between "Add Hero", "Add Call to Action", or "Add Custom Text". The saved data for a chosen hero block would look like `{ _block: 'hero', headline: '...', ... }`.
 
 ### List
 
@@ -344,6 +288,7 @@ Certain fields (e.g. the [image field](/docs/configuration/image-field)) impleme
 
 ### Field Types
 
+- [Block field](/docs/configuration/block-field)
 - [Boolean field](/docs/configuration/boolean-field)
 - [Code field](/docs/configuration/code-field)
 - [Date field](/docs/configuration/date-field)
