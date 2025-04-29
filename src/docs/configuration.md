@@ -82,7 +82,7 @@ media:
     input: files/documents
     output: /files/documents
     categories: [ document ]
-  - label: images
+  - name: images
     label: Images
     input: images
     output: /images
