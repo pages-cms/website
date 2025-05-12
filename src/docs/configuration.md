@@ -21,7 +21,7 @@ The `.pages.yml` file contains mainly 2 sections:
 
 ## Media
 
-With media, you can configure how to handle the files that can be embedded in or associated with the content: attachments, thumbnails, inline images...
+With media, you can configure how to handle files you want to upload, attach to or embed in your content. `media` can be a string, a single object or an array of objects depending on whether you want a single or multiple media folders and configurations.
 
 ![Media](/media/screenshots/nextjs-media-light@2x.png)
 
@@ -29,6 +29,8 @@ With media, you can configure how to handle the files that can be embedded in or
 
 | Key | Type | Description |
 | - | - | - |
+| **`name`** | `string` | **Required if media is an array. Must be unique across the media array**. Machine name for the media entry. |
+| **`label`** | `string` | Display name for the media. This will be displayed in the main menu. |
 | **`input`**| `string` | The path to the media folder relative to the root of the repo (e.g. `src/files/media`). This path is what allows us to find the files in Pages CMS to manage content and media. |
 | **`output`** | `string` | The path to the media folder relative to the root of the website (e.g. `files/media`). This path will prefix all media saved in our content, which will be used by your static site generator. |
 | **`path`** | `string` | The default path to present the user (e.g. when opening the media browser on an [Image Field](/docs/configuration/image-field)). |
@@ -44,6 +46,8 @@ media:
   input: files/media
   output: /files/media
 ```
+
+If we want to define multiple media configurations, we can use an array (see examples below).
 
 ### Examples
 
@@ -69,6 +73,22 @@ media:
   output: /my-website/media
 ```
 
+Now, if I want to use a `files/documents` folder only for document uploads (e.g. pdf, doc, ppt) and another `images` folder with my photos that must be in `.png` or `.webp` formats, we could do the following:
+
+```yaml
+media:
+  - name: files
+    label: Files
+    input: files/documents
+    output: /files/documents
+    categories: [ document ]
+  - label: images
+    label: Images
+    input: images
+    output: /images
+    extensions: [ png, webp ]
+```
+
 ## Content
 
 Content managed by the users: collections (e.g. blog posts) and file types (e.g. the home page). The `content` key should be set as an array of content entries.
@@ -85,7 +105,6 @@ Each content entry can define the following keys:
 | **`label`** | `string` | Display name for the collection or single file. This will be displayed in the main menu. |
 | **`type`**| `string` | **Required**. `collection` or `file`, depending on whether the content entry is a collection of files with an identical schema (e.g. blog posts) or a single file (e.g. home page). |
 | **`path`** | `string` | **Required**. Path to the folder where the files are stored if it's a collection (e.g. `path: src/posts`, otherwise the path to the single file (e.g. `path: src/index.md`). |
-| **`icon`** | `string` | Name of a [Lucide icon](https://lucide.dev/icons/) to display in the main navigation (e.g. `map-pinned`). You can use Kebab, Pascal or Camel case (e.g. `map-pinned`, `MapPinned` or `mapPinned`). |
 | **`fields`** | `string` | The list of fields defining the schema of the content entry (e.g. title, date, author, body, etc). [See the "Fields" section below](#fields). |
 | **`filename`** | `string` | The pattern to generate the filename when creating a new file. You can use the value of any field (e.g. `fields.title`) including nested values (e.g. `fields.tags[0].label`). You can also use a few date tokens (`{year}`, `{month}`, `{day}`) and time (`{hour}`, `{minute}`, `{second}`) and `{primary}` for the primary field as defined in the `view` key. By default this is set to `'{year}-{month}-{day}-{primary}.md'`. |
 | **`exclude`** | `array` | An array of files to exclude from the collection (e.g. `[ README.md ]`). This is only valid for collections.
