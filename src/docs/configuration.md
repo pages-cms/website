@@ -146,6 +146,8 @@ The `view` object is only valid for `type: collection` content entries. It defin
 | **`sort`** | `array` | The list of fields that the collection can be sorted by (e.g. `sort: [ date, title ]`). By default, it is set to the date (if any) and the primary field. |
 | **`search`** | `array` | The list of fields that should be indexed for search. By default, all fields are indexed. |
 | **`default`** | `object` | Define the default values for search and sorting: `{ search: 'My keywords', sort: title, order: asc }`). `default.order` can be `asc` or `desc`. By default, `default.search` is empty, `default.sort` is the first field in the `sort` array and `default.order` is set to `desc`. |
+| **`layout`** | `string` | Controls the visual layout of the collection view, either `list` (default) or `tree` for a collapsible tree view.
+| **`node`**   | `string` or `object` | If a `string`, it will be treated as the value for `node.filename`. If an object, it can have 2 attributes: `filename` for the filename of the nodes (e.g. `index.md`) and `hideDirs` (can be `all`, `nodes` or `others` to hide either all folders, only node folders or folders other than the nodes'). A node is typically a nested file in a subfolder (e.g. `folder/subfolder/index.md`) that will show up as if it were in its parent folder (e.g. `folder/`) and act as the parent of all of its siblings in the subfolder. It is useful either if entries in your collection are nested (e.g. `2025-01-01-my-post/index.md`) or if you want to show a tree layout with nodes as parents of the subfolders' entries. |
 
 #### Examples
 
@@ -182,6 +184,16 @@ view:
 ```
 
 The `author:Patricia` syntax [comes from lunr.js](https://lunrjs.com/guides/searching.html#fields), the search library used by Pages CMS under the hood. Other syntax will work too (wildcards, boosts, fuzzy matches and term presence).
+
+If I wanted to show a tree view of my collection, with some nodes:
+
+```yaml
+view:
+  layout: tree
+  node:
+    filename: index.md
+    hideDirs: all # This will hide all subfolders, even if they do not contain a node
+```
 
 ## Components
 
@@ -302,3 +314,35 @@ Certain fields (e.g. the [image field](/docs/configuration/image-field)) impleme
 - [String field](/docs/configuration/string-field)
 - [Text field](/docs/configuration/text-field)
 - [UUID field](/docs/configuration/uuid-field)
+
+## Settings
+
+This allows you to apply global settings within this repository and branch.
+
+### Keys
+
+| Key   | Type    | Description                                                                 |
+| :---- | :------ | :-------------------------------------------------------------------------- |
+| `hide`  | `boolean` | If set to `true`, the "Settings" link/page will be hidden in the Pages CMS UI. |
+| `content` | `object`  | An object containing settings specifically related to content handling. |
+| `content` | `object`  | An object containing settings specifically related to content handling. |
+| `content.merge` | `object`  | Defaults to `false`. If set to `true`, when saving an existing content entry, the submitted fields will be merged with the fields already present in the file. Fields present only in the file will be preserved. Fields present in both will take the value from the submitted form. If `false`, the file content will be completely overwritten with the submitted form data (after processing according to the schema). This is helpful if you want to expose only parts of your file for editing. |
+
+### Examples
+
+To hide the settings editor and enable the content merge behavior:
+
+```yaml
+settings:
+  hide: true
+  content:
+    merge: true
+```
+
+To just enable the content merge behavior:
+
+```yaml
+settings:
+  content:
+    merge: true
+```
