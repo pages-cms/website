@@ -104,11 +104,11 @@ Each content entry can define the following keys:
 | - | - | - |
 | **`name`** | `string` | **Required and must be unique across the content array**. Machine name for the content entry. |
 | **`label`** | `string` | Display name for the collection or single file. This will be displayed in the main menu. |
-| **`type`** | `string` | **Required**. `collection` or `file`, depending on whether the content entry is a collection of files with an identical schema (e.g. blog posts) or a single file (e.g. home page). |
-| **`path`** | `string` | **Required**. Path to the folder where the files are stored if it's a collection (e.g. `path: src/posts`), otherwise the path to the single file (e.g. `path: src/index.md`). |
-| **`fields`** | `array` | The list of fields defining the schema of the content entry (e.g. title, date, author, body, etc). [See the "Fields" section below](#fields). |
-| **`filename`** | `string` | The pattern to generate the filename when creating a new file. You can use the value of any field (e.g. `fields.title`) including nested values (e.g. `fields.tags[0].label`). You can also use a few date tokens (`{year}`, `{month}`, `{day}`) and time (`{hour}`, `{minute}`, `{second}`) and `{primary}` for the primary field as defined in the `view` key. By default this is set to `'{year}-{month}-{day}-{primary}.md'`. |
-| **`exclude`** | `array` | An array of files to exclude from the collection (e.g. `[ README.md ]`). This is only valid for collections. |
+| **`type`**| `string` | **Required**. `collection` or `file`, depending on whether the content entry is a collection of files with an identical schema (e.g. blog posts) or a single file (e.g. home page). |
+| **`path`** | `string` | **Required**. Path to the folder where the files are stored if it's a collection (e.g. `path: src/posts`, otherwise the path to the single file (e.g. `path: src/index.md`). |
+| **`fields`** | `string` | The list of fields defining the schema of the content entry (e.g. title, date, author, body, etc). [See the "Fields" section below](#fields). |
+| **`filename`** | `string` | The pattern to generate the filename when creating a new file. This also defines how files are looked up. You can use the value of any field (e.g. `{{fields.title}}`) including nested values (e.g. `{{fields.tags[0].label}}`). You can also use a few date tokens (`{year}`, `{month}`, `{day}`) and time (`{hour}`, `{minute}`, `{second}`) and `{primary}` for the primary field as defined in the `view` key. By default this is set to `'{year}-{month}-{day}-{primary}.md'`. |
+| **`exclude`** | `array` | An array of files to exclude from the collection (e.g. `[ README.md ]`). This is only valid for collections.
 | **`view`** | `object` | **Only valid for collections**. This object defines the various options for the collection view; visible fields, sorting options and defaults, fields indexed for the search... [See the "View" section below](#view). |
 | **`format`** | `string` | The format of the file, used to set up the editor to edit the content: `yaml-frontmatter`, `json-frontmatter`, `toml-frontmatter`, `yaml`, `json`, `toml`, `datagrid`, `code` or `raw`. It defaults to `yaml-frontmatter`. |
 | **`subfolders`** | `boolean` | Whether or not the collection should display subfolders. Default to `true`. Set to `false` if you want to force the collection of files to be "flat". |
@@ -256,12 +256,10 @@ Fields define the structure and data types for your content entries or [componen
 | **`default`** | (any) | Default value for the field when a new entry is created. |
 | **`list`** | `boolean` or `object` | If truthy, the field is an array of values (of the type defined for the field). [See the "List" section below](#list). |
 | **`hidden`** | `boolean` | If `true`, the field will not be displayed in the form but will be saved. It is usually used with `default` to set a required field that shouldn't be edited by users, like for example the language of a post (`lang: en-US`). |
-| **`required`** | `boolean` | If `true`, the field cannot be empty or unselected. Validation rules depend on the field type. |
-| **`pattern`** | `string` or `object` | A regular expression to validate the field (primarily for string-based types). A custom error message can be provided by defining an object with `regex` and `message` attributes (e.g. `pattern: { regex: '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$', message: 'This must be a valid email address (e.g. hello@example.com).' }`). |
-| **`fields`** | `array` | **Required if `type` is `object` and no `component` is defined**. Defines the nested fields within the object. Each element follows the standard Field definition structure. |
-| **`blocks`** | `array` | **Required if `type` is `block`**. An array of block definitions allowed within this field. Each element in the array is an object following the [Field](#fields) definition structure (it must have a unique `name` and can optionally use `component` or define its own `fields`). |
-| **`blockKey`** | `string` | **Only valid if `type` is `block`**. Specifies the key used to identify the chosen block type within the data object. Defaults to `_block`. For example, if `blockKey: block_type`, the chosen block's data would look like `{ block_type: 'hero', ... }`. |
-| **`options`** | `object` | Contains type-specific configuration options for the field. Refer to the documentation for each [Field Type](#field-types) for available options. |
+| **`required`** | `boolean` | If `true`, the field can't be empty. |
+| **`pattern`** | `string` or `object` | A regular expression to validate the field. A custom message for the error can be provided by defining an object with `regex` and `message` attributes (e.g. `pattern: { message: 'This must be a valid email address (e.g. hello@example.com).', regex: '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$' }`) |
+| **`fields`** | `array` | **Only valid for object fields**. List of the fields in that object. |
+| **`options`** | `object` | Options for that field. Refer to the field specific details below. |
 
 ### List
 
