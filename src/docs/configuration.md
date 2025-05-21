@@ -282,7 +282,7 @@ images:
   - media/image-2.png
 ```
 
-`list` can be an object with `min`, `max` and `default` keys. `min` and `max` define the minimum and maximum number of entries in the array. For example:
+`list` can be an object with `min`, `max`, `default` and `collapsible` keys. `min` and `max` define the minimum and maximum number of entries in the array. For example:
 
 ```yaml
 - name: tags
@@ -296,7 +296,33 @@ images:
 
 This will force the user to enter at least 1 tag and at most 5.
 
-Certain fields (e.g. the [image field](/docs/configuration/image-field)) implement their own list logic (e.g., multi-select UI). If you want to use the default list widget (which allows drag-and-drop reordering and adding/removing items individually), you might need specific configuration depending on the field type, though often setting `list: true` is sufficient.
+By default, list entries are collapsible. You can disable this behavior by setting `collapsible` to `false`:
+
+```yaml
+- name: tags
+  label: Tags
+  type: string
+  list:
+    collapsible: false
+```
+
+You can also configure the collapsible behavior by setting `collapsible` to an object with `collapsed` and `summary` properties:
+
+```yaml
+- name: sections
+  label: Sections
+  type: object
+  list:
+    collapsible:
+      collapsed: true # Default collapsed state
+      summary: "{title} ({index})" # Template string using field values and {index}
+```
+
+The `summary` template string can use:
+- Field values using `{fields.fieldName}` syntax
+- The index of the item using `{index}`
+
+Certain fields (e.g. the [image field](/docs/configuration/image-field)) implement their own list logic for handling multiple elements with the `mutliple` option. You can use either one approach, both result in an array of values.
 
 ### Field Types
 
