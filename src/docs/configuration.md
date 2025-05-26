@@ -349,7 +349,6 @@ This allows you to apply global settings within this repository and branch.
 | :---- | :------ | :-------------------------------------------------------------------------- |
 | `hide`  | `boolean` | If set to `true`, the "Settings" link/page will be hidden in the Pages CMS UI. |
 | `content` | `object`  | An object containing settings specifically related to content handling. |
-| `content` | `object`  | An object containing settings specifically related to content handling. |
 | `content.merge` | `object`  | Defaults to `false`. If set to `true`, when saving an existing content entry, the submitted fields will be merged with the fields already present in the file. Fields present only in the file will be preserved. Fields present in both will take the value from the submitted form. If `false`, the file content will be completely overwritten with the submitted form data (after processing according to the schema). This is helpful if you want to expose only parts of your file for editing. |
 
 ### Examples
