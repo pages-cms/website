@@ -1,0 +1,42 @@
+{% from "macros/command.njk" import command_dialog %}
+
+{% set commandMenu = menu | commandMenu(collections) %}
+{{ command_dialog(id="command-search", items=commandMenu, placeholder="Search the docs...") }}
+<script>
+  document.addEventListener('keydown', (e) => {
+    if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+      e.preventDefault();
+      const dialog = document.getElementById('command-search');
+      if (dialog.open) {
+        dialog.close();
+      } else {
+        dialog.showModal();
+        dialog.querySelector('header input')?.focus();
+      }
+    }
+  });
+</script>
+
+<div class="flex h-14 w-full items-center justify-between gap-2 px-4">
+  <button
+    type="button"
+    onclick="document.dispatchEvent(new CustomEvent('basecoat:sidebar'))"
+    aria-label="Toggle sidebar"
+    data-tooltip="Toggle sidebar"
+    data-side="bottom"
+    data-align="start"
+    class="btn-sm-icon-ghost"
+  >
+    {% lucide "panel-left" %}
+  </button>
+
+  <button
+    type="button"
+    class="relative text-muted-foreground bg-background dark:bg-input/30 border-input flex items-center h-8 w-full min-w-0 rounded-md border px-3 py-1 gap-x-2 text-base md:text-sm focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] outline-none cursor-text max-w-72 sm:ml-auto"
+    onclick="document.getElementById('command-search').showModal()"
+  >
+    {% lucide "search", { "class": "size-4" } %}
+    Search the docs...
+    <kbd class="kbd ml-auto -mr-1.5">⌘K</kbd>
+  </button>
+</div>

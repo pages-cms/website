@@ -1,0 +1,225 @@
+/*
+  Prism highlighting rebuilt from scratch from:
+  node_modules/.pnpm/prism-theme-github@1.0.2/node_modules/prism-theme-github/themes/prism-theme-github-dark.css
+*/
+
+:root {
+  --prism-fg: #c9d1d9;
+  --prism-bg: #161b22;
+  --prism-selection-bg: #234879;
+  --prism-inline-bg: #343942;
+  --prism-line-highlight-bg: #2f2a1e;
+  --prism-line-highlight-border: #674c16;
+
+  --prism-comment: #8b949e;
+  --prism-punctuation: #c9d1d9;
+  --prism-property: #79c0ff;
+  --prism-tag: #79c0ff;
+  --prism-boolean: #79c0ff;
+  --prism-number: #79c0ff;
+  --prism-constant: #79c0ff;
+  --prism-symbol: #79c0ff;
+  --prism-deleted: #79c0ff;
+  --prism-selector: #a5d6ff;
+  --prism-attr-name: #a5d6ff;
+  --prism-string: #a5d6ff;
+  --prism-char: #a5d6ff;
+  --prism-builtin: #a5d6ff;
+  --prism-inserted: #a5d6ff;
+  --prism-operator: #a5d6ff;
+  --prism-entity: #a5d6ff;
+  --prism-url: #a5d6ff;
+  --prism-atrule: #a5d6ff;
+  --prism-attr-value: #a5d6ff;
+  --prism-keyword: #a5d6ff;
+  --prism-function: #d2a8ff;
+  --prism-regex: #a8daff;
+  --prism-important: #a8daff;
+  --prism-variable: #a8daff;
+}
+
+pre[class*="language-"],
+code[class*="language-"] {
+  color: var(--prism-fg);
+  font-family: var(--font-mono);
+  text-align: left;
+  text-shadow: none;
+  white-space: pre;
+  word-break: normal;
+  word-spacing: normal;
+  tab-size: 2;
+  hyphens: none;
+}
+
+pre[class*="language-"]::selection,
+code[class*="language-"]::selection {
+  text-shadow: none;
+  background: var(--prism-selection-bg);
+}
+
+pre[class*="language-"]::-moz-selection,
+code[class*="language-"]::-moz-selection {
+  text-shadow: none;
+  background: var(--prism-selection-bg);
+}
+
+@media print {
+  pre[class*="language-"],
+  code[class*="language-"] {
+    text-shadow: none;
+  }
+}
+
+pre[class*="language-"] {
+  margin: 0;
+  overflow: auto;
+  border-radius: var(--radius);
+}
+
+pre[class*="language-"] > code[class*="language-"] {
+  display: block;
+  position: relative;
+  z-index: 1;
+}
+
+:not(pre) > code[class*="language-"] {
+  padding: 0.15rem 0.35rem;
+  border-radius: calc(var(--radius) - 2px);
+  color: var(--prism-fg);
+  background: var(--prism-inline-bg);
+}
+
+pre[data-line] {
+  position: relative;
+}
+
+.line-highlight {
+  position: absolute;
+  right: 0;
+  left: 0;
+  padding: inherit 0;
+  margin-top: 1rem;
+  background: var(--prism-line-highlight-bg);
+  box-shadow: inset 5px 0 0 var(--prism-line-highlight-border);
+  pointer-events: none;
+  line-height: inherit;
+  white-space: pre;
+  z-index: 0;
+}
+
+.namespace {
+  opacity: 0.7;
+}
+
+.token.comment,
+.token.prolog,
+.token.doctype,
+.token.cdata {
+  color: var(--prism-comment);
+}
+
+.token.punctuation {
+  color: var(--prism-punctuation);
+}
+
+.token.property {
+  color: var(--prism-property);
+}
+
+.token.tag {
+  color: var(--prism-tag);
+}
+
+.token.boolean {
+  color: var(--prism-boolean);
+}
+
+.token.number {
+  color: var(--prism-number);
+}
+
+.token.constant {
+  color: var(--prism-constant);
+}
+
+.token.symbol {
+  color: var(--prism-symbol);
+}
+
+.token.deleted {
+  color: var(--prism-deleted);
+}
+
+.token.selector {
+  color: var(--prism-selector);
+}
+
+.token.attr-name {
+  color: var(--prism-attr-name);
+}
+
+.token.string {
+  color: var(--prism-string);
+}
+
+.token.char {
+  color: var(--prism-char);
+}
+
+.token.builtin {
+  color: var(--prism-builtin);
+}
+
+.token.inserted {
+  color: var(--prism-inserted);
+}
+
+.token.operator,
+.token.entity,
+.token.url,
+.language-css .token.string,
+.style .token.string {
+  color: var(--prism-operator);
+  background: var(--prism-bg);
+}
+
+.token.atrule {
+  color: var(--prism-atrule);
+}
+
+.token.attr-value {
+  color: var(--prism-attr-value);
+}
+
+.token.keyword {
+  color: var(--prism-keyword);
+}
+
+.token.function {
+  color: var(--prism-function);
+}
+
+.token.regex {
+  color: var(--prism-regex);
+}
+
+.token.important {
+  color: var(--prism-important);
+}
+
+.token.variable {
+  color: var(--prism-variable);
+}
+
+.token.important,
+.token.bold {
+  font-weight: 700;
+}
+
+.token.italic {
+  font-style: italic;
+}
+
+.token.entity {
+  cursor: help;
+}

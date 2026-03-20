@@ -1,0 +1,9 @@
+package.json
+package-lock.json
+src/
+_legacy/
+AGENTS.md
+CONTRIBUTING.md
+LICENSE.md
+README.md
+ROADMAP.md

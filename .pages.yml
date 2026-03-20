@@ -1,62 +1,54 @@
-media:
-  input: src/media
-  output: /media
+media: media
+
 content:
   - name: docs
-    label: Documentation
+    label: Docs
     type: collection
-    path: src/docs
+    path: docs
+    format: yaml-frontmatter
+    exclude: [docs.json]
     filename: "{primary}.md"
     view:
-      fields: [ title, order ]
+      fields: [title, description, date]
       primary: title
-      sort: [ order, title ]
+      sort: [date, title]
       default:
-        sort: order
-        order: asc
+        search: ""
+        sort: date
+        order: desc
     fields:
-      - { name: title, label: Title, type: string, required: true }
-      - { name: description, label: Description, type: string, options: { maxlength: 180 }}
-      - { name: order, label: Order, type: number }
-      - { name: body, label: Body, type: rich-text }
-  - label: Home page
-    path: src/index.njk
-    name: homepage
+      - name: title
+        label: Title
+        type: string
+        required: true
+      - name: description
+        label: Description
+        type: string
+        required: true
+      - name: icon
+        label: Icon
+        type: string
+        description: Kebab case Lucide icon name. See https://lucide.dev
+      - name: body
+        label: Body
+        type: rich-text
+
+  - name: navigation
+    label: Navigation
     type: file
-    fields:
-      - { name: layout, type: string, hidden: true, default: layouts/base.njk }
-      - name: promotion
-        label: Promotion
-        type: object
-        fields:
-          - { name: text, label: Text, type: string }
-          - { name: url, label: URL, type: string }
-      - { name: title, label: Title, type: string, required: true }
-      - { name: description, label: Description, type: string }
-      - name: features
-        label: Features
-        type: object
-        fields:
-          - { name: title, label: Title, type: string }
-          - name: entries
-            label: Entries
-            type: object
-            list: true
-            fields:
-              - { name: title, label: Title, type: string }
-              - { name: description, label: Description, type: string }
-              - { name: icon, label: Icon, type: string }
-              - { name: soon, label: Soon, type: boolean }
-      - name: faq
-        label: FAQ
-        type: object
-        fields:
-          - { name: title, label: Title, type: string }
-          - name: entries
-            label: Entries
-            type: object
-            list: true
-            fields:
-              - { name: question, label: Question, type: string }
-              - { name: answer, label: Answer, type: text, options: { rows: 5 } }
-      - { name: body, label: Body, type: code, options: { format: html} }
+    path: docs/docs.json
+    format: code
+    options:
+      language: json
+
+  - name: site
+    label: Site configuration
+    type: file
+    path: _data/site.json
+    format: code
+    options:
+      language: json
+
+settings:
+  content:
+    merge: true

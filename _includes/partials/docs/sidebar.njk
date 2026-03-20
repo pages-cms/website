@@ -1,0 +1,26 @@
+{% from "macros/sidebar.njk" import sidebar %}
+
+{% set header %}
+<a href="/" class="btn-ghost p-2 h-12 w-full justify-start gap-3">
+  {% if site.logo and (site.logo.svg or site.logo.url) %}
+    <div class="bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-6 items-center justify-center rounded-md">
+      {% if site.logo.svg %}
+        {{ site.logo.svg | safe }}
+      {% else %}
+        <img src="{{ site.logo.url }}" alt="{{ site.title }} logo" class="size-6" />
+      {% endif %}
+    </div>
+  {% endif %}
+  <div class="grid flex-1 text-left text-sm leading-tight">
+    <span class="truncate font-semibold">{{ site.title }}</span>
+  </div>
+</a>
+{% endset %}
+
+{{ sidebar(
+  id="sidebar",
+  label="Sidebar navigation",
+  header=header,
+  content_attrs={ "class": "scrollbar" },
+  menu=menu | sidebarMenu(collections)
+) }}

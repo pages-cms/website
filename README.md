@@ -1,12 +1,45 @@
-# PagesCMS.org
+# ReallySimpleDocs
 
-This is the official website for Pages CMS, deployed at [PagesCMS.org](PagesCMS.org). It includes [the official documentation](https://pagescms.org/docs).
+A simple documentation site template built with **Eleventy (11ty)**, **Basecoat**, and **Tailwind CSS**.
 
-It is built with 11ty + Tailwind and is hosted on Cloudflare Pages.
+## Create a new site
 
-## Install & Run
+```bash
+npm create reallysimpledocs@latest my-docs
+# or: npx create-reallysimpledocs@latest my-docs
+```
 
-1. Clone the repo: `git clone git@github.com:pages-cms/website.git`
-2. Install the dependencies: `cd website && npm install`
-3. Run it: `npm run dev`
-4. Visit it: `http://localhost:8080/
+Then:
+
+```bash
+cd my-docs
+npm install
+npm run dev
+```
+
+Docs:
+
+- `docs/index.md`
+- Pages CMS: `docs/content/pages-cms.md`
+
+## Local development (this repo)
+
+```bash
+npm install
+npm run dev
+```
+
+## Documentation
+
+Go to [ReallySimpleDocs.com](https://reallysimpledocs.com).
+
+## Support the project 
+
+- [Contribute code](/CONTRIBUTING.md)
+- [Report issues](https://github.com/hunvreus/reallysimpledocs/issues)
+- [Sponsor me](https://github.com/sponsors/hunvreus)
+- [Star the project on GitHub](https://github.com/hunvreus/reallysimpledocs)
+
+## License
+
+[MIT](/LICENSE.md)

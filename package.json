@@ -1,34 +1,27 @@
 {
-  "name": "docs",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "name": "reallysimpledocs",
+  "version": "0.1.3",
+  "type": "module",
   "scripts": {
-    "clean": "rm -rf _site",
-    "dev": "eleventy --serve & npx tailwindcss -i ./src/styles/main.css -o ./_site/styles.css --watch",
-    "build": "ELEVENTY_PRODUCTION=true eleventy && NODE_ENV=production npx tailwindcss -i ./src/styles/main.css -o ./_site/styles.css --minify"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/pages-cms/docs.git"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/pages-cms/docs/issues"
-  },
-  "homepage": "https://github.com/pages-cms/docs#readme",
-  "devDependencies": {
-    "@11ty/eleventy": "^2.0.1",
-    "@tailwindcss/forms": "^0.5.7",
-    "alpinejs": "^3.13.5",
-    "htmx.org": "^1.9.10",
-    "markdown-it-anchor": "^8.6.7",
-    "tailwindcss": "^3.4.0"
+    "basecoat": "cp node_modules/basecoat-css/dist/js/all.min.js assets/basecoat.min.js",
+    "clean": "node --input-type=module -e \"import fs from 'node:fs'; fs.rmSync('_site', { recursive: true, force: true });\"",
+    "build": "npm run clean && npm run basecoat && npx tailwindcss -i ./src/css/styles.css -o ./assets/styles.css --minify && npx @11ty/eleventy",
+    "dev": "npm run basecoat &&  concurrently \"npx @11ty/eleventy --serve\" \"npx tailwindcss -i ./src/css/styles.css -o ./assets/styles.css --watch\""
   },
   "dependencies": {
-    "@grimlink/eleventy-plugin-lucide-icons": "^2.0.2",
-    "eleventy-plugin-toc": "^1.1.5"
+    "@11ty/eleventy": "^3.1.2",
+    "@11ty/eleventy-plugin-syntaxhighlight": "^5.0.2",
+    "@grimlink/eleventy-plugin-lucide-icons": "^2.1.8",
+    "@tailwindcss/cli": "^4.1.11",
+    "basecoat-css": "^0.3.7",
+    "eleventy-plugin-toc": "^1.1.5",
+    "lucide-static": "^0.552.0",
+    "markdown-it": "^14.1.0",
+    "markdown-it-anchor": "^9.2.0",
+    "prism-theme-github": "^1.0.2",
+    "tailwindcss": "^4.1.11"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.0"
   }
 }

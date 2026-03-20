@@ -1,116 +1,84 @@
-const markdownIt = require("markdown-it");
-const markdownItAnchor = require("markdown-it-anchor");
-const pluginTOC = require("eleventy-plugin-toc")
-const lucideIcons = require("@grimlink/eleventy-plugin-lucide-icons");
+import fs from "node:fs";
 
-const md = new markdownIt({ html: true });
+import eleventyLucideicons from "@grimlink/eleventy-plugin-lucide-icons";
+import eleventySyntaxHighlight from "@11ty/eleventy-plugin-syntaxhighlight";
+import markdownIt from "markdown-it";
+import markdownItAnchor from "markdown-it-anchor";
+import pluginTOC from "eleventy-plugin-toc";
 
-module.exports = function(eleventyConfig) {
-  eleventyConfig.addPassthroughCopy({
-     "src/media": "/media",
-     "src/assets": "/",
-     "node_modules/alpinejs/dist/cdn.min.js": "js/alpine.js",
-     "node_modules/htmx.org/dist/htmx.min.js": "js/htmx.js"
-  });
+import * as lucideIcons from "lucide-static";
 
-  eleventyConfig.addShortcode("now", () => `${Date.now()}`);
+import { registerLlmExports } from "./src/eleventy/llm-exports.js";
+import { registerNavigationFilters } from "./src/eleventy/navigation.js";
 
-  eleventyConfig.addPlugin(lucideIcons);
-
-  eleventyConfig.setLibrary("md", markdownIt({ html: true }).use(markdownItAnchor, { tabIndex: false }));
-
-  eleventyConfig.addFilter("markdown", (content) => {
-    return md.render(content);
-  });
-  
-  eleventyConfig.addPlugin(pluginTOC, {
-    tags: ['h2', 'h3'],
-  });
-
-  eleventyConfig.addFilter("sortByOrderAndTitle", (values) => {
-    let vals = [...values];
-    return vals.sort((a, b) => {
-      // Sort by order first
-      const aOrder = typeof a.data.order === 'number' ? a.data.order : 0;
-      const bOrder = typeof b.data.order === 'number' ? b.data.order : 0;
-      const orderDiff = aOrder - bOrder;
-      if (orderDiff !== 0) return orderDiff;
-    
-      // If order is the same, sort by title
-      return a.data.title.localeCompare(b.data.title);
-    })
-  });
-
-  eleventyConfig.addFilter("sortByUrl", (values) => {
-    let vals = [...values];
-    return vals.sort((a, b) => Math.sign(a.url.localeCompare(b.url)));
-  });
-
-  eleventyConfig.addNunjucksFilter("getNextPrevMenu", function(menu, currentUrl) {
-    let flatMenu = [];
-    menu.forEach(item => {
-      flatMenu.push(item);
-      if (item.children) {
-        item.children.forEach(child => {
-          flatMenu.push(child);
-        });
-      }
-    });
-  
-    const currentIndex = flatMenu.findIndex(item => item.url === currentUrl);
-    const previousItem = currentIndex > 0 ? flatMenu[currentIndex - 1] : null;
-    const nextItem = currentIndex < flatMenu.length - 1 ? flatMenu[currentIndex + 1] : null;
-  
-    return { previous: previousItem, next: nextItem };
-  });
-  
-  eleventyConfig.addCollection("menu", function(collectionApi) {
-    const docs = collectionApi.getFilteredByGlob("src/docs/**/*.md");
-    let menu = [];
-
-    docs.sort((a, b) => {
-      // Sort by order first
-      const aOrder = typeof a.data.order === 'number' ? a.data.order : 0;
-      const bOrder = typeof b.data.order === 'number' ? b.data.order : 0;
-      const orderDiff = aOrder - bOrder;
-      if (orderDiff !== 0) return orderDiff;
-    
-      // If order is the same, sort by title
-      return a.data.title.localeCompare(b.data.title);
-    })
-    .forEach(doc => {
-      const urlSegments = doc.url.split('/').filter(Boolean);
-    
-      // Add top-level items
-      if (urlSegments.length === 1 || urlSegments.length === 2) {
-        let menuItem = {
-          title: doc.data.title,
-          url: doc.url,
-          children: []
-        };
-    
-        // Add children
-        docs.forEach(subDoc => {
-          const subUrlSegments = subDoc.url.split('/').filter(Boolean);
-          if (subUrlSegments.length === 3 && subUrlSegments[1] === urlSegments[1]) {
-            menuItem.children.push({
-              title: subDoc.data.title,
-              url: subDoc.url
-            });
-          }
-        });
-    
-        menu.push(menuItem);
-      }
-    });
-
-    return menu;
-  });
-  
-  return {
-    dir: {
-      input: "src",
-      output: "_site"
-    }
+const readSiteData = () => {
+  try {
+    const raw = fs.readFileSync(new URL("./_data/site.json", import.meta.url), "utf8");
+    return JSON.parse(raw) || null;
+  } catch {
+    return null;
   }
 };
+
+export default function eleventyConfigFile(eleventyConfig) {
+  eleventyConfig.addPassthroughCopy("assets");
+  eleventyConfig.addPassthroughCopy("media");
+
+  // Plugins
+  eleventyConfig.addPlugin(eleventyLucideicons);
+  eleventyConfig.addPlugin(eleventySyntaxHighlight);
+  eleventyConfig.addPlugin(pluginTOC);
+
+  // Global data (for absolute URLs in meta tags + llm exports).
+  const site = readSiteData();
+  const siteTitle = site?.title || "ReallySimpleDocs";
+  const isServe = process.argv.includes("--serve");
+  const siteUrl = process.env.SITE_URL || (isServe ? "" : site?.url || "");
+  eleventyConfig.addGlobalData("siteUrl", siteUrl);
+
+  // Markdown
+  const markdown = markdownIt({ html: true, breaks: true, linkify: true }).use(markdownItAnchor, {
+    permalink: markdownItAnchor.permalink.headerLink(),
+  });
+
+  const defaultTableOpen = markdown.renderer.rules.table_open;
+  const defaultTableClose = markdown.renderer.rules.table_close;
+  markdown.renderer.rules.table_open = (tokens, idx, mdOptions, env, self) => {
+    return (
+      '<div class="relative w-full overflow-auto my-6"><table>' +
+      (defaultTableOpen ? defaultTableOpen(tokens, idx, mdOptions, env, self) : "")
+    );
+  };
+  markdown.renderer.rules.table_close = (tokens, idx, mdOptions, env, self) => {
+    return (
+      (defaultTableClose ? defaultTableClose(tokens, idx, mdOptions, env, self) : "") + "</table></div>"
+    );
+  };
+  eleventyConfig.setLibrary("md", markdown);
+  eleventyConfig.addFilter("markdown", function markdownFilter(value) {
+    return markdown.render(String(value || ""));
+  });
+
+  eleventyConfig.addFilter("markdownUrl", function markdownUrl(pageUrl) {
+    if (pageUrl === "/") return "/index.md";
+    if (pageUrl === "/docs/" || pageUrl === "/docs") return "/docs/index.md";
+    return pageUrl.replace(/\/$/, "") + ".md";
+  });
+
+  registerNavigationFilters(eleventyConfig, lucideIcons);
+  registerLlmExports(eleventyConfig, {
+    getSiteUrl: () => siteUrl,
+    getSiteTitle: () => siteTitle,
+  });
+
+  return {
+    dir: {
+      input: ".",
+      output: "_site",
+      includes: "_includes",
+      layouts: "_includes/layouts",
+      data: "_data",
+    },
+    markdownTemplateEngine: "njk",
+  };
+}

@@ -1,0 +1,192 @@
+---
+layout: page
+title: The simplest CMS you'll ever need
+description: Manage content and media right in your GitHub repository. No database, no API, no extra backend.
+features:
+  title: Just as powerful as the big boys...
+  entries:
+    - title: Configurable
+      description: Customize content types, views, search, and more.
+      icon: settings
+      soon: false
+    - title: Visual editor
+      description: Rich-text, syntax highlighting, and more.
+      icon: pencil
+      soon: false
+    - title: Media manager
+      description: Drag and drop upload, multi-file selection, and more.
+      icon: folder-tree
+      soon: false
+    - title: Search
+      description: Fast, full-text and faceted search across your content.
+      icon: search
+      soon: false
+    - title: Github
+      description: Manage any website or app hosted on GitHub directly.
+      icon: github
+      soon: false
+    - title: Mobile support
+      description: Full responsive design, optimized for mobile.
+      icon: smartphone
+      soon: false
+    - title: Email invites
+      description: Invite users via email, no other account needed.
+      icon: mail-open
+      soon: false
+    - title: File storage
+      description: Connect with AWS S3, Cloudflare R2, and more.
+      icon: cloud
+      soon: true
+    - title: Scheduling
+      description: Easily schedule one-off or recurring content updates.
+      icon: calendar-clock
+      soon: true
+    - title: Permissions
+      description: Granular access control for different content types.
+      icon: sliders-vertical
+      soon: true
+    - title: Analytics
+      description: Integrate with GA, Cloudflare Analytics, and more.
+      icon: chart-column-increasing
+      soon: true
+    - title: Comments
+      description: Let your team leave inline comments on any part of your content.
+      icon: git-branch
+      soon: true
+faq:
+  title: Frequently asked questions
+  entries:
+    - question: Is Pages CMS free?
+      answer: Yes, Pages CMS is 100% free, whether you want to use [the online
+        version](https://app.pagescms.org), deploy it for free on
+        [Vercel](https://vercel.com/), or self-host it. It's MIT licensed
+        through and through, feel free to extend it as you see fit.
+    - question: Do you only support GitHub?
+      answer: "Yes. Supposedly, we could add GitLab and Bitbucket support, but the
+        assumption is the vast majority of users will be on GitHub. Pull
+        requests and issues are welcome:
+        [github.com/pages-cms/pages-cms](https://github.com/pages-cms/pages-cms\
+        )."
+    - question: Why yet another CMS?
+      answer: I hear you, but I needed Pages CMS to exist. I love static site
+        generators, and while YAML front matter and Markdown aren't terribly
+        complicated, editing content and uploading images using GitHub.com or
+        Git isn't really user-friendly, especially if you're updating the site
+        with a whole team. For that reason, a lot of teams use a headless CMS
+        like Contentful, Sanity, or Strapi. That works, but it's one more
+        dependency and is overkill in most cases. You could also use something
+        like Decap CMS (formerly Netlify CMS). Really cool project, but I've
+        never been a fan of the user experience. And most importantly, I wanted
+        something as simple as possible. Back in 2018, I had built a lightweight
+        CMS ([Jekyll+](https://github.com/hunvreus/jekyllplus)) with the idea of
+        getting the CMS set up with a single configuration file. Pages CMS is
+        the next iteration of that idea.
+    - question: Who built this?
+      answer: "My name is [Ronan Berder](https://ronanberder.com) ([@hunvreus](https://x.com/hunvreus)).
+        I live in Singapore. I went back to writing software [after years of building (and ultimately selling) a consultancy in China](https://www.youtube.com/watch?v=SEzXTXo1D8I)."
+    - question: I have a problem, how can I get help?
+      answer: First, make sure to check the [documentation](/docs). You can also
+        [ask for help in the Discord channel](https://pagescms.org/chat). Otherwise,
+        [post your issue on GitHub](https://github.com/pages-cms/pages-cms).
+    - question: How can I help?
+      answer: |
+        - [Sponsor me](https://github.com/sponsors/hunvreus)
+        - [Star the project on GitHub](https://github.com/pages-cms/pages-cms)
+        - [Report issues](https://github.com/pages-cms/pages-cms/issues)
+        - [Send pull requests](https://github.com/pages-cms/pages-cms/pulls)
+        - [Join the Discord chat](https://pagescms.org/chat)
+---
+
+<section class="px-6 lg:px-8 py-16 sm:py-32 space-y-16 sm:space-y-32">
+
+  <header class="mx-auto max-w-2xl text-center">
+    <h1 class="font-semibold tracking-tight text-4xl sm:text-7xl">{{ title }}</h1>
+    <p class="mx-auto mt-4 mb-6 max-w-md opacity-80">{{ description }}</p>
+    <footer class="flex flex-col sm:flex-row items-center justify-center gap-4">
+      <a class="btn-lg max-sm:w-full" href="/docs/installation">Sign up</a>
+      <a class="btn-lg-outline max-sm:w-full" href="/docs/quick-start/" target="_blank">
+        {% lucide "play", { "class": "opacity-50" } %}
+        Watch demo
+      </a>
+    </footer>
+  </header>
+
+  <section class="text-center max-w-7xl mx-auto">
+    <h2 class="mb-8 opacity-50 text-sm">Works with all popular site generators and frameworks</h2>
+    {% include "partials/carousel.njk" %}
+  </section>
+</section>
+
+<section class="max-w-5xl mx-auto px-6 lg:px-8 py-16 sm:py-24">
+  <header class="mx-auto max-w-2xl text-center mb-12">
+    <h2 class="font-semibold tracking-tight text-3xl sm:text-4xl">{{ features.title }}</h2>
+  </header>
+  <ul class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    {% for feature in features.entries %}
+    <li class="card bg-transparent">
+      <header>
+        <h3 class="flex items-center gap-2">
+          {% lucide feature.icon, { "class" : "size-4 opacity-50"} %}
+          {{ feature.title }}
+          {% if feature.soon %}<span class="badge-secondary ml-auto opacity-50">Soon</span>{% endif %}
+        </h3>
+        <section>
+          <p class="text-foreground opacity-50">{{ feature.description }}</p>
+        </section>
+      </header>
+    </li>
+    {% endfor %}
+  </ul>
+</section>
+
+<section class="max-w-7xl mx-auto px-6 lg:px-8 py-16 sm:py-24">
+  <header class="mx-auto max-w-2xl text-center mb-12">
+    <h2 class="font-semibold tracking-tight text-3xl sm:text-4xl">Free and Open Source</h2>
+  </header>
+  <footer class="flex flex-col sm:flex-row items-center justify-center gap-4">
+    <a class="btn-lg max-sm:w-full" href="/docs/guides/install-self-host/">Self-host</a>
+    <a class="btn-lg-outline max-sm:w-full" href="https://github.com/pages-cms/pages-cms" target="_blank">
+      Get source code
+    </a>
+  </footer>
+</section>
+
+<section class="max-w-7xl mx-auto px-6 lg:px-8 py-16 sm:py-24">
+  <header class="mx-auto max-w-2xl text-center mb-12">
+    <h2 class="font-semibold tracking-tight text-3xl sm:text-4xl">{{ faq.title }}</h2>
+  </header>
+
+  <section class="accordion max-w-2xl mx-auto [&_a]:underline [&_a]:underline-offset-2 [&_a]:decoration-muted-foreground/50 [&_a]:hover:decoration-foreground/50 [&_a]:transition-all">
+    {% for entry in faq.entries %}
+      <details class="group border-b last:border-b-0">
+        <summary class="w-full focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] transition-all outline-none rounded-md">
+          <h2 class="flex flex-1 items-center justify-between gap-4 py-4 text-lg text-left font-semibold hover:underline [&>svg]:size-4 [&>svg]:opacity-50 [&>svg]:shrink-0 [&>svg]:transition-transform [&>svg]:duration-200 [&>svg]:group-open:rotate-180">
+            {{ entry.question }}
+            {% lucide "chevron-down" %}
+          </h2>
+        </summary>
+        <section class="pb-4 text-sm">
+          {{ entry.answer | markdown | safe }}
+        </section>
+      </details>
+    {% endfor %}
+  </section>
+  <script>
+    (() => {
+      const accordions = document.querySelectorAll(".accordion");
+      accordions.forEach((accordion) => {
+        accordion.addEventListener("click", (event) => {
+          const summary = event.target.closest("summary");
+          if (!summary) return;
+          const details = summary.closest("details");
+          if (!details) return;
+          accordion.querySelectorAll("details").forEach((detailsEl) => {
+            if (detailsEl !== details) {
+              detailsEl.removeAttribute("open");
+            }
+          });
+        });
+      });
+    })();
+  </script>
+</section>
