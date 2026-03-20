@@ -8,10 +8,15 @@
 
   {# Title & Description #}
   {% set meta_description = description or site.description or "" %}
+  {% set page_title = title or site.title %}
   {% if page.url == "/" %}
-    {% set meta_title = site.title ~ ' | ' ~ meta_description %}
+    {% set meta_title = site.title %}
   {% else %}
-    {% set meta_title = meta_description ~ ' | ' ~ site.title %}
+    {% set meta_title = page_title ~ ' | ' ~ site.title %}
+  {% endif %}
+  {% set social_image = site.social.card %}
+  {% if social_image and not (social_image.startsWith('http://') or social_image.startsWith('https://')) %}
+    {% set social_image = siteUrl ~ social_image %}
   {% endif %}
   <title>{{ meta_title }}</title>
   <meta name="description" content="{{ meta_description }}"/>
@@ -27,17 +32,16 @@
   <meta property="og:url" content="{{ siteUrl }}{{ page.url }}">
   <meta property="og:title" content="{{ meta_title }}">
   <meta property="og:description" content="{{ meta_description }}">
-  <meta property="og:image" content="{{ site.social.card }}">
+  <meta property="og:image" content="{{ social_image }}">
   <meta property="og:site_name" content="{{ site.title }}">
   <meta property="og:locale" content="en_US">
-  <meta property="og:author" content="{{ site.social.author.name }}">
 
   {# X/Twitter #}
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:url" content="{{ siteUrl }}{{ page.url }}">
   <meta name="twitter:title" content="{{ meta_title }}">
   <meta name="twitter:description" content="{{ meta_description }}">
-  <meta name="twitter:image" content="{{ site.social.card }}">
+  <meta name="twitter:image" content="{{ social_image }}">
   <meta name="twitter:creator" content="{{ site.social.author.x }}">
 
   {# CSS #}

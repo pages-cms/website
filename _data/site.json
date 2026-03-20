@@ -3,7 +3,7 @@
   "subtitle": "Documentation",
   "description": "Open-source CMS for static sites on GitHub. Edit content, media, and configuration directly from your repository.",
   "url": "https://pagescms.org",
-  "app_url": "https://dev.pagescms.org",
+  "app_url": "https://app.pagescms.org",
   "social": {
     "card": "/assets/social.png",
     "author": {

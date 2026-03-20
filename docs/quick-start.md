@@ -5,9 +5,9 @@ description: The fastest path from zero to a working Pages CMS setup.
 
 ## Use the online version
 
-The easiest way to get started is to use [the online version of Pages CMS]({{ site.app_url }}):
+The easiest way to get started is to use [the online version of Pages CMS](https://app.pagescms.org):
 
-1. Go to [{{ site.app_url }}]({{ site.app_url }}).
+1. Go to [app.pagescms.org](https://app.pagescms.org).
 2. Sign in with your GitHub account.
 3. Install the GitHub App on the GitHub account that owns the repository for your website/app.
 4. Select the repository for your website/app.
