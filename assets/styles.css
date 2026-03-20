@@ -10,7 +10,6 @@
     --color-green-500: oklch(72.3% 0.219 149.579);
     --color-green-600: oklch(62.7% 0.194 149.214);
     --color-blue-500: oklch(62.3% 0.214 259.815);
-    --color-neutral-950: oklch(14.5% 0 0);
     --color-black: #000;
     --color-white: #fff;
     --spacing: 0.25rem;
@@ -589,6 +588,12 @@
   .border-b {
     border-bottom-style: var(--tw-border-style);
     border-bottom-width: 1px;
+  }
+  .border-border\/50 {
+    border-color: var(--color-border);
+    @supports (color: color-mix(in lab, red, red)) {
+      border-color: color-mix(in oklab, var(--color-border) 50%, transparent);
+    }
   }
   .border-input {
     border-color: var(--color-input);
@@ -4614,7 +4619,7 @@
   animation: scroll 10s linear infinite;
 }
 .wash {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140' viewBox='0 0 140 140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.15' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='0.18'/%3E%3C/svg%3E"), linear-gradient( to bottom, oklch(from var(--primary) l c h / 0.08) 0%, oklch(from var(--primary) l c h / 0.05) 16%, transparent 58% ), radial-gradient( 54% 36% at 50% 0%, oklch(from var(--primary) calc(l + 0.02) c h / 0.18) 0%, oklch(from var(--primary) l c h / 0.1) 36%, transparent 78% );
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140' viewBox='0 0 140 140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.15' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='0.12'/%3E%3C/svg%3E"), linear-gradient( to bottom, oklch(from var(--primary) l c h / 0.08) 0%, oklch(from var(--primary) l c h / 0.05) 16%, transparent 58% ), radial-gradient( 54% 36% at 50% 0%, oklch(from var(--primary) calc(l + 0.02) c h / 0.18) 0%, oklch(from var(--primary) l c h / 0.1) 36%, transparent 78% );
   background-size: 280px 280px, 100% auto, min(1100px, 100%) 540px;
   background-position: left top, center top, center top;
   background-repeat: repeat, no-repeat, no-repeat;

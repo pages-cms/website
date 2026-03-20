@@ -131,7 +131,7 @@
 
 .wash {
   background-image:
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140' viewBox='0 0 140 140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.15' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='0.18'/%3E%3C/svg%3E"),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140' viewBox='0 0 140 140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.15' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='0.12'/%3E%3C/svg%3E"),
     linear-gradient(
       to bottom,
       oklch(from var(--primary) l c h / 0.08) 0%,
@@ -152,10 +152,7 @@
     left top,
     center top,
     center top;
-  background-repeat:
-    repeat,
-    no-repeat,
-    no-repeat;
+  background-repeat: repeat, no-repeat, no-repeat;
 }
 
 .carousel-mask {
