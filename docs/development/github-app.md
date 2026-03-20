@@ -23,6 +23,10 @@ Common options:
 
 The helper creates the app from a manifest and writes the GitHub App environment variables for you.
 
+The manifest already sets the callback URL, setup URL, webhook URL, permissions, events, `Request user authorization (OAuth) during installation`, and `Redirect on update`.
+
+After helper-based setup, you will need to disable `User-to-server token expiration` if GitHub shows that option. This will avoid your users to be periodically logged out.
+
 ## Manual settings
 
 Open GitHub App settings:
@@ -30,62 +34,28 @@ Open GitHub App settings:
 - personal apps: `https://github.com/settings/apps`
 - org apps: `https://github.com/organizations/<org>/settings/apps`
 
-Use these settings:
+Match the permissions and events below:
 
-### URLs and install settings
-
-| Setting | Value |
-| --- | --- |
-| Homepage URL | `<BASE_URL>` |
-| User authorization callback URL | `<BASE_URL>/api/auth/callback/github` |
-| Webhook URL | `<BASE_URL>/api/webhook/github` |
-| Setup URL | `<BASE_URL>/` |
-| Redirect on update | Enabled |
-| Request user authorization (OAuth) during installation | Disabled |
-
-### Account permissions
-
-| Permission | Value | Why |
+| Section | Name | Value |
 | --- | --- | --- |
-| Email addresses | Read only | Required for GitHub sign-in through Better Auth. |
+| Account permissions | Email addresses | Read only |
+| Repository permissions | Administration | Read and write |
+| Repository permissions | Actions | Read and write |
+| Repository permissions | Checks | Read only |
+| Repository permissions | Commit statuses | Read only |
+| Repository permissions | Contents | Read and write |
+| Repository permissions | Metadata | Read only |
+| Events | Installation target | Enabled |
+| Events | Repository | Enabled |
+| Events | Push | Enabled |
+| Events | Delete | Enabled |
+| Events | Check run | Enabled |
+| Events | Check suite | Enabled |
+| Events | Status | Enabled |
+| Events | Workflow run | Enabled |
 
-### Repository permissions
+Finally:
 
-| Permission | Value | Why |
-| --- | --- | --- |
-| Administration | Read and write | Repository and installation management behavior. |
-| Actions | Read and write | Lets Pages CMS trigger GitHub Actions workflows. |
-| Checks | Read only | Reads build and deployment status reported to GitHub. |
-| Commit statuses | Read only | Reads build and deployment status reported to GitHub. |
-| Contents | Read and write | Lets Pages CMS read and write repository content. |
-| Metadata | Read only | Required for repository integration basics. |
-
-### Events
-
-| Event | Why |
-| --- | --- |
-| Installation target | Tracks account rename/install state changes. |
-| Repository | Tracks repository rename/delete/transfer changes. |
-| Push | Refreshes content and config cache. |
-| Delete | Cleans up branch cache on branch deletion. |
-| Check run | Refreshes check-based build status. |
-| Check suite | Refreshes check-based build status. |
-| Status | Refreshes commit status-based build status. |
-| Workflow run | Refreshes GitHub Actions run status. |
-
-Then:
-
-- generate and download a private key,
-- set a webhook secret,
-- disable `User-to-server token expiration` if GitHub offers that setting,
-- install the app on the accounts or repositories you want Pages CMS to manage.
-
-The helper already sets `request_oauth_on_install: false`, but GitHub does not expose every setting through the manifest flow, so it is still worth reviewing the app after creation.
-
-With `Request user authorization (OAuth) during installation` disabled, GitHub sends install and update completion to the Setup URL, not the user authorization callback URL. Pages CMS uses the user authorization callback only for Better Auth GitHub sign-in and account linking.
-
-`Redirect on update` should stay enabled so repository add/remove changes send the user back through the same Setup URL flow.
-
-`Actions` is used to trigger GitHub Actions workflows. `Checks` and `Commit statuses` let Pages CMS read build and deployment status from providers that report back to GitHub, such as GitHub Pages, Vercel, Netlify, or Cloudflare.
-
-If `User-to-server token expiration` is enabled, users can get logged out when their GitHub user token expires. Opt out of that setting for the Pages CMS GitHub App.
+- generate and download a private key (for `GITHUB_APP_PRIVATE_KEY`),
+- set a webhook secret (for `GITHUB_APP_WEBHOOK_SECRET`),
+- disable `User-to-server token expiration` if GitHub offers that setting (in "Optional features"),
