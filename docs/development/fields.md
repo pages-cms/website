@@ -28,7 +28,17 @@ The registry collects these exports and exposes them to the rest of the app.
 
 ## Registry
 
-[fields/registry.ts](/Users/hunvreus/Workspace/_sandbox/pages-cms/fields/registry.ts) imports each field module and registers it with `registerField(...)`.
+[fields/registry.ts](/Users/hunvreus/Workspace/_sandbox/pages-cms/fields/registry.ts) registers core fields directly and then registers custom fields from the generated manifest in [custom.generated.ts](/Users/hunvreus/Workspace/_sandbox/pages-cms/fields/custom.generated.ts).
+
+That generated file is written by [next.config.mjs](/Users/hunvreus/Workspace/_sandbox/pages-cms/next.config.mjs) by scanning `fields/custom/*/index.ts(x)`.
+
+The custom field folder name becomes the field type. For example:
+
+```text
+fields/custom/my-field/index.tsx
+```
+
+registers the field as `type: my-field`.
 
 That produces shared maps for:
 

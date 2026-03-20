@@ -1,6 +1,6 @@
 ---
 title: Creating a custom field
-description: Build and register a custom field step by step.
+description: Build a custom field and let Pages CMS auto-register it.
 ---
 
 ## When to create one
@@ -119,17 +119,29 @@ const label = "My field";
 export { label, schema, EditComponent, ViewComponent };
 ```
 
-## Register the field
+## How registration works
 
 Pages CMS loads fields through [fields/registry.ts](/Users/hunvreus/Workspace/_sandbox/pages-cms/fields/registry.ts).
 
-To register a custom field, import it and call `registerField(...)`.
+Core fields are registered directly in the registry.
 
-Typical flow:
+Custom fields under `fields/custom/<field-type>/index.ts` or `index.tsx` are auto-registered at app startup and build time.
 
-1. import your field module,
-2. call `registerField("my-field", myFieldModule)`,
-3. use `type: my-field` in `.pages.yml`.
+If you add, remove, or rename a custom field folder while the dev server is already running, restart it so the generated registry is refreshed.
+
+The folder name becomes the field `type`, so:
+
+```text
+fields/custom/my-field/index.tsx
+```
+
+registers the field as:
+
+```yaml
+type: my-field
+```
+
+If you want to override a core field, use the same folder name as the core field type.
 
 ## Test with a minimal config
 
