@@ -751,12 +751,6 @@
       color: color-mix(in oklab, var(--color-foreground) 80%, transparent);
     }
   }
-  .text-foreground\/90 {
-    color: var(--color-foreground);
-    @supports (color: color-mix(in lab, red, red)) {
-      color: color-mix(in oklab, var(--color-foreground) 90%, transparent);
-    }
-  }
   .text-green-600 {
     color: var(--color-green-600);
   }
