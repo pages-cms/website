@@ -1,45 +1,54 @@
 ---
 title: Media
-description: Configure where files are stored and how URLs are written.
+description: Configure where uploaded files are stored and what URLs are written.
 ---
 
 ## What `media` does
 
-`media` defines file storage paths used by [image](/fields/image), [file](/fields/file) and [rich-text](fields/rich-text) fields.
+`media` defines file storage for:
 
-You can set it as:
+- [image](/docs/configuration/fields/image/) fields,
+- [file](/docs/configuration/fields/file/) fields,
+- [rich-text](/docs/configuration/fields/rich-text/) image uploads.
 
-- [a string](#single-media-(string)),
-- [a single object](#single-media-(object)),
-- [an array of named media sources](#multiple-media-sources).
+Use it to answer two questions:
+
+1. Where should uploaded files be saved in the repository?
+2. What public path should be written into content?
+
+## Shapes
+
+You can define `media` as:
+
+- a string,
+- one object,
+- an array of named media sources.
 
 ## Keys
 
 Key | Description
 --- | ---
-<code class="text-[var(--prism-keyword)]">name</code> <span class="text-muted-foreground">**</span> | Source name, required when using an array (e.g. `"images"`).
-<code class="text-[var(--prism-keyword)]">label</code> | Display label in the UI (e.g. `"Product images"`).
-<code class="text-[var(--prism-keyword)]">input</code> <span class="text-muted-foreground">*</span> | Repository path where files are saved (e.g. `"src/media"`).
-<code class="text-[var(--prism-keyword)]">output</code> <span class="text-muted-foreground">*</span> | Public path written in content (e.g. `"/media"`).
-<code class="text-[var(--prism-keyword)]">extensions</code> | Explicit allowed extensions (e.g. `["png", "webp"]`).
-<code class="text-[var(--prism-keyword)]">categories</code> | Category-based extension set. Values: `image`, `document`, `video`, `audio`, `compressed`, `code`, `font`, `spreadsheet`.
-<code class="text-[var(--prism-keyword)]">rename</code> | If `true`, uploaded files are saved with a random filename plus the original extension.
-<code class="text-[var(--prism-keyword)]">commit</code> | Per-entry commit settings, overriding `settings.commit` (e.g. `"chore(media): add {filename}"`). [Read more in `settings`](/docs/configuration/settings).
+<code class="text-[var(--prism-keyword)]">name</code> <span class="text-muted-foreground">**</span> | Internal media source name. Required when using an array (e.g. `"images"`).
+<code class="text-[var(--prism-keyword)]">label</code> | UI label for the media source (e.g. `"Product images"`).
+<code class="text-[var(--prism-keyword)]">input</code> <span class="text-muted-foreground">*</span> | Repository path where files are stored (e.g. `"src/media"`).
+<code class="text-[var(--prism-keyword)]">output</code> <span class="text-muted-foreground">*</span> | Public path written into content (e.g. `"/media"`).
+<code class="text-[var(--prism-keyword)]">extensions</code> | Allowed extensions (e.g. `["png", "webp"]`).
+<code class="text-[var(--prism-keyword)]">categories</code> | Category-based extension sets. Values: `image`, `document`, `video`, `audio`, `compressed`, `code`, `font`, `spreadsheet`.
+<code class="text-[var(--prism-keyword)]">rename</code> | If `true`, uploads get a random filename plus their original extension.
+<code class="text-[var(--prism-keyword)]">commit</code> | Per-media commit settings. [See `settings.commit`](#/docs/configuration/settings/) .
 
 <span class="text-sm text-muted-foreground">*: Required</span>
 <span class="text-sm text-muted-foreground">**: Required with multiple sources</span>
 
-All options (except for `name` and `label`) can be overriden by [image](/docs/fields/image), [file](/docs/fields/file) and [rich-text](/docs/fields/rich-text) fields.
+Field-level media options can override the media source defaults.
 
-## Examples
-
-### Single media (string)
+## String form
 
 ```yaml
 media: media
 ```
 
-This is equivalent to:
+Equivalent to:
 
 ```yaml
 media:
@@ -47,7 +56,7 @@ media:
   output: /media
 ```
 
-### Single media (object)
+## Single media object
 
 ```yaml
 media:
@@ -57,7 +66,9 @@ media:
   categories: [image]
 ```
 
-### Multiple media sources
+## Multiple media sources
+
+Use an array when different field types should write to different folders.
 
 ```yaml
 media:
@@ -74,7 +85,9 @@ media:
     categories: [document]
 ```
 
-### Custom commit templates
+## Commit templates
+
+`media[].commit.templates` overrides the global commit templates for that media source.
 
 ```yaml
 media:
@@ -88,3 +101,18 @@ media:
         delete: "chore(media): remove {filename}"
         rename: "chore(media): rename {oldFilename} -> {newFilename}"
 ```
+
+<div class="flex flex-wrap gap-2 my-6">
+  <a href="/docs/configuration/content/" class="badge-outline">
+    Content
+    {% lucide "arrow-right" %}
+  </a>
+  <a href="/docs/configuration/fields/image/" class="badge-outline">
+    Image field
+    {% lucide "arrow-right" %}
+  </a>
+  <a href="/docs/configuration/fields/file/" class="badge-outline">
+    File field
+    {% lucide "arrow-right" %}
+  </a>
+</div>

@@ -1,34 +1,45 @@
 ---
 title: Settings
-description: Global repository-level behavior for Pages CMS.
+description: Configure repository-wide behavior in Pages CMS.
 ---
 
 ## What `settings` does
 
-`settings` defines repository-wide behavior for one config file.
+Use `settings` for behavior that applies across the whole repository.
 
-Use it for:
+Typical uses:
 
-- hiding the settings UI,
-- changing how content saves behave,
-- setting default commit message templates.
+- hide admin pages,
+- preserve unmanaged keys when saving structured content,
+- define default commit messages.
 
 ## Keys
 
 Key | Description
 --- | ---
 <code class="text-[var(--prism-keyword)]">hide</code> | If `true`, hides the Settings page in the UI.
-<code class="text-[var(--prism-keyword)]">content.merge</code> | Controls how Pages CMS saves structured content. [See `Content merge`](#content-merge).
-<code class="text-[var(--prism-keyword)]">commit.templates</code> | Global commit message templates for create, update, delete, and rename actions. [See `Commit templates`](#commit-templates).
+<code class="text-[var(--prism-keyword)]">content.merge</code> | Controls how structured content is written back to disk. [See `Content merge`](#content-merge).
+<code class="text-[var(--prism-keyword)]">commit.templates</code> | Global commit message templates. [See `Commit templates`](#commit-templates).
 
 ## Content merge
 
-`settings.content.merge` controls how Pages CMS writes structured files when a schema is present.
+`settings.content.merge` controls what happens when Pages CMS saves a structured file.
 
-- `false`: rewrite the file from the submitted schema only. Keys not present in the editor output are removed,
-- `true`: merge the submitted fields into the existing file before saving. Keys outside the schema are preserved unless overwritten.
+### `false` (default)
 
-This is helpful when you want to only manage part of a file in Pages CMS, but still want the ability to edit other parts directly in Git, allowing you to restrict access to sensitive content/settings to developers.
+Rewrite the file from the configured schema only.
+
+Anything outside the submitted editor output is removed.
+
+Use this when Pages CMS fully owns the file.
+
+### `true`
+
+Merge the submitted fields into the existing file before saving.
+
+Keys outside the schema are preserved unless the editor overwrites them.
+
+Use this when developers still manage part of the file directly in Git.
 
 ## Commit templates
 
@@ -44,16 +55,16 @@ settings:
       rename: "content(rename): {oldPath} -> {newPath}"
 ```
 
-These settings can be overriden in each `media` or `content` entry.
+Per-entry templates in `content[].commit.templates` and `media[].commit.templates` override these global templates.
 
 ### Keys
 
-Key | Description
---- | ---
-<code class="text-[var(--prism-keyword)]">create</code> | Commit message for new files. Defaults to `Create {path} (via Pages CMS)`.
-<code class="text-[var(--prism-keyword)]">update</code> | Commit message for edited files. Defaults to `Update {path} (via Pages CMS)`.
-<code class="text-[var(--prism-keyword)]">delete</code> | Commit message for deleted files. Defaults to `Delete {path} (via Pages CMS)`.
-<code class="text-[var(--prism-keyword)]">rename</code> | Commit message for renamed files. Defaults to `Rename {oldPath} to {newPath} (via Pages CMS)`.
+Key | Description | Default value
+--- | --- | ---
+<code class="text-[var(--prism-keyword)]">create</code> | Commit message for new files. | `Create {path} (via Pages CMS)`
+<code class="text-[var(--prism-keyword)]">update</code> | Commit message for edited files. | `Update {path} (via Pages CMS)`
+<code class="text-[var(--prism-keyword)]">delete</code> | Commit message for deleted files. | `Delete {path} (via Pages CMS)`
+<code class="text-[var(--prism-keyword)]">rename</code> | Commit message for renamed files. | `Rename {oldPath} to {newPath} (via Pages CMS)`
 
 ### Tokens
 
@@ -67,20 +78,16 @@ Token | Description
 <code class="text-[var(--prism-keyword)]">{repo}</code> | Repository name.
 <code class="text-[var(--prism-keyword)]">{branch}</code> | Current branch.
 <code class="text-[var(--prism-keyword)]">{user}</code> | Current user.
-<code class="text-[var(--prism-keyword)]">{oldPath}</code> | Previous file path. Rename only.
-<code class="text-[var(--prism-keyword)]">{newPath}</code> | New file path. Rename only.
+<code class="text-[var(--prism-keyword)]">{oldPath}</code> | Previous path. Rename only.
+<code class="text-[var(--prism-keyword)]">{newPath}</code> | New path. Rename only.
 <code class="text-[var(--prism-keyword)]">{oldFilename}</code> | Previous file name. Rename only.
 <code class="text-[var(--prism-keyword)]">{newFilename}</code> | New file name. Rename only.
 
-Per-entry templates in `content[].commit.templates` and `media[].commit.templates` override these global templates.
-
-
-## Example
+## Simple example
 
 ```yaml
 settings:
-  cache: true # Exposes cache controls for GitHub users
-  hide: true # Hide settings in the UI
+  hide: true
   content:
     merge: true
 ```

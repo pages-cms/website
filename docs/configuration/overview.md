@@ -1,26 +1,35 @@
 ---
 title: Overview
-description: Understand how the `.pages.yml` file works.
+description: Understand the structure of the `.pages.yml` file.
 ---
 
-## The `.pages.yml` file
+## What `.pages.yml` does
 
-Pages CMS is configured through a `.pages.yml` file at the repository root (per branch).
+`.pages.yml` is the single source of truth for Pages CMS configuration.
 
-If your repository doesn't have a `.pages.yml` file, you will be asked if you want to create it the first time you visit it through Pages CMS.
+Place it at the repository root.
 
-## Keys
+Pages CMS reads it per repository and per branch.
+
+## Top-level keys
 
 Key | Description
 --- | ---
-<code class="text-[var(--prism-keyword)]">media</code> | Configures media folders (images, videos, files). [See configuration for `media`](/docs/configuration/media).
-<code class="text-[var(--prism-keyword)]">content</code> | Defines the structure of the content editors can edit (collections and single files). [See configuration for `content`](/docs/configuration/content).
-<code class="text-[var(--prism-keyword)]">components</code> | Allows you to define reusable sets of fields. [See configuration for `components`](/docs/configuration/components).
-<code class="text-[var(--prism-keyword)]">settings</code> | Global settings (e.g. enable the cache admin page, define content merging strategy, etc). [See configuration for `settings`](/docs/configuration/settings).
+<code class="text-[var(--prism-keyword)]">media</code> | Defines where uploaded files are stored and what URLs are written. [See `media`](/docs/configuration/media/).
+<code class="text-[var(--prism-keyword)]">content</code> | Defines editable collections and files. [See `content`](/docs/configuration/content/).
+<code class="text-[var(--prism-keyword)]">components</code> | Reuses shared field definitions. [See `components`](/docs/configuration/components/).
+<code class="text-[var(--prism-keyword)]">settings</code> | Sets repository-wide behavior such as merge mode and commit templates. [See `settings`](/docs/configuration/settings/).
 
-## Examples
+## Read order
 
-### Simple blog
+Start with this order:
+
+1. Define `media`.
+2. Define `content`.
+3. Add `components` if fields repeat.
+4. Add `settings` if you need global behavior.
+
+## Minimal example
 
 ```yaml
 media: media
@@ -29,21 +38,14 @@ content:
     label: Posts
     type: collection
     path: content/posts
-    view:
-      fields: [title, published, date]
     fields:
-      - name: published
-        type: boolean
-        default: true
-      - name: date
-        type: date
       - name: title
         type: string
       - name: body
         type: rich-text
 ```
 
-### Simple blog with site settings file
+## Example with a collection and a single file
 
 ```yaml
 media:

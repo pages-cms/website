@@ -7,9 +7,19 @@ Guidelines for AI agents working on the documentation website.
 - **Concise**: Keep sentences short. Remove filler words.
 - **Direct**: Lead with the action or key information.
 - **Technical**: Assume readers are developers. Don't over-explain basics.
+- **Process-driven**: Prefer step-by-step instructions that a human or agent can follow successfully without guesswork.
 
 Always try to first describe the feature or concept as concisely first, then provide
 details (e.g. options) and then example if relevant.
+
+## Content Rules
+
+- Prefer procedural guidance over broad explanation when the page is about setup, installation, migration, or upgrade.
+- Keep upgrade and setup pages action-oriented: prerequisites, exact changes, verification.
+- Do not add generic `Related docs` sections.
+- Do not add speculative `Common issues` or troubleshooting sections.
+- Only call out a trap when it is a clear, common failure mode already known from the product or codebase.
+- If cross-linking is needed, place the link where the reader needs it in the relevant step or paragraph.
 
 ## Structure
 
@@ -29,7 +39,7 @@ Use alert blocks for important contextual information:
 
 ### Contextual Links
 
-Add related documentation links at the end of sections:
+Add links inline where they help the reader complete the current step. Do not add link dumps at the end of a page.
 
 ```njk
 <div class="flex flex-wrap gap-2 my-6">
@@ -78,3 +88,4 @@ Update `docs/docs.json` when adding or reorganizing pages:
 - Use bold for: UI elements, key terms on first use
 - Use tables for: structured data, comparisons, reference lists
 - Avoid: excessive headings, redundant explanations, long paragraphs
+- Avoid: imagined problems, generic best-practice padding, and “you may run into” sections unless the trap is obvious and proven

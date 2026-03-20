@@ -1,24 +1,56 @@
 ---
 title: Collaborators
-description: What collaborators can access in Pages CMS and how their changes are committed.
+description: What collaborators can do and how their changes are committed.
 ---
 
-## What are collaborators
+## What collaborators are
 
-For each repository, you can invite users by email if they do not have a GitHub account. This is particularly helpful for non-technical users (e.g. marketing team).
+Collaborators are invited by email.
 
-If they accept the invitation, they will be able to use Pages CMS like other users, with a couple caveats.
+Use them when someone needs to edit content or media but does not have a GitHub account.
 
-## Permissions
+## What collaborators can do
 
-Collaborators can edit content and media for the repositories they've been invited to. You can revoke their access at any given point.
+Collaborators can:
 
-Specifically, collaborators can not access or edit the repository configuration (`.pages.yml`), see or manage collaborators, or access the cache admin panel (if enabled). These are reserved for GitHub users with access to the repository on GitHub.
+- open repositories they were invited to,
+- edit content,
+- edit media.
 
-## Commits
+## What collaborators cannot do
 
-Collaborator changes are made using the GitHub App isntallation token. They will show up as a GitHub App commit, but include name and email defined in their account.
+Collaborators cannot:
+
+- manage `.pages.yml`,
+- manage collaborators,
+- access cache admin features.
+
+Those actions stay limited to GitHub users with repository access.
+
+## How collaborator commits work
+
+Collaborator writes use the GitHub App installation token for the target repository.
+
+The commit is still written with the collaborator's name and email as committer metadata.
+
+That means:
+
+- the write is authorized by the GitHub App,
+- the commit still identifies the collaborator in the commit details.
 
 ## Migration
 
-Collaborators are only saved in the database, not the configuration file. If you need to migrate to a new install of Pages CMS, you will need to use [the collaborators import/export scripts](/docs/migrating-collaborators).
+Collaborators live in the database, not in `.pages.yml`.
+
+If you move to a new Pages CMS install, export and import collaborators separately.
+
+<div class="flex flex-wrap gap-2 my-6">
+  <a href="/docs/guides/migrating-collaborators/" class="badge-outline">
+    Migrate collaborators
+    {% lucide "arrow-right" %}
+  </a>
+  <a href="/docs/development/authentication/" class="badge-outline">
+    Authentication details
+    {% lucide "arrow-right" %}
+  </a>
+</div>

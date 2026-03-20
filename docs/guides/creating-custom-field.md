@@ -1,28 +1,28 @@
 ---
 title: Creating a custom field
-description: Build a custom field and let Pages CMS auto-register it.
+description: Build a custom field and let Pages CMS register it automatically.
 ---
 
 ## When to create one
 
-Create a custom field when the built-in fields cannot represent your data shape or editing workflow.
+Create a custom field when the built-in fields are not enough.
 
-Good examples:
+Typical cases:
 
-- special formatting rules,
-- custom picker UIs,
-- data that needs `read` / `write` transforms,
-- a field you want to reuse across many projects.
+- a custom picker UI,
+- a custom storage format,
+- field-specific validation,
+- a reusable editing pattern.
 
-## Start from a simple field
+## Fastest path
 
-The fastest path is to copy a small existing field such as:
+Start from a simple existing field such as:
 
 - `fields/core/boolean`
 - `fields/core/string`
 - `fields/core/select`
 
-Avoid starting from a complex field like rich text unless you really need that level of behavior.
+Avoid starting from a complex field unless you need that behavior.
 
 ## Folder structure
 
@@ -39,7 +39,7 @@ fields/
 └─ registry.ts
 ```
 
-## What the field module exports
+## What a field can export
 
 Your `index.tsx` can export:
 
@@ -51,51 +51,37 @@ Your `index.tsx` can export:
 - `EditComponent`
 - `ViewComponent`
 
-You usually do not need all of them.
+You usually only need some of them.
 
 ## What each export does
 
 ### `label`
 
-Human-readable name for the field type.
+Human-readable field name.
 
 ### `schema`
 
-Returns a Zod schema for the field.
-
-Use it to:
-
-- validate field values,
-- coerce types,
-- enforce field-specific rules.
-
-This schema is used inside the larger form schema built by Pages CMS.
+Returns the Zod schema for this field.
 
 ### `defaultValue`
 
-Default value used when the field has no stored value and no explicit field default.
+Fallback value when there is no stored value and no explicit field default.
 
 ### `read`
 
-Transforms the raw stored value into the editor value.
-
-Use this when the saved data and UI data are not the same shape.
+Transforms stored data into editor data.
 
 ### `write`
 
-Transforms the editor value back into the saved value.
-
-Use this together with `read` when the field needs a different storage format.
+Transforms editor data back into stored data.
 
 ### `EditComponent`
 
-The form UI shown while editing an entry.
-
-It receives the current value and should call `onChange` with the next value.
+The editing UI. It receives the current value and calls `onChange` with the next value.
 
 ### `ViewComponent`
 
-Compact display used in read-only contexts such as lists or previews.
+Compact display used in lists or read-only contexts.
 
 ## Minimal example
 
@@ -123,25 +109,23 @@ export { label, schema, EditComponent, ViewComponent };
 
 Pages CMS loads fields through [fields/registry.ts](/Users/hunvreus/Workspace/_sandbox/pages-cms/fields/registry.ts).
 
-Core fields are registered directly in the registry.
+Core fields are registered directly.
 
-Custom fields under `fields/custom/<field-type>/index.ts` or `index.tsx` are auto-registered at app startup and build time.
+Custom fields under `fields/custom/<field-type>/index.ts` or `index.tsx` are auto-registered at startup and build time.
 
-If you add, remove, or rename a custom field folder while the dev server is already running, restart it so the generated registry is refreshed.
-
-The folder name becomes the field `type`, so:
+The folder name becomes the field `type`.
 
 ```text
 fields/custom/my-field/index.tsx
 ```
 
-registers the field as:
+registers:
 
 ```yaml
 type: my-field
 ```
 
-If you want to override a core field, use the same folder name as the core field type.
+If you add, remove, or rename a custom field while the dev server is running, restart it.
 
 ## Test with a minimal config
 
@@ -151,24 +135,19 @@ fields:
     type: my-field
 ```
 
-Keep the first test small. Confirm:
+Check four things:
 
-- it renders,
-- it saves,
-- it reloads correctly,
-- validation behaves as expected.
+1. it renders,
+2. it saves,
+3. it reloads,
+4. validation behaves correctly.
 
 ## When to add `read` and `write`
 
-Add them when the UI value and stored value differ.
+Add them only when the editor value and stored value are different.
 
 Examples:
 
-- editor uses objects but file stores strings,
-- editor uses local dates but file stores ISO strings,
+- editor uses objects but storage uses strings,
+- editor uses local dates but storage uses ISO strings,
 - editor uses relative media paths but storage wants normalized paths.
-
-## Related docs
-
-- [Fields internals](/docs/development/fields/)
-- [Configuration overview](/docs/configuration/overview/)

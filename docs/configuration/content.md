@@ -5,169 +5,34 @@ description: Define editable collections and files in your repository.
 
 ## What `content` does
 
-`content` is the "meat" of the configuration. It defines an array of content types users can edit:
+`content` defines what editors can edit.
 
-- Collections (`type: collection`) are used for groups of files with the same schema (e.g. blog posts),
-- Files (`type: file`) are used for single files with their own individual schema (e.g. site settings, home page, etc).
+Each entry is either:
+
+- a `collection` for many files with the same schema,
+- a `file` for one file with its own schema.
 
 ## Keys
 
-Each entry in the `content` array can use the following keys:
-
 Key | Description
 --- | ---
-<code class="text-[var(--prism-keyword)]">name</code> <span class="text-muted-foreground">*</span> | Internal name for the content entry. Required and must be unique (e.g. `"posts"`).
-<code class="text-[var(--prism-keyword)]">label</code> | Label shown in the UI (e.g. `"Blog posts"`).
+<code class="text-[var(--prism-keyword)]">name</code> <span class="text-muted-foreground">*</span> | Unique internal name (e.g. `"posts"`).
+<code class="text-[var(--prism-keyword)]">label</code> | UI label (e.g. `"Blog posts"`).
 <code class="text-[var(--prism-keyword)]">type</code> <span class="text-muted-foreground">*</span> | Values: `collection`, `file`.
-<code class="text-[var(--prism-keyword)]">path</code> <span class="text-muted-foreground">*</span> | Repository path. For a collection, this is a folder. For a file, this is the file path (e.g. `"content/posts"`, `"data/site.yml"`).
-<code class="text-[var(--prism-keyword)]">fields</code> | An array of fields that will be displayed to the user when editing content (e.g. `[{ name: "title", type: "string" }]`). See the [field references](#fields).
-<code class="text-[var(--prism-keyword)]">filename</code> | Collection filename template, as a string or object (e.g. `"{primary}.md"`).
+<code class="text-[var(--prism-keyword)]">path</code> <span class="text-muted-foreground">*</span> | Folder for collections or file path for single files (e.g. `"content/posts"`, `"data/site.yml"`).
+<code class="text-[var(--prism-keyword)]">fields</code> | Field definitions shown in the editor. [See `Fields`](#fields).
+<code class="text-[var(--prism-keyword)]">filename</code> | Collection filename template or object config. [See `Filename`](#filename).
 <code class="text-[var(--prism-keyword)]">exclude</code> | Files to ignore in a collection (e.g. `["README.md"]`).
-<code class="text-[var(--prism-keyword)]">format</code> | Values include `yaml-frontmatter`, `json-frontmatter`, `toml-frontmatter`, `yaml`, `json`, `toml`, `datagrid`, `code`, `raw` (e.g. `"json"`).
-<code class="text-[var(--prism-keyword)]">delimiters</code> | Custom frontmatter delimiters, as a string or two-item array (e.g. `"+++"`, `["<!--", "-->"]`).
+<code class="text-[var(--prism-keyword)]">format</code> | File format. Values include `yaml-frontmatter`, `json-frontmatter`, `toml-frontmatter`, `yaml`, `json`, `toml`, `datagrid`, `code`, `raw`.
+<code class="text-[var(--prism-keyword)]">delimiters</code> | Custom frontmatter delimiters (e.g. `"+++"`, `["<!--", "-->"]`).
 <code class="text-[var(--prism-keyword)]">subfolders</code> | Enables or disables nested folders in collections.
-<code class="text-[var(--prism-keyword)]">list</code> | For `type: file`, store the file as a top-level array.
-<code class="text-[var(--prism-keyword)]">view</code> | Collection view configuration for visible fields, sorting, search, and tree layout (e.g. `fields: ["title", "date"]`).
-<code class="text-[var(--prism-keyword)]">commit</code> | Per-entry commit settings, overriding `settings.commit` (e.g. `"feat(posts): update {filename}"`). [Read more in `settings`](/docs/configuration/settings).
+<code class="text-[var(--prism-keyword)]">list</code> | For `type: file`, store the whole file as a top-level array.
+<code class="text-[var(--prism-keyword)]">view</code> | Collection list settings for fields, sorting, search, and tree mode. [See `View`](#view).
+<code class="text-[var(--prism-keyword)]">commit</code> | Per-entry commit settings. [See `settings`]( /docs/configuration/settings/).
 
 <span class="text-sm text-muted-foreground">*: Required</span>
 
-## Fields
-
-### Types of fields
-
-Type | Description
---- | ---
-`block` | Let editors choose between multiple object shapes. [Read more](/docs/configuration/fields/block/).
-`boolean` | True/false toggle for flags and state. [Read more](/docs/configuration/fields/boolean/).
-`code` | Code editor with syntax highlighting. [Read more](/docs/configuration/fields/code/).
-`date` | Date or date-time input with formatting and bounds. [Read more](/docs/configuration/fields/date/).
-`file` | Select or upload non-image files from media. [Read more](/docs/configuration/fields/file/).
-`image` | Select or upload images from media. [Read more](/docs/configuration/fields/image/).
-`number` | Numeric input for integers and decimals. [Read more](/docs/configuration/fields/number/).
-`object` | Group nested fields under one key. [Read more](/docs/configuration/fields/object/).
-`reference` | Search and link entries from another collection. [Read more](/docs/configuration/fields/reference/).
-`rich-text` | WYSIWYG editor for formatted content. [Read more](/docs/configuration/fields/rich-text/).
-`select` | Choose from a predefined list of local options. [Read more](/docs/configuration/fields/select/).
-`string` | Single-line text input. [Read more](/docs/configuration/fields/string/).
-`text` | Multi-line plain text. [Read more](/docs/configuration/fields/text/).
-`uuid` | Generate and store a UUID v4. [Read more](/docs/configuration/fields/uuid/).
-
-### Body field
-
-For frontmatter formats (`yaml-frontmatter`, `json-frontmatter`, and `toml-frontmatter`), `body` is a special key that refers to the content of file without the frontmatter. All other fields are saved in the frontmatter.
-
-You can define what type of field this should be. In most cases you will use rich-text:
-
-```yaml
-fields:
-  - name: title
-    type: string
-  - name: body
-    type: rich-text
-```
-
-### Filename field
-
-For collections, you can also display a field for the filename at the top of the editor using the `filename.field` key. [See the "Filename" section](#filename).
-
-## File editor
-
-If `fields` is omitted or empty, Pages CMS falls back to a regular file editor, allowing you to edit the whole 
-
-You can use this for files that should be edited as raw source instead of a structured form (e.g. `robots.txt`).
-
-## Datagrid editor
-
-For `.csv` files you can use the datagrid editor. Either define a file with a `.csv` extension (e.g. `path: data/pricing.csv`), or set it explicitely:
-
-```yaml
-content:
-  - name: pricing
-    type: file
-    path: data/pricing
-    format: datagrid
-```
-
-## Filename
-
-### String vs object
-
-`filename` can be either a string or an object. If a string, it only defines the template for the filename:
-
-```yaml
-filename: "{primary}.md"
-```
-
-As an object you can also define `filenmae.field`, allowing you to control whether or not you want to display the file's filename as a field in the editor:
-
-```yaml
-filename:
-  template: "{year}-{month}-{day}-{primary}.md"
-  field: create
-```
-
-You can pick one of 3 values:
-
-- `false` (default): hide the filename input,
-- `create`: show the filename input only when creating a new entry,
-- `true`: show the filename input when creating and editing.
-
-### Template
-
-Filename templates can use any of the following tokens:
-
-Token | Description
---- | ---
-`{primary}` | Alias for the primary field in `view.primary`, or `title`, or the first field.
-`{slug}` | Alias for `{primary}`.
-`{year}` | Current year.
-`{month}` | Current month, zero-padded.
-`{day}` | Current day, zero-padded.
-`{hour}` | Current hour, zero-padded.
-`{minute}` | Current minute, zero-padded.
-`{second}` | Current second, zero-padded.
-`{fields.<name>}` | Field value from the current entry, slugified (e.g. `{fields.title}`). This works for nested fields too (e.g. `{fields.author.name}`).
-`{<name>}` | Shorthand alias for `{fields.<name>}` (e.g. `{title}` or `{author.name}`).
-
-Pages CMS resolves filename tokens in this order:
-
-1. Try the token as written.
-2. If nothing resolves, try the same token under `fields.*`.
-
-For example:
-
-```yaml
-filename: "{year}-{month}-{day}-{title}.md"
-```
-
-For a post created on January 17, 2026, with the title "Hello world!", this would save the file as `2026-01-17-hello-world.md`.
-
-## View
-
-`view` only applies to `type: collection`.
-
-It controls the collection listing: visible fields, sorting, search, and tree view behavior.
-
-### Keys
-
-Key | Description
---- | ---
-<code class="text-[var(--prism-keyword)]">fields</code> | Fields shown in the collection list, in order (e.g. `["title", "published", "author.name"]`).
-<code class="text-[var(--prism-keyword)]">primary</code> | Field used as the primary label (e.g. `"title"`). Defaults to `title` when available, otherwise the first configured field.
-<code class="text-[var(--prism-keyword)]">sort</code> | Fields available for sorting (e.g. `["date", "title"]`).
-<code class="text-[var(--prism-keyword)]">search</code> | Fields indexed for search (e.g. `["title", "body", "author"]`). By default, all fields are indexed.
-<code class="text-[var(--prism-keyword)]">default.search</code> | Default search query (e.g. `"author:Patricia"`).
-<code class="text-[var(--prism-keyword)]">default.sort</code> | Default sort field (e.g. `"date"`).
-<code class="text-[var(--prism-keyword)]">default.order</code> | Values: `asc`, `desc`.
-<code class="text-[var(--prism-keyword)]">layout</code> | Values: `list`, `tree`.
-<code class="text-[var(--prism-keyword)]">node</code> | Tree node config, as a string or object. A string is treated as `node.filename` (e.g. `"index.md"`).
-<code class="text-[var(--prism-keyword)]">node.filename</code> | Node filename used in tree mode (e.g. `"index.md"`).
-<code class="text-[var(--prism-keyword)]">node.hideDirs</code> | Values: `all`, `nodes`, `others`.
-
-## Examples
-
-### Basic collection
+## Start with a collection
 
 ```yaml
 content:
@@ -178,14 +43,11 @@ content:
     fields:
       - name: title
         type: string
-      - name: published
-        type: boolean
-        default: true
       - name: body
         type: rich-text
 ```
 
-### Basic single file
+## Start with a single file
 
 ```yaml
 content:
@@ -200,9 +62,185 @@ content:
         type: text
 ```
 
-### Root arrays in single files
+## Fields
 
-If a single file stores an array at the top level, set `list: true`.
+`fields` defines the editor schema.
+
+### Field types
+
+Type | Description
+--- | ---
+`block` | Multiple object shapes in one list.
+`boolean` | True/false toggle.
+`code` | Code editor with syntax highlighting.
+`date` | Date or date-time input.
+`file` | File picker or uploader.
+`image` | Image picker or uploader.
+`number` | Numeric input.
+`object` | Nested group of fields.
+`reference` | Link to another collection.
+`rich-text` | Rich text editor.
+`select` | Fixed local options.
+`string` | Single-line text input.
+`text` | Multi-line plain text input.
+`uuid` | UUID v4 field.
+
+### `body` is a special key
+
+For frontmatter formats, `body` maps to the file content below the frontmatter.
+
+All other fields stay in frontmatter.
+
+```yaml
+fields:
+  - name: title
+    type: string
+  - name: body
+    type: rich-text
+```
+
+## File editor
+
+If `fields` is omitted or empty, Pages CMS falls back to a raw file editor.
+
+Use this for files that should not be modeled as structured fields, for example:
+
+- `robots.txt`,
+- redirect files,
+- small JSON or YAML config files,
+- snippets or templates.
+
+Example:
+
+```yaml
+content:
+  - name: robots
+    label: robots.txt
+    type: file
+    path: public/robots.txt
+```
+
+If you want code editing behavior, set a code-oriented format:
+
+```yaml
+content:
+  - name: redirects
+    type: file
+    path: public/_redirects
+    format: code
+```
+
+## Datagrid editor
+
+Use `format: datagrid` for CSV-style tables.
+
+For `.csv` files, Pages CMS can infer this automatically.
+
+```yaml
+content:
+  - name: pricing
+    type: file
+    path: data/pricing.csv
+```
+
+Or set it explicitly:
+
+```yaml
+content:
+  - name: pricing
+    type: file
+    path: data/pricing
+    format: datagrid
+```
+
+## Filename
+
+`filename` only applies to collections.
+
+Use it to control how new files are named.
+
+### String form
+
+```yaml
+filename: "{primary}.md"
+```
+
+### Object form
+
+Use the object form when you also want a filename field in the editor.
+
+```yaml
+filename:
+  template: "{year}-{month}-{day}-{primary}.md"
+  field: create
+```
+
+### `filename.field`
+
+Value | Behavior
+--- | ---
+`false` | Hide the filename input.
+`create` | Show it only when creating a new entry.
+`true` | Show it when creating and editing.
+
+### Filename tokens
+
+Token | Description
+--- | ---
+`{primary}` | Primary field from `view.primary`, or `title`, or the first field.
+`{slug}` | Alias for `{primary}`.
+`{year}` | Current year.
+`{month}` | Current month, zero-padded.
+`{day}` | Current day, zero-padded.
+`{hour}` | Current hour, zero-padded.
+`{minute}` | Current minute, zero-padded.
+`{second}` | Current second, zero-padded.
+`{fields.<name>}` | Field value from the current entry, slugified.
+`{<name>}` | Shorthand for `{fields.<name>}`.
+
+Example:
+
+```yaml
+filename: "{year}-{month}-{day}-{title}.md"
+```
+
+## View
+
+`view` only applies to collections.
+
+It controls how the collection list is displayed.
+
+### Keys
+
+Key | Description
+--- | ---
+<code class="text-[var(--prism-keyword)]">fields</code> | Fields shown in the list, in order (e.g. `["title", "published", "author.name"]`).
+<code class="text-[var(--prism-keyword)]">primary</code> | Field used as the main label. Defaults to `title` if present.
+<code class="text-[var(--prism-keyword)]">sort</code> | Fields available for sorting.
+<code class="text-[var(--prism-keyword)]">search</code> | Fields indexed for search.
+<code class="text-[var(--prism-keyword)]">default.search</code> | Default search query.
+<code class="text-[var(--prism-keyword)]">default.sort</code> | Default sort field.
+<code class="text-[var(--prism-keyword)]">default.order</code> | Values: `asc`, `desc`.
+<code class="text-[var(--prism-keyword)]">layout</code> | Values: `list`, `tree`.
+<code class="text-[var(--prism-keyword)]">node</code> | Tree node config, as a string or object.
+<code class="text-[var(--prism-keyword)]">node.filename</code> | Node filename in tree mode.
+<code class="text-[var(--prism-keyword)]">node.hideDirs</code> | Values: `all`, `nodes`, `others`.
+
+Example:
+
+```yaml
+view:
+  fields: [title, published, date]
+  primary: title
+  sort: [date, title]
+  default:
+    sort: date
+    order: desc
+```
+
+## Root arrays in single files
+
+If a file stores a top-level array, set `list: true`.
 
 ```yaml
 content:
@@ -211,7 +249,7 @@ content:
     type: file
     path: data/authors.json
     format: json
-    list: true # Enables top level array
+    list: true
     fields:
       - name: name
         type: string
@@ -219,72 +257,4 @@ content:
         type: string
       - name: avatar
         type: image
-```
-
-This saves the file as a top-level JSON array:
-
-```json
-[
-  {
-    "name": "John Doe",
-    "email": "john@example.com",
-    "avatar": "/media/avatars/john.png",
-  },
-  {
-    "name": "Marie Smith",
-    "email": "marie@example.com",
-    "avatar": "/media/avatars/marie.png",
-  }
-]
-```
-
-
-### Collection view config
-
-`view` only applies to `type: collection`.
-
-```yaml
-content:
-  - name: posts
-    type: collection
-    path: content/posts
-    view:
-      fields: [title, date, published]
-      primary: title
-      sort: [date, title]
-      search: [title, body, author]
-      default:
-        sort: date
-        order: desc
-```
-
-Tree example:
-
-```yaml
-content:
-  - name: docs
-    type: collection
-    path: content/docs
-    view:
-      layout: tree
-      node:
-        filename: index.md
-        hideDirs: all
-```
-
-### Per-entry commit templates
-
-Use `content[].commit.templates` when one entry needs different commit messages.
-
-```yaml
-content:
-  - name: posts
-    type: collection
-    path: content/posts
-    commit:
-      templates:
-        create: "feat(posts): add {filename}"
-        update: "feat(posts): update {filename}"
-        delete: "feat(posts): remove {filename}"
-        rename: "feat(posts): rename {oldFilename} -> {newFilename}"
 ```

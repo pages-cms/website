@@ -124,7 +124,3 @@ These are separate layers and should not be conflated.
 - use `read` / `write` only when representation actually differs,
 - avoid leaking transport or API concerns into generic field logic,
 - copy a simple field first, then add complexity.
-
-## Related docs
-
-- [Creating a custom field](/docs/guides/creating-custom-field/)

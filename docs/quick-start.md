@@ -3,35 +3,55 @@ title: Quick start
 description: The fastest path from zero to a working Pages CMS setup.
 ---
 
-## Use the online version
+## Quick start
 
-The easiest way to get started is to use [the online version of Pages CMS](https://app.pagescms.org):
+If you just want to try Pages CMS, use the hosted app.
 
 1. Go to [app.pagescms.org](https://app.pagescms.org).
-2. Sign in with your GitHub account.
-3. Install the GitHub App on the GitHub account that owns the repository for your website/app.
-4. Select the repository for your website/app.
-5. You will be asked to add the configuration file (`.pages.yml`). [Read more about configuration](/docs/configuration/overview) or use the minimal configuration below:
+2. Sign in with GitHub.
+3. Install the GitHub App on the account or organization that owns your repository.
+4. Open the repository you want to edit.
+5. Create `.pages.yml` when prompted.
+6. Start editing.
 
+## Minimal config
 
-    ```yaml
-    media: media
-    content:
-      - name: pages
-        label: Pages
-        type: collection
-        path: docs
-        fields:
-          - name: title
-            label: Title
-            type: string
-          - name: body
-            label: Body
-            type: rich-text
-    ```
+Use this as a first working config:
 
-6. Start editing your content and media.
+```yaml
+media: media
+content:
+  - name: pages
+    label: Pages
+    type: collection
+    path: docs
+    fields:
+      - name: title
+        type: string
+      - name: body
+        type: rich-text
+```
 
-## Deploy your own version
+This gives you:
 
-The simplest way it to [deploy it on Vercel](/docs/guides/install-vercel/), but you can [self-host it pretty anywhere that supports Node.js](/docs/guides/install-self-host).
+- one media folder at `media/`,
+- one editable collection at `docs/`,
+- a `title` field,
+- a rich-text `body` field.
+
+## What to do next
+
+1. Add more fields.
+2. Configure media storage.
+3. Adjust filenames and collection view.
+
+<div class="flex flex-wrap gap-2 my-6">
+  <a href="/docs/configuration/overview/" class="badge-outline">
+    Configuration overview
+    {% lucide "arrow-right" %}
+  </a>
+  <a href="/docs/guides/install-vercel/" class="badge-outline">
+    Deploy your own instance
+    {% lucide "arrow-right" %}
+  </a>
+</div>

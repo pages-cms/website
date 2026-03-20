@@ -3,24 +3,29 @@ title: Authentication
 description: How Pages CMS chooses between a GitHub user token and a GitHub App installation token.
 ---
 
-Pages CMS uses two authentication paths:
+## Authentication model
+
+Pages CMS can operate with either:
 
 - a GitHub user token,
 - a GitHub App installation token.
 
-Which one is used depends on who is editing and what access they have.
+The token choice depends on who is signed in and what access they have.
 
-## Token selection
+## Token selection order
 
-For repository reads and writes, Pages CMS first checks whether the signed-in user has a GitHub account token.
+For repository reads and writes, Pages CMS follows this order:
 
-If access verification is enabled, Pages CMS confirms that token can access the target repository. If it can, the request runs as the GitHub user.
+1. Check whether the signed-in user has a GitHub token.
+2. If access checks are enabled, verify that token can access the target repository.
+3. If yes, use the GitHub user token.
+4. If not, check for collaborator access for the current `owner/repo`.
+5. If a collaborator record exists, use the repository's GitHub App installation token.
+6. If neither path succeeds, deny access.
 
-If that check fails, Pages CMS falls back to collaborator access for the current `owner/repo`. When a collaborator record exists, Pages CMS requests a GitHub App installation token for that repository and uses that token instead.
+## Collaborator scope
 
-## Repository scope
-
-Collaborator access is scoped per repository.
+Collaborator access is scoped to one repository.
 
 The fallback check matches:
 
@@ -28,30 +33,26 @@ The fallback check matches:
 - repository owner,
 - repository name.
 
-If no matching collaborator permission exists, access is denied.
+## Commits and attribution
 
-## Writes and committer identity
+When Pages CMS writes with a GitHub user token, GitHub handles attribution normally.
 
-When the request uses a GitHub user token, GitHub handles commit attribution normally.
-
-When the request uses the GitHub App installation token, Pages CMS still sets the committer metadata from the current user:
+When Pages CMS writes with the GitHub App installation token, it still sets committer metadata from the current user:
 
 - `name`: user name, or email if name is missing,
 - `email`: user email.
 
-This is why collaborator edits still show the collaborator's name and email in the commit metadata even though the write is performed through the GitHub App.
+That is why collaborator edits still show the collaborator's name and email in commit metadata.
 
-## Admin routes
+## Routes that require a GitHub user
 
-Some routes require a real GitHub identity and do not allow collaborator fallback.
+Collaborator fallback does not apply everywhere.
 
-That includes:
+The following areas require a real GitHub identity:
 
 - configuration management,
 - collaborator management,
 - cache management.
-
-Use this model when you need content editing for invited users, but keep repository administration limited to GitHub users.
 
 <div class="flex flex-wrap gap-2 my-6">
   <a href="/docs/configuration/collaborators/" class="badge-outline">
