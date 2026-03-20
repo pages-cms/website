@@ -2,12 +2,10 @@
 layout: base
 ---
 
-<header class="max-w-7xl mx-auto px-6 lg:px-8 py-4 flex items-center gap-2">
-  {% include "partials/header.njk" %}
-</header>
-
+{% include "partials/header.njk" %}
 {{ content | safe }}
-
 <footer class="flex items-center justify-center gap-x-4 text-muted-foreground px-6 lg:px-8 py-8 text-xs [&_a]:hover:underline">
-  {% include "partials/footer.njk" %}
+  <span>© <a href="https://ronanberder.com">Ronan Berder</a></span>
+  <a href="/terms">Terms</a>
+  <a href="/privacy">Privacy</a>
 </footer>

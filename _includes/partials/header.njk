@@ -1,58 +1,60 @@
-<a href="/" class="flex items-center justify-center mr-auto gap-3 font-semibold text-sm">
-  <div class="[&>svg]:size-4 bg-primary text-primary-foreground rounded-md size-6 flex items-center justify-center">
-    {{ site.logo.svg | safe }}
-  </div>
-  {{ site.title }}
-</a>
+<header class="max-w-7xl mx-auto px-6 lg:px-8 py-4 flex items-center gap-2 transition-colors" :class="{ 'max-sm:bg-background': isMobileOpen }" x-data="{ isMobileOpen: false }">
+  <a href="/" class="flex items-center justify-center mr-auto gap-3 font-semibold text-sm">
+    <div class="[&>svg]:size-4 bg-primary text-primary-foreground rounded-md size-6 flex items-center justify-center">
+      {{ site.logo.svg | safe }}
+    </div>
+    {{ site.title }}
+  </a>
 
-<nav class="items-center gap-2 hidden sm:flex">
-  <a
-    href="/"
-    class="max-sm:w-full btn-sm-ghost {% if page.url == '/' %}bg-accent dark:bg-accent/50{% endif %}"
-    {% if page.url == '/' %}aria-current="page"{% endif %}
-  >
-      Home
-  </a>
-  <a
-    href="/docs"
-    class="max-sm:w-full btn-sm-ghost {% if page.url.startsWith('/docs') %}bg-accent dark:bg-accent/50{% endif %}"
-    {% if page.url == '/docs' %}aria-current="page"{% endif %}
-  >
-    Docs
-  </a>
-  <a class="max-sm:w-full btn-sm-icon-ghost" href="https://pagescms.org/chat" target="_blank" data-tooltip="Discord" data-side="bottom">
-    {% include "logos/discord.svg" %}
-
-  </a>
-  <a class="max-sm:w-full btn-sm-icon-ghost" href="https://github.com/pages-cms/pages-cms" target="_blank" data-tooltip="GitHub" data-side="bottom">
-    {% include "logos/github.svg" %}
-  </a>
-  <a class="max-sm:w-full btn-sm-outline" href="https://app.pagescms.org">Sign in</a>
-</nav>
-
-<div class="sm:hidden" x-data="{ isOpen: false }">
-  <button type="button" class="btn-sm-icon-ghost" @click="isOpen = !isOpen">
-  <span x-show="!isOpen" x-cloak>{% lucide "menu" %}</span>
-  <span x-show="isOpen" x-cloak>{% lucide "x" %}</span>
-  </button>
-  <nav class="fixed inset-0 top-16 bg-background z-50 flex flex-col gap-2 p-4 transition-all opacity-0 scale-95 -translate-y-16 invisible" :class="{ 'opacity-100 scale-100 translate-y-0 visible': isOpen }" x-cloak>
-    <a class="btn-lg-ghost justify-between px-4" href="/">
-      Home
+  <nav class="items-center gap-2 hidden sm:flex">
+    <a
+      href="/"
+      class="max-sm:w-full btn-sm-ghost {% if page.url == '/' %}bg-accent dark:bg-accent/50{% endif %}"
+      {% if page.url == '/' %}aria-current="page"{% endif %}
+    >
+        Home
     </a>
-    <a class="btn-lg-ghost justify-between px-4" href="/docs">
+    <a
+      href="/docs"
+      class="max-sm:w-full btn-sm-ghost {% if page.url.startsWith('/docs') %}bg-accent dark:bg-accent/50{% endif %}"
+      {% if page.url == '/docs' %}aria-current="page"{% endif %}
+    >
       Docs
     </a>
-    <a class="btn-lg-ghost justify-between" href="https://pagescms.org/chat">
-      Discord
+    <a class="max-sm:w-full btn-sm-icon-ghost" href="https://pagescms.org/chat" target="_blank" data-tooltip="Discord" data-side="bottom">
       {% include "logos/discord.svg" %}
+
     </a>
-    <a class="btn-lg-ghost justify-between" href="https://github.com/pages-cms/pages-cms">
-      GitHub
+    <a class="max-sm:w-full btn-sm-icon-ghost" href="https://github.com/pages-cms/pages-cms" target="_blank" data-tooltip="GitHub" data-side="bottom">
       {% include "logos/github.svg" %}
     </a>
-    <a class="btn-lg-ghost justify-between" href="https://app.pagescms.org">
-      Sign in
-      {% lucide "arrow-right" %}
-    </a>
+    <a class="max-sm:w-full btn-sm-outline" href="https://app.pagescms.org">Sign in</a>
   </nav>
-</div>
+
+  <div class="sm:hidden">
+    <button type="button" class="btn-sm-icon-outline" @click="isMobileOpen = !isMobileOpen">
+      <span x-show="!isMobileOpen" x-cloak>{% lucide "menu" %}</span>
+      <span x-show="isMobileOpen" x-cloak>{% lucide "x" %}</span>
+    </button>
+    <nav class="fixed inset-0 top-16 bg-background z-50 flex flex-col gap-2 p-4 transition-all opacity-0 scale-95 -translate-y-16 invisible" :class="{ 'opacity-100 scale-100 translate-y-0 visible': isMobileOpen }" x-cloak>
+      <a class="btn-lg-ghost justify-between px-4" href="/">
+        Home
+      </a>
+      <a class="btn-lg-ghost justify-between px-4" href="/docs">
+        Docs
+      </a>
+      <a class="btn-lg-ghost justify-between" href="https://pagescms.org/chat">
+        Discord
+        {% include "logos/discord.svg" %}
+      </a>
+      <a class="btn-lg-ghost justify-between" href="https://github.com/pages-cms/pages-cms">
+        GitHub
+        {% include "logos/github.svg" %}
+      </a>
+      <a class="btn-lg-ghost justify-between" href="https://app.pagescms.org">
+        Sign in
+        {% lucide "arrow-right" %}
+      </a>
+    </nav>
+  </div>
+</header>
