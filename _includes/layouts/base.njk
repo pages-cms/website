@@ -27,18 +27,18 @@
   <meta property="og:url" content="{{ siteUrl }}{{ page.url }}">
   <meta property="og:title" content="{{ meta_title }}">
   <meta property="og:description" content="{{ meta_description }}">
-  <meta property="og:image" content="{{ siteUrl }}/assets/social.png">
+  <meta property="og:image" content="{{ site.social.card }}">
   <meta property="og:site_name" content="{{ site.title }}">
   <meta property="og:locale" content="en_US">
-  <meta property="og:author" content="{{ site.author.name }}">
+  <meta property="og:author" content="{{ site.social.author.name }}">
 
   {# X/Twitter #}
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:url" content="{{ siteUrl }}{{ page.url }}">
   <meta name="twitter:title" content="{{ meta_title }}">
   <meta name="twitter:description" content="{{ meta_description }}">
-  <meta name="twitter:image" content="{{ siteUrl }}/assets/social.png">
-  <meta name="twitter:creator" content="{{ site.author.x }}">
+  <meta name="twitter:image" content="{{ site.social.card }}">
+  <meta name="twitter:creator" content="{{ site.social.author.x }}">
 
   {# CSS #}
   <link rel="preconnect" href="https://rsms.me/">
