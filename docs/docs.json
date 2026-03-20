@@ -74,7 +74,8 @@
           "items": [
             "guides/install-local",
             "guides/install-vercel",
-            "guides/install-self-host"
+            "guides/install-self-host",
+            "guides/github-app"
           ]
         },
         "guides/upgrading-to-2",
@@ -89,8 +90,7 @@
         "development/authentication",
         "development/caching",
         "development/fields",
-        "development/environment-variables",
-        "development/github-app"
+        "development/environment-variables"
       ]
     }
   ]

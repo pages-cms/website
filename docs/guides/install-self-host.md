@@ -3,62 +3,76 @@ title: Self-host
 description: Run Pages CMS on your own infrastructure.
 ---
 
-## What you need
+## Step 1: Create a PostgreSQL database
 
-- PostgreSQL,
-- a public HTTPS URL,
-- a GitHub App,
-- Pages CMS environment variables.
+You will need a `DATABASE_URL`.
 
-## Minimum checklist
+<div class="alert">
+  {% lucide "triangle-alert" %}
+  <h3>Using Supabase?</h3>
+  <section>
+    <p>
+      If you run migrations during deployment, prefer the Supabase Session Pooler for
+      <code>DATABASE_URL</code>. Direct connections can cause connectivity issues on some
+      hosting providers.
+    </p>
+  </section>
+</div>
 
-1. Build and run the app.
-2. Set required environment variables.
-3. Set `BASE_URL` to the final public URL.
-4. Configure the GitHub App.
-5. Run migrations.
-6. Verify webhook delivery.
+## Step 2: Create `.env`
 
-## Build and run
+Add at least:
+
+```bash
+DATABASE_URL=postgresql://...
+BETTER_AUTH_SECRET=your-random-secret
+CRYPTO_KEY=your-random-secret
+BASE_URL=https://cms.example.com
+```
+
+You can generate secrets with:
+
+```bash
+openssl rand -base64 32
+```
+
+## Step 3: Create the GitHub App
+
+Use [the helper](/docs/guides/github-app#using-the-helper):
+
+```bash
+npm run setup:github-app -- --base-url https://cms.example.com --env .env
+```
+
+This writes the GitHub App environment variables into `.env.production`.
+
+If you need other helper options, see [GitHub App helper](/docs/guides/github-app#using-the-helper).
+
+## Step 4: Install dependencies
 
 ```bash
 npm install
-npm run build
-npm run start
 ```
 
-Run migrations before serving traffic:
+## Step 5: Run migrations
 
 ```bash
 npm run db:migrate
 ```
 
-## Reverse proxy and HTTPS
+## Step 6: Build and run
+
+```bash
+npm run build
+npm run start
+```
+
+## Step 7: Put HTTPS in front of the app
 
 Use a stable public HTTPS URL in front of the app.
 
 Typical setup:
 
-- Nginx or Caddy as reverse proxy,
-- TLS at the proxy or platform edge,
-- the app behind it on an internal port.
-
-## GitHub App URLs
-
-Use:
-
-- User authorization callback URL: `<BASE_URL>/api/auth/callback/github`
-- Webhook URL: `<BASE_URL>/api/webhook/github`
-- Setup URL: `<BASE_URL>/`
-
-For the full app setup, see [GitHub App](/docs/development/github-app/).
-
-## Operations
-
-Plan for:
-
-- environment variable management,
-- database backups,
-- logging,
-- process restarts,
-- deploy windows or rolling updates.
+- Nginx or Caddy as reverse proxy
+- TLS at the proxy or platform edge
+- the app behind it on an internal port

@@ -5,7 +5,7 @@ description: What the Pages CMS GitHub App does, how to create it with the helpe
 
 Pages CMS uses a GitHub App for repository access, user sign-in, webhook delivery, and installation-scoped repository operations.
 
-## Helper
+## Using the helper
 
 The fastest path is the built-in helper:
 
@@ -13,21 +13,36 @@ The fastest path is the built-in helper:
 npm run setup:github-app -- --base-url http://localhost:3000
 ```
 
-Common options:
+The helper creates the app from a manifest and prints the GitHub App environment variables for you.
 
-- `--owner-type personal|org`
-- `--org <slug>`
-- `--app-name "Pages CMS"`
-- `--env .env.local`
-- `--no-open`
+If you pass `--env <path>`, it will also write them to that file.
 
-The helper creates the app from a manifest and writes the GitHub App environment variables for you.
+Options:
 
-The manifest already sets the callback URL, setup URL, webhook URL, permissions, events, `Request user authorization (OAuth) during installation`, and `Redirect on update`.
+| Option | What it does |
+| --- | --- |
+| `--base-url` | Sets the public app URL used for the callback URL, webhook URL, and setup URL. |
+| `--env` | Writes the generated GitHub App environment variables to a file instead of only printing them. |
+| `--owner-type` | Creates the app under a personal account or an organization. |
+| `--org` | Sets the organization slug when `--owner-type org` is used. |
+| `--app-name` | Sets the GitHub App display name. |
+| `--no-open` | Does not try to open the browser automatically. |
 
-After helper-based setup, you will need to disable `User-to-server token expiration` if GitHub shows that option. This will avoid your users to be periodically logged out.
+Example:
 
-## Manual settings
+```bash
+npm run setup:github-app -- \
+  --base-url https://cms.example.com \
+  --env .env \
+  --owner-type org \
+  --org my-company \
+  --app-name "Pages CMS" \
+  --no-open
+```
+
+You will need to manually disable `User-to-server token expiration` if GitHub shows that option. This will avoid your users to be periodically logged out.
+
+## Manually
 
 Open GitHub App settings:
 

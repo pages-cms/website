@@ -23,7 +23,6 @@ Variable | Description
 
 Variable | Description
 --- | ---
-`BASE_URL` | Public base URL for the app.
 `CRON_SECRET` | Secret used to protect the cron endpoint.
 `EMAIL_PROVIDER` | `resend` or `smtp`.
 `EMAIL_FROM` | Sender address for auth and invitation emails.
@@ -55,4 +54,5 @@ openssl rand -base64 32
 
 - If you use the GitHub App helper, it writes the GitHub App variables for you.
 - `GITHUB_APP_NAME` must be the app slug, not the display name.
+- `BASE_URL` is required in production. In development, it defaults to `http://localhost:3000`.
 - `BASE_URL`, callback URL, setup URL, and webhook URL must all point to the same app instance.
