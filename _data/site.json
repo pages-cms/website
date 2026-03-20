@@ -5,7 +5,7 @@
   "url": "https://pagescms.org",
   "app_url": "https://app.pagescms.org",
   "social": {
-    "card": "/assets/social.png",
+    "card": "/assets/social-card.png",
     "author": {
       "x": "@pagescms",
       "name": "Ronan Berder"
