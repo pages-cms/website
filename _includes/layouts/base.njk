@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html class="dark noise">
+<html class="dark">
 <head>
   {# Meta #}
   <meta charset="utf-8">
@@ -52,7 +52,10 @@
 
   {% if head %}{{ head | safe }}{% endif %}
 </head>
-<body{% if not page.url.startsWith('/docs/') %} class="wash"{% endif %}>
+<body>
+  {% if not page.url.startsWith('/docs/') %}
+    <div aria-hidden="true" class="page-wash"></div>
+  {% endif %}
   {{ content | safe }}
 </body>
 </html>

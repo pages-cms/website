@@ -129,7 +129,13 @@
   animation: scroll 15s linear infinite;
 }
 
-.wash {
+.page-wash {
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 720px;
+  max-height: 100vh;
+  pointer-events: none;
+  z-index: -1;
   background-image:
     url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140' viewBox='0 0 140 140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.15' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='0.12'/%3E%3C/svg%3E"),
     linear-gradient(
@@ -153,6 +159,13 @@
     center top,
     center top;
   background-repeat: repeat, no-repeat, no-repeat;
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    black 0%,
+    black 52%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(to bottom, black 0%, black 52%, transparent 100%);
 }
 
 .carousel-mask {

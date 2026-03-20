@@ -745,8 +745,11 @@
   .text-\[var\(--prism-keyword\)\] {
     color: var(--prism-keyword);
   }
-  .text-foreground {
+  .text-foreground\/80 {
     color: var(--color-foreground);
+    @supports (color: color-mix(in lab, red, red)) {
+      color: color-mix(in oklab, var(--color-foreground) 80%, transparent);
+    }
   }
   .text-foreground\/90 {
     color: var(--color-foreground);
@@ -791,9 +794,6 @@
     @supports (color: color-mix(in lab, red, red)) {
       --tw-ring-color: color-mix(in oklab, var(--color-background) 50%, transparent);
     }
-  }
-  .filter {
-    filter: var(--tw-blur,) var(--tw-brightness,) var(--tw-contrast,) var(--tw-grayscale,) var(--tw-hue-rotate,) var(--tw-invert,) var(--tw-saturate,) var(--tw-sepia,) var(--tw-drop-shadow,);
   }
   .transition-all {
     transition-property: all;
@@ -4689,11 +4689,19 @@
 .infinite-scroll {
   animation: scroll 15s linear infinite;
 }
-.wash {
+.page-wash {
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 720px;
+  max-height: 100vh;
+  pointer-events: none;
+  z-index: -1;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140' viewBox='0 0 140 140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.15' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='0.12'/%3E%3C/svg%3E"), linear-gradient( to bottom, oklch(from var(--primary) l c h / 0.08) 0%, oklch(from var(--primary) l c h / 0.05) 16%, transparent 58% ), radial-gradient( 54% 36% at 50% 0%, oklch(from var(--primary) calc(l + 0.02) c h / 0.18) 0%, oklch(from var(--primary) l c h / 0.1) 36%, transparent 78% );
   background-size: 280px 280px, 100% auto, min(1100px, 100%) 540px;
   background-position: left top, center top, center top;
   background-repeat: repeat, no-repeat, no-repeat;
+  -webkit-mask-image: linear-gradient( to bottom, black 0%, black 52%, transparent 100% );
+  mask-image: linear-gradient(to bottom, black 0%, black 52%, transparent 100%);
 }
 .carousel-mask {
   -webkit-mask-image: linear-gradient( to right, transparent 0%, black 12%, black 88%, transparent 100% );
@@ -4990,59 +4998,6 @@ pre[data-line] {
   inherits: false;
   initial-value: 0 0 #0000;
 }
-@property --tw-blur {
-  syntax: "*";
-  inherits: false;
-}
-@property --tw-brightness {
-  syntax: "*";
-  inherits: false;
-}
-@property --tw-contrast {
-  syntax: "*";
-  inherits: false;
-}
-@property --tw-grayscale {
-  syntax: "*";
-  inherits: false;
-}
-@property --tw-hue-rotate {
-  syntax: "*";
-  inherits: false;
-}
-@property --tw-invert {
-  syntax: "*";
-  inherits: false;
-}
-@property --tw-opacity {
-  syntax: "*";
-  inherits: false;
-}
-@property --tw-saturate {
-  syntax: "*";
-  inherits: false;
-}
-@property --tw-sepia {
-  syntax: "*";
-  inherits: false;
-}
-@property --tw-drop-shadow {
-  syntax: "*";
-  inherits: false;
-}
-@property --tw-drop-shadow-color {
-  syntax: "*";
-  inherits: false;
-}
-@property --tw-drop-shadow-alpha {
-  syntax: "<percentage>";
-  inherits: false;
-  initial-value: 100%;
-}
-@property --tw-drop-shadow-size {
-  syntax: "*";
-  inherits: false;
-}
 @property --tw-duration {
   syntax: "*";
   inherits: false;
@@ -5089,19 +5044,6 @@ pre[data-line] {
       --tw-ring-offset-width: 0px;
       --tw-ring-offset-color: #fff;
       --tw-ring-offset-shadow: 0 0 #0000;
-      --tw-blur: initial;
-      --tw-brightness: initial;
-      --tw-contrast: initial;
-      --tw-grayscale: initial;
-      --tw-hue-rotate: initial;
-      --tw-invert: initial;
-      --tw-opacity: initial;
-      --tw-saturate: initial;
-      --tw-sepia: initial;
-      --tw-drop-shadow: initial;
-      --tw-drop-shadow-color: initial;
-      --tw-drop-shadow-alpha: 100%;
-      --tw-drop-shadow-size: initial;
       --tw-duration: initial;
       --tw-content: "";
       --tw-ease: initial;

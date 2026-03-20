@@ -131,12 +131,12 @@ faq:
     <li class="card bg-transparent border-foreground/15">
       <header>
         <h3 class="flex items-center gap-2">
-          {% lucide feature.icon, { "class" : "size-4 opacity-50"} %}
+          {% lucide feature.icon, { "class" : "size-4 text-muted-foreground"} %}
           {{ feature.title }}
-          {% if feature.soon %}<span class="badge-secondary ml-auto opacity-50">Soon</span>{% endif %}
+          {% if feature.soon %}<span class="badge-secondary ml-auto text-muted-foreground">Soon</span>{% endif %}
         </h3>
         <section>
-          <p class="text-foreground opacity-50">{{ feature.description }}</p>
+          <p>{{ feature.description }}</p>
         </section>
       </header>
     </li>
