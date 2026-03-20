@@ -102,7 +102,7 @@ faq:
     <h1 class="font-semibold tracking-tight text-4xl sm:text-7xl">{{ title }}</h1>
     <p class="mx-auto mt-4 mb-6 max-w-md opacity-80">{{ description }}</p>
     <footer class="flex flex-col sm:flex-row items-center justify-center gap-4">
-      <a class="btn-lg max-sm:w-full" href="/docs/installation">Sign up</a>
+      <a class="btn-lg max-sm:w-full" href="{{ site.app_url }}">Sign up</a>
       <a class="btn-lg-outline max-sm:w-full" href="/docs/quick-start">Quick start</a>
     </footer>
   </header>
@@ -149,8 +149,12 @@ faq:
     <h2 class="font-semibold tracking-tight text-3xl sm:text-4xl">Free and Open Source</h2>
   </header>
   <footer class="flex flex-col sm:flex-row items-center justify-center gap-4">
-    <a class="btn-lg max-sm:w-full" href="/docs/guides/install-self-host/">Self-host</a>
+    <a class="btn-lg max-sm:w-full" href="/docs/guides/install-vercel/">
+      {% include "logos/vercel.svg" %}
+      Deploy on Vercel
+    </a>
     <a class="btn-lg-outline max-sm:w-full" href="https://github.com/pages-cms/pages-cms" target="_blank">
+      {% include "logos/github.svg" %}
       Get source code
     </a>
   </footer>
