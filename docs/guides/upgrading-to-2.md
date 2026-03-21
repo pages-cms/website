@@ -7,45 +7,45 @@ description: Upgrade an existing Pages CMS 1.x deployment to 2.x.
 
 1. **Back up the deployment.** Save the current database and environment configuration before changing anything.
 2. **Optional: Migrate to PostgreSQL.** Pages CMS 2.x expects PostgreSQL for normal deployments. If you still use SQLite or legacy libSQL/Turso, migrate collaborators first: [Migrating collaborators](/docs/guides/migrating-collaborators/).
-3. **Update environment variables.** Compare your deployment against [Environment variables](/docs/development/environment-variables/) and add or replace anything that changed in 2.x (e.g. `BETTER_AUTH_SECRET`).
-4. [**Update the GitHub App (see below).**](#update-github-app) Do not recreate it unless you need to.
+3. [**Update environment variables (see below).**](#update-environment-variables).
+4. [**Update the GitHub App (see below).**](#update-github-app)
 5. **Run migrations.** Apply the 2.x database migrations before serving traffic: `npm run db:migrate`.
 6. **Redeploy the app.** Restart the app with the new code and environment.
 7. **Verify the upgrade.** Confirm GitHub sign-in, repository installation, webhook delivery, build status display, and GitHub Actions triggering if you use it.
 
+## Add environment variables
+
+- `BETTER_AUTH_SECRET`: A random secrete for the new auth library (Better Auth).
+- `BASE_URL`: This wasn't required before as we fell back to VERCEL_PROJECT_PRODUCTION_URL and/or VERCEL_URL. We are now asking for an explicit value.
+
+More info: [Environment variables](/docs/development/environment-variables/)
+
 ## Update GitHub App
 
-For the full settings list, see [GitHub App](/docs/development/github-app/).
+More info: [GitHub App](/docs/guides/github-app/)
 
 ### Add account permissions
 
-| Setting | Value | Why |
-| --- | --- | --- |
-| Email addresses | Read only | Required for GitHub sign-in through Better Auth. |
-
-### Add or confirm repository permissions
-
-| Permission | Value | Why |
-| --- | --- | --- |
-| Administration | Read and write | Existing app/repository management behavior. |
-| Actions | Read and write | Lets users trigger GitHub Actions from the UI. |
-| Checks | Read only | Reads build and deployment status reported back to GitHub. |
-| Commit statuses | Read only | Reads build and deployment status reported back to GitHub. |
-| Contents | Read and write | Existing content editing behavior. |
-| Metadata | Read only | Existing repository integration behavior. |
-
-### Add webhook events
-
-| Event | Why |
+| Permission | Value |
 | --- | --- |
-| Installation target | Existing account/install cache updates. |
-| Repository | Existing repository rename/delete/transfer handling. |
-| Push | Existing cache refresh behavior. |
-| Delete | Existing branch deletion cache cleanup. |
-| Check run | Refresh check-based build status. |
-| Check suite | Refresh check-based build status. |
-| Status | Refresh commit status-based build status. |
-| Workflow run | Refresh GitHub Actions run status. |
+| Email addresses | Read only |
+
+### Add repository permissions
+
+| Permission | Value |
+| --- | --- |
+| Actions | Read and write |
+| Checks | Read only |
+| Commit statuses | Read only |
+
+## Add webhook events
+
+| Event |
+| --- |
+| Check run |
+| Check suite |
+| Status |
+| Workflow run |
 
 ### Confirm URLs and install behavior
 
