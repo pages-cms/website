@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @import "basecoat-css";
+@import "./fonts.css";
 @import "./theme.css";
 @import "./custom.css";
 @import "./highlight.css";

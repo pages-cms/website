@@ -23,7 +23,6 @@ Variable | Description
 
 Variable | Description
 --- | ---
-`CRON_SECRET` | Secret used to protect the cron endpoint.
 `EMAIL_PROVIDER` | `resend` or `smtp`.
 `EMAIL_FROM` | Sender address for auth and invitation emails.
 `RESEND_API_KEY` | Required when using Resend.
