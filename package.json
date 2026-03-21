@@ -3,19 +3,24 @@
   "version": "0.1.3",
   "type": "module",
   "scripts": {
+    "alpine": "cp node_modules/alpinejs/dist/cdn.min.js assets/alpine.min.js",
     "basecoat": "cp node_modules/basecoat-css/dist/js/all.min.js assets/basecoat.min.js",
+    "htmx": "cp node_modules/htmx.org/dist/htmx.min.js assets/htmx.min.js",
+    "assets": "npm run alpine && npm run basecoat && npm run htmx && npm run css",
+    "css": "npx tailwindcss -i ./src/css/styles.css -o ./assets/styles.css --minify",
     "clean": "node --input-type=module -e \"import fs from 'node:fs'; fs.rmSync('_site', { recursive: true, force: true });\"",
-    "build": "npm run clean && npm run basecoat && npx tailwindcss -i ./src/css/styles.css -o ./assets/styles.css --minify && npx @11ty/eleventy",
-    "build:cloudflare": "npm run clean && npx @11ty/eleventy",
-    "dev": "npm run basecoat &&  concurrently \"npx @11ty/eleventy --serve\" \"npx tailwindcss -i ./src/css/styles.css -o ./assets/styles.css --watch\""
+    "build": "npm run clean &&  npm run assets && npx @11ty/eleventy",
+    "dev": "npm run assets &&  concurrently \"npx @11ty/eleventy --serve\" \"npx tailwindcss -i ./src/css/styles.css -o ./assets/styles.css --watch\""
   },
   "dependencies": {
     "@11ty/eleventy": "^3.1.2",
     "@11ty/eleventy-plugin-syntaxhighlight": "^5.0.2",
     "@grimlink/eleventy-plugin-lucide-icons": "^2.1.8",
     "@tailwindcss/cli": "^4.1.11",
+    "alpinejs": "^3.15.8",
     "basecoat-css": "^0.3.7",
     "eleventy-plugin-toc": "^1.1.5",
+    "htmx.org": "^2.0.8",
     "lucide-static": "^0.552.0",
     "markdown-it": "^14.1.0",
     "markdown-it-anchor": "^9.2.0",

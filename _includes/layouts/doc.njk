@@ -73,7 +73,14 @@ layout: base
 
               <div role="group" class="button-group">
                 {% if navigation.prev %}
-                  <a href="{{ navigation.prev.url }}" class="btn-sm-icon-secondary hidden sm:flex size-7">
+                  <a
+                    href="{{ navigation.prev.url }}"
+                    class="btn-sm-icon-secondary hidden sm:flex size-7"
+                    hx-boost="true"
+                    hx-select="#content"
+                    hx-target="#content"
+                    hx-swap="outerHtml"
+                  >
                     <span class="sr-only">{{ navigation.prev.label }}</span>
                     {% lucide "arrow-left" %}
                   </a>
@@ -83,7 +90,12 @@ layout: base
                 {% endif %}
                 {% if navigation.next %}
                   <a
-                    href="{{ navigation.next.url }}" class="btn-sm-icon-secondary hidden sm:flex size-7"
+                    href="{{ navigation.next.url }}"
+                    class="btn-sm-icon-secondary hidden sm:flex size-7"
+                    hx-boost="true"
+                    hx-select="#content"
+                    hx-target="#content"
+                    hx-swap="outerHtml"
                   >
                     <span class="sr-only">{{ navigation.next.label }}</span>
                     {% lucide "arrow-right" %}
@@ -101,14 +113,26 @@ layout: base
         </div>
         <footer class="flex items-center mt-12">
           {% if navigation.prev %}
-            <a href="{{ navigation.prev.url }}" class="btn-sm-secondary mr-auto">
+            <a
+              href="{{ navigation.prev.url }}"
+              class="btn-sm-secondary mr-auto"
+              hx-boost="true"
+              hx-select="#content"
+              hx-target="#content"
+              hx-swap="outerHtml"
+            >
               {% lucide "arrow-left" %}
               {{ navigation.prev.label }}
             </a>
           {% endif %}
           {% if navigation.next %}
             <a
-              href="{{ navigation.next.url }}" class="btn-sm-secondary ml-auto"
+              href="{{ navigation.next.url }}"
+              class="btn-sm-secondary ml-auto"
+              hx-boost="true"
+              hx-select="#content"
+              hx-target="#content"
+              hx-swap="outerHtml"
             >
               {{ navigation.next.label }}
               {% lucide "arrow-right" %}
