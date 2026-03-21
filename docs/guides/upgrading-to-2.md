@@ -10,8 +10,9 @@ description: Upgrade an existing Pages CMS 1.x deployment to 2.x.
 3. [**Update environment variables (see below).**](#update-environment-variables).
 4. [**Update the GitHub App (see below).**](#update-github-app)
 5. **Run migrations.** Apply the 2.x database migrations before serving traffic: `npm run db:migrate`.
-6. **Redeploy the app.** Restart the app with the new code and environment.
-7. **Verify the upgrade.** Confirm GitHub sign-in, repository installation, webhook delivery, build status display, and GitHub Actions triggering if you use it.
+6. **Clear cache.** Remove old cache data once after upgrading: `npm run db:clear-cache`.
+7. **Redeploy the app.** Restart the app with the new code and environment.
+8. **Verify the upgrade.** Confirm GitHub sign-in, repository installation, webhook delivery, build status display, and GitHub Actions triggering if you use it.
 
 ## Add environment variables
 
@@ -19,6 +20,16 @@ description: Upgrade an existing Pages CMS 1.x deployment to 2.x.
 - `BASE_URL`: This is now required.
 
 More info: [Environment variables](/docs/development/environment-variables/)
+
+## Clear cache after upgrading
+
+Recommended once after upgrading to 2.x:
+
+```bash
+npm run db:clear-cache
+```
+
+This removes old cache data from previous versions and lets Pages CMS rebuild it with the 2.x cache logic.
 
 ## Update GitHub App
 
