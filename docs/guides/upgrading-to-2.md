@@ -15,8 +15,8 @@ description: Upgrade an existing Pages CMS 1.x deployment to 2.x.
 
 ## Add environment variables
 
-- `BETTER_AUTH_SECRET`: A random secrete for the new auth library (Better Auth).
-- `BASE_URL`: This wasn't required before as we fell back to VERCEL_PROJECT_PRODUCTION_URL and/or VERCEL_URL. We are now asking for an explicit value.
+- `BETTER_AUTH_SECRET`: A random secret for the new auth library (Better Auth).
+- `BASE_URL`: This is now required.
 
 More info: [Environment variables](/docs/development/environment-variables/)
 
