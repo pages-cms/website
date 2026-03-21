@@ -1,7 +1,8 @@
 export const docUrl = (slug) => {
-  if (slug === "index") return "/docs/";
-  if (slug.endsWith("/index")) return "/docs/" + slug.replace(/\/index$/, "/");
-  return "/docs/" + slug + "/";
+  const value = String(slug || "").replace(/^\/+|\/+$/g, "");
+  if (!value || value === "index") return "/docs/";
+  if (value.endsWith("/index")) return `/docs/${value.replace(/\/index$/, "/")}`;
+  return `/docs/${value}/`;
 };
 
 export const flattenMenuSlugs = (menu) => {
@@ -35,7 +36,7 @@ export const collectMenuSlugs = (menu) => {
 export const fallbackLabelFromSlug = (slug) => {
   if (slug === "index") return "Introduction";
   const parts = String(slug).split("/");
-  const last = parts[parts.length - 1];
-  const base = last === "index" && parts.length > 1 ? parts[parts.length - 2] : last;
+  const last = parts.at(-1);
+  const base = last === "index" && parts.length > 1 ? parts.at(-2) : last;
   return base.replace(/-/g, " ").replace(/\b\w/g, (l) => l.toUpperCase());
 };

@@ -27,12 +27,37 @@ export const registerNavigationFilters = (eleventyConfig, lucideIcons) => {
   const normalizeUrl = (url) => {
     if (!url) return "/";
     if (url === "/") return "/";
-    return String(url).endsWith("/") ? String(url) : String(url) + "/";
+    return String(url).endsWith("/") ? String(url) : `${url}/`;
+  };
+
+  const isExternalUrl = (url) => /^https?:\/\//i.test(String(url || ""));
+  const isCurrentUrl = (url, currentUrl) =>
+    normalizeUrl(url) === normalizeUrl(currentUrl);
+
+  const buildCommandItem = ({ label, description, iconSvg, url, isExternal }) => {
+    const keywords = [label, description].filter(Boolean).join(" ");
+    const iconHtml = iconSvg ? iconSvg : "";
+    const urlJs = JSON.stringify(url);
+
+    return {
+      type: "item",
+      label,
+      content: `${iconHtml}<span>${label}</span>`,
+      keywords,
+      attrs: isExternal
+        ? {
+            onclick: `window.open(${urlJs}, '_blank', 'noopener'); this.closest('dialog')?.close();`,
+          }
+        : {
+            onclick: `window.location.href=${urlJs}; this.closest('dialog')?.close();`,
+          },
+    };
   };
 
   const buildMenus = (menu, collections, currentUrl) => {
     const docs = collections?.docs || [];
     const docsByUrl = new Map(docs.map((doc) => [doc.url, doc]));
+
     const hasCurrentDescendant = (entry) => {
       if (!entry) return false;
       if (entry.current) return true;
@@ -51,35 +76,22 @@ export const registerNavigationFilters = (eleventyConfig, lucideIcons) => {
         : "";
       const iconSvg = resolveIcon(doc?.data?.icon) || null;
 
-      const sidebarItem = {
-        icon: iconSvg,
-        url,
-        current: normalizeUrl(url) === normalizeUrl(currentUrl),
-        label: title,
-        description,
-        attrs: url.startsWith("/docs/")
-          ? {
-              "hx-boost": true,
-              "hx-select": "#content",
-              "hx-target": "#content",
-              "hx-swap": "outerHtml",
-            }
-          : undefined,
-      };
-
-      const keywords = [title, description].filter(Boolean).join(" ");
-      const iconHtml = iconSvg ? iconSvg : "";
-      const commandItem = {
-        type: "item",
-        label: title,
-        content: `${iconHtml}<span>${title}</span>`,
-        keywords,
-        attrs: {
-          onclick: `window.location.href='${url}'; this.closest('dialog')?.close();`,
+      return {
+        sidebar: {
+          icon: iconSvg,
+          url,
+          current: isCurrentUrl(url, currentUrl),
+          label: title,
+          description,
         },
+        command: buildCommandItem({
+          label: title,
+          description,
+          iconSvg,
+          url,
+          isExternal: false,
+        }),
       };
-
-      return { sidebar: sidebarItem, command: commandItem };
     };
 
     const processItem = (item) => {
@@ -90,59 +102,44 @@ export const registerNavigationFilters = (eleventyConfig, lucideIcons) => {
         const label = String(item.label);
         const description = item.description ? String(item.description) : "";
         const iconSvg = resolveIcon(item.icon) || null;
-        const isExternal = /^https?:\/\//i.test(url);
-        const itemAttrs =
-          item.attrs && typeof item.attrs === "object" ? item.attrs : {};
-        const urlJs = JSON.stringify(url);
+        const isExternal = isExternalUrl(url);
+        const attrs = item.attrs && typeof item.attrs === "object" ? item.attrs : {};
 
-        const sidebarItem = {
-          icon: iconSvg,
-          url,
-          current:
-            !isExternal && normalizeUrl(url) === normalizeUrl(currentUrl),
-          label,
-          description,
-          attrs: itemAttrs,
+        return {
+          sidebar: {
+            icon: iconSvg,
+            url,
+            current: !isExternal && isCurrentUrl(url, currentUrl),
+            label,
+            description,
+            attrs,
+          },
+          command: buildCommandItem({
+            label,
+            description,
+            iconSvg,
+            url,
+            isExternal,
+          }),
         };
-
-        const keywords = [label, description].filter(Boolean).join(" ");
-        const iconHtml = iconSvg ? iconSvg : "";
-        const commandItem = {
-          type: "item",
-          label,
-          content: `${iconHtml}<span>${label}</span>`,
-          keywords,
-          attrs: isExternal
-            ? {
-                onclick: `window.open(${urlJs}, '_blank', 'noopener'); this.closest('dialog')?.close();`,
-              }
-            : {
-                onclick: `window.location.href=${urlJs}; this.closest('dialog')?.close();`,
-              },
-        };
-
-        return { sidebar: sidebarItem, command: commandItem };
       }
 
       if (item?.type === "submenu") {
-        const submenuIcon = resolveIcon(item.icon) || null;
-        const processedItems = (item.items || []).map((sub) =>
-          processItem(sub),
-        );
+        const processedItems = (item.items || []).map((sub) => processItem(sub));
         const sidebarItems = processedItems
           .map((sub) => sub.sidebar)
           .filter(Boolean);
         const commandItems = processedItems
           .map((sub) => sub.command)
           .filter(Boolean);
-        const isOpen =
-          item.open === true ||
-          sidebarItems.some((sub) => hasCurrentDescendant(sub));
+
         return {
           sidebar: {
             ...item,
-            icon: submenuIcon,
-            open: isOpen,
+            icon: resolveIcon(item.icon) || null,
+            open:
+              item.open === true ||
+              sidebarItems.some((sub) => hasCurrentDescendant(sub)),
             items: sidebarItems,
           },
           command: { type: "group", label: item.label, items: commandItems },
@@ -155,22 +152,24 @@ export const registerNavigationFilters = (eleventyConfig, lucideIcons) => {
     const processedGroups = (menu || []).map((group) => {
       if (group?.type !== "group") return { sidebar: group, command: group };
 
-      const sidebarItems = (group.items || [])
-        .map((item) => processItem(item).sidebar)
-        .filter(Boolean);
-      const commandItems = (group.items || [])
-        .map((item) => processItem(item).command)
-        .filter(Boolean);
+      const processedItems = (group.items || []).map((item) => processItem(item));
 
       return {
-        sidebar: { ...group, items: sidebarItems },
-        command: { type: "group", label: group.label, items: commandItems },
+        sidebar: {
+          ...group,
+          items: processedItems.map((item) => item.sidebar).filter(Boolean),
+        },
+        command: {
+          type: "group",
+          label: group.label,
+          items: processedItems.map((item) => item.command).filter(Boolean),
+        },
       };
     });
 
     return {
-      sidebar: processedGroups.map((p) => p.sidebar),
-      command: processedGroups.map((p) => p.command),
+      sidebar: processedGroups.map((group) => group.sidebar),
+      command: processedGroups.map((group) => group.command),
     };
   };
 
@@ -184,7 +183,7 @@ export const registerNavigationFilters = (eleventyConfig, lucideIcons) => {
 
       const labelFor = (slug) => {
         const url = docUrl(slug);
-        const doc = collections?.docs?.find((d) => d.url === url);
+        const doc = collections?.docs?.find((entry) => entry.url === url);
         if (doc?.data?.title) return String(doc.data.title);
         return fallbackLabelFromSlug(slug);
       };

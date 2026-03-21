@@ -4,6 +4,14 @@ import path from "node:path";
 import { collectMenuSlugs, docUrl, fallbackLabelFromSlug } from "./menu.js";
 
 export const registerLlmExports = (eleventyConfig, options) => {
+  const markdownExportPathFromSlug = (slug) => {
+    if (slug === "index") return "docs/index.md";
+    if (slug.endsWith("/index")) {
+      return `docs/${slug.slice(0, -"/index".length)}.md`;
+    }
+    return `docs/${slug}.md`;
+  };
+
   const collectFiles = async (dir, predicate) => {
     let entries = [];
     try {
@@ -109,12 +117,6 @@ export const registerLlmExports = (eleventyConfig, options) => {
     const docsNotInMenu = docs.filter((doc) => !docsInMenu.includes(doc));
     const orderedDocs = [...docsInMenu, ...docsNotInMenu];
 
-    const markdownExportPathFromSlug = (slug) => {
-      if (slug === "index") return "docs/index.md";
-      if (slug.endsWith("/index")) return `docs/${slug.slice(0, -"/index".length)}.md`;
-      return `docs/${slug}.md`;
-    };
-
     await Promise.all(
       docs.map(async (doc) => {
         const parts = [`# ${doc.title}`];
@@ -138,10 +140,19 @@ export const registerLlmExports = (eleventyConfig, options) => {
         );
       };
 
-      (group.items || []).forEach((item) => {
-        if (typeof item === "string") addSlug(item);
-        else if (item?.type === "submenu" && Array.isArray(item.items)) item.items.forEach(addSlug);
-      });
+      const walkItems = (items) => {
+        (items || []).forEach((item) => {
+          if (typeof item === "string") {
+            addSlug(item);
+            return;
+          }
+          if (item?.type === "submenu" && Array.isArray(item.items)) {
+            walkItems(item.items);
+          }
+        });
+      };
+
+      walkItems(group.items || []);
 
       llmsLines.push("");
     });
