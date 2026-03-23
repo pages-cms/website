@@ -36,9 +36,19 @@
       "type": "group",
       "label": "Configuration",
       "items": [
-        "configuration/overview",
+        "configuration",
         "configuration/media",
-        "configuration/content",
+        {
+          "type": "submenu",
+          "label": "Content",
+          "items": [
+            "configuration/content",
+            "configuration/content/editors",
+            "configuration/content/filename",
+            "configuration/content/fields",
+            "configuration/content/view"
+          ]
+        },
         "configuration/components",
         "configuration/settings",
         "configuration/collaborators"
@@ -72,10 +82,10 @@
           "type": "submenu",
           "label": "Installing",
           "items": [
-            "guides/install-local",
-            "guides/install-vercel",
-            "guides/install-self-host",
-            "guides/github-app"
+            "guides/installing",
+            "guides/installing/vercel",
+            "guides/installing/self-host",
+            "guides/installing/github-app"
           ]
         },
         "guides/upgrading-to-2",

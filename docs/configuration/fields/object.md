@@ -11,41 +11,25 @@ Key | Description
 --- | ---
 None | This field has no field-specific options. Define nested `fields` instead.
 
-## `required` behavior
+## Behavior
 
-`required` on an object controls whether the object itself must exist.
-
-- `required: true`: object must be present.
-- `required: false` (or omitted): object is optional.
-
-For optional objects, child `required` rules are applied only when the object is meaningfully present.
-
-- If all nested values are empty, the object is treated as absent.
-- If any nested value is filled, child validations run.
-
-This makes patterns like "optional button, but required fields once used" work naturally.
-
-### Optional object with required children
+- `required` applies to the object itself, not automatically to every child.
+- For optional objects, child `required` rules apply only once the object has meaningful content.
+- `readonly` is inherited by the whole nested subtree.
 
 ```yaml
-- name: button
-  label: Button
+- name: authors
   type: object
-  required: false
+  readonly: true
+  list: true
   fields:
-    - name: text
+    - name: name
       type: string
-      required: true
-    - name: link
+    - name: email
       type: string
-      required: true
 ```
 
-Validation outcome:
-
-- Leave `button` empty: valid.
-- Fill `button.text` only: invalid (`button.link` is required).
-- Fill `button.text` and `button.link`: valid.
+In this example, `name` and `email` behave as readonly without needing their own `readonly: true`.
 
 ## List summary tokens
 

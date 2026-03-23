@@ -29,11 +29,24 @@ npm run db:collaborators:import -- --input=collaborators.csv
 
 ## Export from legacy SQLite or libSQL
 
-If you are migrating from an older Pages CMS install that used SQLite or libSQL/Turso, first export collaborators with the following script: [`export-collaborators-legacy-libsql.mjs`](https://gist.github.com/hunvreus/0738ab0bfa85ed9cd528ca8b7a5ca4f3)
+If you are migrating from an older Pages CMS install that used SQLite or libSQL/Turso, first export collaborators with the legacy exporter script included in the Pages CMS repo:
+
+`db/scripts/export-collaborators-legacy-libsql.mjs`
+
+Run it from the Pages CMS repository root:
 
 ```bash
 SQLITE_URL="libsql://..." SQLITE_AUTH_TOKEN="..." \
-npx -y -p @libsql/client node export-collaborators-legacy-libsql.mjs --out=collaborators.csv
+npx -y -p @libsql/client node db/scripts/export-collaborators-legacy-libsql.mjs --out=collaborators.csv
 ```
 
-Once done, you can import the resulting CSV.
+You can also pass credentials as flags instead of environment variables:
+
+```bash
+npx -y -p @libsql/client node db/scripts/export-collaborators-legacy-libsql.mjs \
+  --url="libsql://..." \
+  --token="..." \
+  --out=collaborators.csv
+```
+
+Once done, import the resulting CSV with the normal importer.

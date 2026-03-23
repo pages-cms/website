@@ -16,13 +16,56 @@ Use it to answer two questions:
 1. Where should uploaded files be saved in the repository?
 2. What public path should be written into content?
 
-## Shapes
+## Value
 
 You can define `media` as:
 
 - a string,
 - one object,
 - an array of named media sources.
+
+### String form
+
+```yaml
+media: media
+```
+
+Equivalent to:
+
+```yaml
+media:
+  input: media
+  output: /media
+```
+
+### Single media object
+
+```yaml
+media:
+  input: src/media
+  output: /media
+  rename: true
+  categories: [image]
+```
+
+### Multiple media sources
+
+Use an array when different field types should write to different folders.
+
+```yaml
+media:
+  - name: images
+    label: Images
+    input: media/images
+    output: /media/images
+    rename: true
+    extensions: [png, jpg, webp]
+  - name: docs
+    label: Documents
+    input: media/docs
+    output: /media/docs
+    categories: [document]
+```
 
 ## Keys
 
@@ -41,49 +84,6 @@ Key | Description
 <span class="text-sm text-muted-foreground">**: Required with multiple sources</span>
 
 Field-level media options can override the media source defaults.
-
-## String form
-
-```yaml
-media: media
-```
-
-Equivalent to:
-
-```yaml
-media:
-  input: media
-  output: /media
-```
-
-## Single media object
-
-```yaml
-media:
-  input: src/media
-  output: /media
-  rename: true
-  categories: [image]
-```
-
-## Multiple media sources
-
-Use an array when different field types should write to different folders.
-
-```yaml
-media:
-  - name: images
-    label: Images
-    input: media/images
-    output: /media/images
-    rename: true
-    extensions: [png, jpg, webp]
-  - name: docs
-    label: Documents
-    input: media/docs
-    output: /media/docs
-    categories: [document]
-```
 
 ## Commit templates
 

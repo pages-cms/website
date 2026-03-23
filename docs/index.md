@@ -41,7 +41,7 @@ It only provides the editing layer on top of your existing Git-based project.
     Quick start
     {% lucide "arrow-right" %}
   </a>
-  <a href="/docs/configuration/overview/" class="badge-outline">
+  <a href="/docs/configuration" class="badge-outline">
     Configuration overview
     {% lucide "arrow-right" %}
   </a>

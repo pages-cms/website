@@ -46,11 +46,11 @@ This gives you:
 3. Adjust filenames and collection view.
 
 <div class="flex flex-wrap gap-2 my-6">
-  <a href="/docs/configuration/overview/" class="badge-outline">
+  <a href="/docs/configuration" class="badge-outline">
     Configuration overview
     {% lucide "arrow-right" %}
   </a>
-  <a href="/docs/guides/install-vercel/" class="badge-outline">
+  <a href="/docs/guides/installing/vercel/" class="badge-outline">
     Deploy your own instance
     {% lucide "arrow-right" %}
   </a>

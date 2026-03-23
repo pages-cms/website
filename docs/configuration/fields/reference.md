@@ -27,6 +27,7 @@ Token | Description
 --- | ---
 `{path}` | Entry path.
 `{name}` | Entry name.
+`{primary}` | Primary field value from the referenced collection. Uses `view.primary`, otherwise `title`, otherwise the first field.
 `{fields.<path>}` | Field value from the referenced entry. Nested paths are supported, for example `{fields.author.name}`.
 `{<path>}` | Shorthand alias for `{fields.<path>}` when no direct token resolves, for example `{author.name}`.
 
@@ -73,11 +74,11 @@ Pages CMS resolves reference templates in this order:
   type: reference
   options:
     collection: authors
-    value: "{slug}"
-    label: "{profile.name}"
+    value: "{primary}"
+    label: "{primary}"
 ```
 
-This stores the referenced author's slug while displaying the nested profile name in the editor.
+This stores and displays the referenced entry's primary field value.
 
 ### Multiple references with nested labels
 
