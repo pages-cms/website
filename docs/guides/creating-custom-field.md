@@ -107,7 +107,7 @@ export { label, schema, EditComponent, ViewComponent };
 
 ## How registration works
 
-Pages CMS loads fields through [fields/registry.ts](/Users/hunvreus/Workspace/_sandbox/pages-cms/fields/registry.ts).
+Pages CMS loads fields through `fields/registry.ts`.
 
 Core fields are registered directly.
 

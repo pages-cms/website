@@ -33,7 +33,7 @@ This removes old cache data from previous versions and lets Pages CMS rebuild it
 
 ## Update GitHub App
 
-More info: [GitHub App](/docs/guides/github-app/)
+More info: [GitHub App](/docs/guides/installing/github-app/)
 
 ### Add account permissions
 

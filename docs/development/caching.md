@@ -56,7 +56,7 @@ Legacy aliases are still accepted for backward compatibility.
     Configuration settings
     {% lucide "arrow-right" %}
   </a>
-  <a href="/docs/guides/custom-fields/" class="badge-outline">
+  <a href="/docs/guides/creating-custom-field/" class="badge-outline">
     Developer guides
     {% lucide "arrow-right" %}
   </a>

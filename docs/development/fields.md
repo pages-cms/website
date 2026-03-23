@@ -8,8 +8,8 @@ description: How field registration, validation, transforms, and rendering work 
 The field system is built from:
 
 - field modules under `fields/core` and `fields/custom`,
-- the registry in [fields/registry.ts](/Users/hunvreus/Workspace/_sandbox/pages-cms/fields/registry.ts),
-- schema assembly in [lib/schema.ts](/Users/hunvreus/Workspace/_sandbox/pages-cms/lib/schema.ts),
+- the registry in `fields/registry.ts`,
+- schema assembly in `lib/schema.ts`,
 - field rendering in the entry form.
 
 ## Field modules
@@ -28,9 +28,9 @@ The registry collects these exports and exposes them to the rest of the app.
 
 ## Registry
 
-[fields/registry.ts](/Users/hunvreus/Workspace/_sandbox/pages-cms/fields/registry.ts) registers core fields directly and then registers custom fields from the generated manifest in [custom.generated.ts](/Users/hunvreus/Workspace/_sandbox/pages-cms/fields/custom.generated.ts).
+`fields/registry.ts` registers core fields directly and then registers custom fields from the generated manifest in `fields/custom.generated.ts`.
 
-That generated file is written by [next.config.mjs](/Users/hunvreus/Workspace/_sandbox/pages-cms/next.config.mjs) by scanning `fields/custom/*/index.ts(x)`.
+That generated file is written by `next.config.mjs` by scanning `fields/custom/*/index.ts(x)`.
 
 The custom field folder name becomes the field type. For example:
 
@@ -54,7 +54,7 @@ These maps are then used throughout the app.
 
 ## Validation pipeline
 
-Form validation is assembled in [lib/schema.ts](/Users/hunvreus/Workspace/_sandbox/pages-cms/lib/schema.ts).
+Form validation is assembled in `lib/schema.ts`.
 
 High-level flow:
 
@@ -68,7 +68,7 @@ This means your field-level `schema` usually only needs to describe the field it
 
 ## Default values
 
-Initial editor state is built with `initializeState(...)` in [lib/schema.ts](/Users/hunvreus/Workspace/_sandbox/pages-cms/lib/schema.ts).
+Initial editor state is built with `initializeState(...)` in `lib/schema.ts`.
 
 Resolution order is:
 

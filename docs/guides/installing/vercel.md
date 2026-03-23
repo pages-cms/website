@@ -37,13 +37,13 @@ If you use the default Vercel domain, make sure it matches the project name you 
 
 ## Step 3: Create the GitHub App
 
-Use [the helper](/docs/guides/github-app#using-the-helper):
+Use [the helper](/docs/guides/installing/github-app/#using-the-helper):
 
 ```bash
 npm run setup:github-app -- --base-url https://cms.example.com --env .env
 ```
 
-If you need other helper options, see [GitHub App helper](/docs/guides/github-app#using-the-helper).
+If you need other helper options, see [GitHub App helper](/docs/guides/installing/github-app/#using-the-helper).
 
 This writes the GitHub App environment variables to `.env`.
 

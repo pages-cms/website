@@ -38,7 +38,7 @@ openssl rand -base64 32
 
 ## Step 3: Create the GitHub App
 
-Use [the helper](/docs/guides/github-app#using-the-helper):
+Use [the helper](/docs/guides/installing/github-app/#using-the-helper):
 
 ```bash
 npm run setup:github-app -- --base-url https://cms.example.com --env .env
@@ -46,7 +46,7 @@ npm run setup:github-app -- --base-url https://cms.example.com --env .env
 
 This writes the GitHub App environment variables into `.env.production`.
 
-If you need other helper options, see [GitHub App helper](/docs/guides/github-app#using-the-helper).
+If you need other helper options, see [GitHub App helper](/docs/guides/installing/github-app/#using-the-helper).
 
 ## Step 4: Install dependencies
 

@@ -31,13 +31,13 @@ openssl rand -base64 32
 
 ## Step 4: Create the GitHub App
 
-Use [the helper](/docs/guides/github-app#using-the-helper):
+Use [the helper](/docs/guides/installing/github-app/#using-the-helper):
 
 ```bash
 npm run setup:github-app -- --base-url http://localhost:3000 --env .env.local
 ```
 
-If you need other helper options, see [GitHub App helper](/docs/guides/github-app#using-the-helper).
+If you need other helper options, see [GitHub App helper](/docs/guides/installing/github-app/#using-the-helper).
 
 ## 5. Run migrations
 
