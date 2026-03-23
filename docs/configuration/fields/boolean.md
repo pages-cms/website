@@ -9,7 +9,9 @@ Use for flags like `published`, `featured`, or `archived`.
 
 This field has no field-specific options.
 
-## Example
+## Examples
+
+### Basic boolean
 
 ```yaml
 - name: published

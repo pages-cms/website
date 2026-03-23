@@ -17,7 +17,7 @@ Key | Description
 
 `select` only supports predefined local options. If you need to load entries dynamically or from another source, use [reference](/docs/configuration/fields/reference/) instead.
 
-## Example
+## Examples
 
 ### Single value
 
@@ -28,7 +28,7 @@ Key | Description
     values: [Draft, Review, Published]
 ```
 
-## Multiple + named values
+### Multiple + named values
 
 ```yaml
 - name: categories

@@ -11,7 +11,9 @@ Key | Description
 --- | ---
 <code class="text-[var(--prism-keyword)]">format</code> | Values: `yaml`, `yml`, `javascript`, `js`, `jsx`, `typescript`, `ts`, `tsx`, `json`, `html`, `htm`, `markdown`.
 
-## Example
+## Examples
+
+### JavaScript snippet
 
 ```yaml
 - name: snippet

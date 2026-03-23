@@ -14,7 +14,9 @@ Key | Description
 <code class="text-[var(--prism-keyword)]">blocks</code> | List of available block definitions (e.g. `[{ name: "hero", component: "hero" }]`).
 <code class="text-[var(--prism-keyword)]">blockKey</code> | Key used to store the selected block type. Defaults to `_block` (e.g. `blockKey: type` saves `type: hero`).
 
-## Simple example
+## Examples
+
+### Simple block list
 
 ```yaml
 - name: sections
@@ -42,7 +44,7 @@ sections:
     body: Hello world
 ```
 
-## Block with a nested object
+### Block with a nested object
 
 ```yaml
 - name: sections
@@ -71,7 +73,7 @@ sections:
       url: /about
 ```
 
-## Block with a nested list
+### Block with a nested list
 
 ```yaml
 - name: sections
@@ -103,7 +105,7 @@ sections:
         text: Yes.
 ```
 
-## Block with a nested list field
+### Nested repeated data inside a block
 
 ```yaml
 - name: faqs

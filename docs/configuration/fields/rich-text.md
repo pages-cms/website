@@ -17,14 +17,47 @@ Key | Description
 <code class="text-[var(--prism-keyword)]">categories</code> | Allowed image categories. Values: `image`.
 <code class="text-[var(--prism-keyword)]">rename</code> | If `true`, uploaded images get a random filename plus the original extension.
 
-## Example
+## Examples
+
+### Markdown with media
 
 ```yaml
 - name: body
+  label: Body
   type: rich-text
   options:
     media: content_images
-    path: blog
+    path: public/images/blog
     rename: true
     switcher: true
+```
+
+### HTML output
+
+```yaml
+- name: content
+  label: Content
+  type: rich-text
+  options:
+    format: html
+```
+
+### Hide the mode switch
+
+```yaml
+- name: excerpt
+  label: Excerpt
+  type: rich-text
+  options:
+    switcher: false
+```
+
+### Disable media
+
+```yaml
+- name: notes
+  label: Notes
+  type: rich-text
+  options:
+    media: false
 ```

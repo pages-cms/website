@@ -21,7 +21,9 @@ Key | Description
 - Datetime fields (`time: true`) initialize to the current local date and time.
 - To keep a date field empty by default, set `default: ""`.
 
-## Example
+## Examples
+
+### Date and time
 
 ```yaml
 - name: publish_at

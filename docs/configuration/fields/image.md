@@ -17,14 +17,39 @@ Key | Description
 <code class="text-[var(--prism-keyword)]">unique</code> | If `true`, disallows duplicate image paths when `multiple` is enabled.
 <code class="text-[var(--prism-keyword)]">rename</code> | If `true`, uploaded files get a random filename plus the original extension.
 
-## Example
+## Examples
+
+### Named media config and default folder
+
+```yaml
+- name: cover
+  label: Cover image
+  type: image
+  options:
+    media: images
+    path: public/images/posts
+```
+
+### Multiple images
 
 ```yaml
 - name: gallery
+  label: Gallery
   type: image
   options:
-    rename: true
     multiple:
       max: 6
+    unique: true
     extensions: [jpg, png, webp]
+    rename: true
+```
+
+### Category-based restriction
+
+```yaml
+- name: thumbnail
+  label: Thumbnail
+  type: image
+  options:
+    categories: [image]
 ```

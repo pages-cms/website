@@ -17,14 +17,39 @@ Key | Description
 <code class="text-[var(--prism-keyword)]">unique</code> | If `true`, disallows duplicate file paths when `multiple` is enabled.
 <code class="text-[var(--prism-keyword)]">rename</code> | If `true`, uploaded files get a random filename plus the original extension.
 
-## Example
+## Examples
+
+### Named media config and default folder
+
+```yaml
+- name: brochure
+  label: Brochure
+  type: file
+  options:
+    media: docs
+    path: public/files/brochures
+```
+
+### Multiple downloadable resources
 
 ```yaml
 - name: resources
+  label: Resources
   type: file
   options:
-    rename: true
     categories: [document]
     multiple:
       max: 5
+    unique: true
+    rename: true
+```
+
+### Specific file extensions
+
+```yaml
+- name: archive
+  label: Archive
+  type: file
+  options:
+    extensions: [zip, tar, gz]
 ```

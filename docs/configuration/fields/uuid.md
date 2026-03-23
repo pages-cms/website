@@ -17,7 +17,9 @@ Key | Description
 - A UUID is auto-generated when the field has no explicit `default`.
 - To force an empty initial value, set `default: ""`.
 
-## Example
+## Examples
+
+### Generated UUID
 
 ```yaml
 - name: id

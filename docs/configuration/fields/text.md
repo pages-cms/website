@@ -12,7 +12,9 @@ Key | Description
 <code class="text-[var(--prism-keyword)]">minlength</code> | Minimum allowed length (e.g. `20`).
 <code class="text-[var(--prism-keyword)]">maxlength</code> | Maximum allowed length (e.g. `280`).
 
-## Example
+## Examples
+
+### Basic text
 
 ```yaml
 - name: excerpt

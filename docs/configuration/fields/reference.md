@@ -38,6 +38,8 @@ Pages CMS resolves reference templates in this order:
 
 ## Examples
 
+### Basic reference
+
 ```yaml
 - name: author
   type: reference

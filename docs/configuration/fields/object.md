@@ -17,6 +17,8 @@ None | This field has no field-specific options. Define nested `fields` instead.
 - For optional objects, child `required` rules apply only once the object has meaningful content.
 - `readonly` is inherited by the whole nested subtree.
 
+### Readonly object list
+
 ```yaml
 - name: authors
   type: object
@@ -50,7 +52,7 @@ Notes:
 - `{<name>}` first tries the token as written, then falls back to `fields.*`.
 - Missing values resolve to an empty string.
 
-Example:
+### List summary example
 
 ```yaml
 - name: sections
@@ -64,7 +66,9 @@ Example:
       type: string
 ```
 
-## Example
+## Examples
+
+### Basic object
 
 ```yaml
 - name: contact
