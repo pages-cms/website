@@ -77,11 +77,15 @@ Token | Description
 <code class="text-[var(--prism-keyword)]">{owner}</code> | Repository owner.
 <code class="text-[var(--prism-keyword)]">{repo}</code> | Repository name.
 <code class="text-[var(--prism-keyword)]">{branch}</code> | Current branch.
-<code class="text-[var(--prism-keyword)]">{user}</code> | Current user.
+<code class="text-[var(--prism-keyword)]">{user}</code> | Current user identifier. Kept for compatibility.
+<code class="text-[var(--prism-keyword)]">{userName}</code> | Current user display name when available.
+<code class="text-[var(--prism-keyword)]">{userEmail}</code> | Current user email when available.
 <code class="text-[var(--prism-keyword)]">{oldPath}</code> | Previous path. Rename only.
 <code class="text-[var(--prism-keyword)]">{newPath}</code> | New path. Rename only.
 <code class="text-[var(--prism-keyword)]">{oldFilename}</code> | Previous file name. Rename only.
 <code class="text-[var(--prism-keyword)]">{newFilename}</code> | New file name. Rename only.
+
+Prefer `{userName}` and `{userEmail}` in new templates. `{user}` remains available as a legacy fallback.
 
 ## Simple example
 
