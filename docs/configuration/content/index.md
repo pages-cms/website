@@ -23,7 +23,7 @@ Key | Description
 <code class="text-[var(--prism-keyword)]">label</code> | UI label (e.g. `"Blog posts"`).
 <code class="text-[var(--prism-keyword)]">type</code> <span class="text-muted-foreground">*</span> | Values: `collection`, `file`, `group`.
 <code class="text-[var(--prism-keyword)]">path</code> <span class="text-muted-foreground">*</span> | Folder for collections or file path for single files (e.g. `"content/posts"`, `"data/site.yml"`). Not used by `group`.
-<code class="text-[var(--prism-keyword)]">fields</code> | Field definitions shown in the editor. Read more about: [`fields`](/docs/configuration/content/fields/), [editors](/docs/configuration/content/editors/)
+<code class="text-[var(--prism-keyword)]">fields</code> | Field definitions shown in the editor. Fields support options like `required`, `hidden`, and `readonly`. Read more about: [`fields`](/docs/configuration/content/fields/), [editors](/docs/configuration/content/editors/)
 <code class="text-[var(--prism-keyword)]">filename</code> | Collection filename template or object config. [Read more about `filename`](/docs/configuration/content/filename/)
 <code class="text-[var(--prism-keyword)]">exclude</code> | Files to ignore in a collection (e.g. `["README.md"]`).
 <code class="text-[var(--prism-keyword)]">format</code> | File format. Values include `yaml-frontmatter`, `json-frontmatter`, `toml-frontmatter`, `yaml`, `json`, `toml`, `datagrid`, `code`, `raw`. [Read more about editors](/docs/configuration/content/editors/)
