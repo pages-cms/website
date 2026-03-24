@@ -38,6 +38,16 @@ This keeps normal navigation fast and makes writes visible immediately.
 - **Client state** (for example current config in layout/provider) is in-memory for the current session and may lag external edits until refresh or polling updates.
 - Background reconcile does not block user navigation; stale data can be served while refresh runs.
 
+## Webhook push behavior
+
+GitHub `push` webhooks use a tiered strategy to keep webhook responses fast while avoiding broad cache resets on normal commits:
+
+1. For small pushes, Pages CMS applies incremental file cache updates.
+2. For medium pushes, Pages CMS skips per-file processing and invalidates only affected cache paths.
+3. For very large pushes, Pages CMS invalidates the full branch cache as a safety fallback.
+
+All fallback modes invalidate cache only. The next user request repopulates data on demand.
+
 ## Environment variables
 
 | Variable | Unit | Default | Purpose |
@@ -48,6 +58,8 @@ This keeps normal navigation fast and makes writes visible immediately.
 | `PERMISSIONS_TTL_MIN` | minutes | `60` | Max age for `cache_permission` rows (`0` always recheck GitHub). |
 | `BRANCH_HEAD_TTL_MS` | milliseconds | `15000` | In-memory TTL for branch HEAD lookups. |
 | `REPO_META_TTL_MS` | milliseconds | `15000` | In-memory TTL for repo metadata snapshot lookups. |
+| `WEBHOOK_PUSH_INCREMENTAL_MAX_FILES` | files | `120` | Max changed paths for incremental push processing. |
+| `WEBHOOK_PUSH_SCOPED_INVALIDATION_MAX_FILES` | files | `800` | Max changed paths for scoped invalidation before full branch invalidation. |
 
 Legacy aliases are still accepted for backward compatibility.
 

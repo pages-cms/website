@@ -5,8 +5,6 @@ description: Required and optional environment variables for running Pages CMS.
 
 ## Required variables
 
-Set these first.
-
 Variable | Description
 --- | ---
 `DATABASE_URL` | PostgreSQL connection string.
@@ -42,6 +40,8 @@ Variable | Description
 `PERMISSIONS_TTL_MIN` | Permission cache TTL in minutes. Default `60`.
 `BRANCH_HEAD_TTL_MS` | Branch HEAD cache TTL in milliseconds. Default `15000`.
 `REPO_META_TTL_MS` | Repository metadata cache TTL in milliseconds. Default `15000`.
+`WEBHOOK_PUSH_INCREMENTAL_MAX_FILES` | Max changed-file count for incremental webhook processing. Default `120`.
+`WEBHOOK_PUSH_SCOPED_INVALIDATION_MAX_FILES` | Max changed-file count for scoped invalidation fallback before full branch invalidation. Default `800`.
 
 ## Generate secrets
 

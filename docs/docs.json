@@ -99,6 +99,7 @@
       "items": [
         "development/authentication",
         "development/caching",
+        "development/database",
         "development/fields",
         "development/environment-variables"
       ]

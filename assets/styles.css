@@ -644,6 +644,27 @@
   .bg-blue-500 {
     background-color: var(--color-blue-500);
   }
+  .bg-foreground {
+    background-color: var(--color-foreground);
+  }
+  .bg-foreground\/80 {
+    background-color: var(--color-foreground);
+    @supports (color: color-mix(in lab, red, red)) {
+      background-color: color-mix(in oklab, var(--color-foreground) 80%, transparent);
+    }
+  }
+  .bg-foreground\/90 {
+    background-color: var(--color-foreground);
+    @supports (color: color-mix(in lab, red, red)) {
+      background-color: color-mix(in oklab, var(--color-foreground) 90%, transparent);
+    }
+  }
+  .bg-foreground\/95 {
+    background-color: var(--color-foreground);
+    @supports (color: color-mix(in lab, red, red)) {
+      background-color: color-mix(in oklab, var(--color-foreground) 95%, transparent);
+    }
+  }
   .bg-primary {
     background-color: var(--color-primary);
   }
@@ -754,6 +775,12 @@
   .text-\[var\(--prism-keyword\)\] {
     color: var(--prism-keyword);
   }
+  .text-background {
+    color: var(--color-background);
+  }
+  .text-foreground {
+    color: var(--color-foreground);
+  }
   .text-foreground\/80 {
     color: var(--color-foreground);
     @supports (color: color-mix(in lab, red, red)) {
@@ -828,10 +855,70 @@
       }
     }
   }
+  .group-hover\:bg-foreground\/50 {
+    &:is(:where(.group):hover *) {
+      @media (hover: hover) {
+        background-color: var(--color-foreground);
+        @supports (color: color-mix(in lab, red, red)) {
+          background-color: color-mix(in oklab, var(--color-foreground) 50%, transparent);
+        }
+      }
+    }
+  }
+  .group-hover\:bg-foreground\/90 {
+    &:is(:where(.group):hover *) {
+      @media (hover: hover) {
+        background-color: var(--color-foreground);
+        @supports (color: color-mix(in lab, red, red)) {
+          background-color: color-mix(in oklab, var(--color-foreground) 90%, transparent);
+        }
+      }
+    }
+  }
+  .group-hover\:bg-foreground\/95 {
+    &:is(:where(.group):hover *) {
+      @media (hover: hover) {
+        background-color: var(--color-foreground);
+        @supports (color: color-mix(in lab, red, red)) {
+          background-color: color-mix(in oklab, var(--color-foreground) 95%, transparent);
+        }
+      }
+    }
+  }
   .last\:border-b-0 {
     &:last-child {
       border-bottom-style: var(--tw-border-style);
       border-bottom-width: 0px;
+    }
+  }
+  .hover\:bg-foreground\/50 {
+    &:hover {
+      @media (hover: hover) {
+        background-color: var(--color-foreground);
+        @supports (color: color-mix(in lab, red, red)) {
+          background-color: color-mix(in oklab, var(--color-foreground) 50%, transparent);
+        }
+      }
+    }
+  }
+  .hover\:bg-foreground\/90 {
+    &:hover {
+      @media (hover: hover) {
+        background-color: var(--color-foreground);
+        @supports (color: color-mix(in lab, red, red)) {
+          background-color: color-mix(in oklab, var(--color-foreground) 90%, transparent);
+        }
+      }
+    }
+  }
+  .hover\:bg-primary\/90 {
+    &:hover {
+      @media (hover: hover) {
+        background-color: var(--color-primary);
+        @supports (color: color-mix(in lab, red, red)) {
+          background-color: color-mix(in oklab, var(--color-primary) 90%, transparent);
+        }
+      }
     }
   }
   .hover\:text-foreground {

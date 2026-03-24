@@ -1,5 +1,5 @@
 ---
-title: Content
+title: Overview
 description: Define editable collections and files in your repository.
 ---
 
@@ -11,6 +11,9 @@ Each entry is either:
 
 - a `collection` for many files with the same schema
 - a `file` for one file with its own schema
+- a `group` for organizing files and collections in the sidebar
+
+`group` is navigation-only. It can contain nested `group`, `collection`, and `file` entries, but it does not create its own editor route.
 
 ## Keys
 
@@ -18,8 +21,8 @@ Key | Description
 --- | ---
 <code class="text-[var(--prism-keyword)]">name</code> <span class="text-muted-foreground">*</span> | Unique internal name (e.g. `"posts"`).
 <code class="text-[var(--prism-keyword)]">label</code> | UI label (e.g. `"Blog posts"`).
-<code class="text-[var(--prism-keyword)]">type</code> <span class="text-muted-foreground">*</span> | Values: `collection`, `file`.
-<code class="text-[var(--prism-keyword)]">path</code> <span class="text-muted-foreground">*</span> | Folder for collections or file path for single files (e.g. `"content/posts"`, `"data/site.yml"`).
+<code class="text-[var(--prism-keyword)]">type</code> <span class="text-muted-foreground">*</span> | Values: `collection`, `file`, `group`.
+<code class="text-[var(--prism-keyword)]">path</code> <span class="text-muted-foreground">*</span> | Folder for collections or file path for single files (e.g. `"content/posts"`, `"data/site.yml"`). Not used by `group`.
 <code class="text-[var(--prism-keyword)]">fields</code> | Field definitions shown in the editor. Read more about: [`fields`](/docs/configuration/content/fields/), [editors](/docs/configuration/content/editors/)
 <code class="text-[var(--prism-keyword)]">filename</code> | Collection filename template or object config. [Read more about `filename`](/docs/configuration/content/filename/)
 <code class="text-[var(--prism-keyword)]">exclude</code> | Files to ignore in a collection (e.g. `["README.md"]`).
@@ -29,6 +32,7 @@ Key | Description
 <code class="text-[var(--prism-keyword)]">list</code> | For `type: file`, store the whole file as a top-level array.
 <code class="text-[var(--prism-keyword)]">view</code> | Collection list settings for fields, sorting, search, and tree mode. [Read more about `view`](/docs/configuration/content/view/)
 <code class="text-[var(--prism-keyword)]">commit</code> | Per-entry commit settings. [See `settings`](/docs/configuration/settings/).
+<code class="text-[var(--prism-keyword)]">items</code> | Child entries inside a `group`.
 
 <span class="text-sm text-muted-foreground">*: Required</span>
 
@@ -83,4 +87,37 @@ content:
         type: string
       - name: avatar
         type: image
+```
+
+### Nested groups
+
+Use `type: group` to organize large content menus without changing how content is stored internally.
+
+```yaml
+content:
+  - name: docs
+    label: Docs
+    type: group
+    items:
+      - name: pages
+        label: Pages
+        type: collection
+        path: content/pages
+        fields:
+          - name: title
+            type: string
+
+      - name: references
+        label: References
+        type: group
+        items:
+          - name: publications
+            label: Publications
+            type: file
+            path: data/publications.json
+            format: json
+            list: true
+            fields:
+              - name: title
+                type: string
 ```
