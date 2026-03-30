@@ -23,6 +23,7 @@ Key | Description
 <code class="text-[var(--prism-keyword)]">workflow</code> <span class="text-muted-foreground">*</span> | Workflow file name in `.github/workflows/`.
 <code class="text-[var(--prism-keyword)]">ref</code> | Git ref used to dispatch the workflow. Use `current` to use the branch currently open in Pages CMS.
 <code class="text-[var(--prism-keyword)]">scope</code> | Collection-only. Values: `collection`, `entry`.
+<code class="text-[var(--prism-keyword)]">cancelable</code> | Whether the run can be cancelled from Pages CMS. Defaults to `true`.
 <code class="text-[var(--prism-keyword)]">confirm</code> | Confirmation dialog config. Use `false` to skip confirmation.
 <code class="text-[var(--prism-keyword)]">fields</code> | Extra input fields collected before dispatch.
 
@@ -121,6 +122,8 @@ Example shape:
     "sha": "abc123..."
   },
   "triggeredAt": "2026-03-30T12:00:00.000Z",
+  "triggerType": "rerun",
+  "rerunOfActionRunId": 42,
   "triggeredBy": {
     "userId": "...",
     "name": "Ronan Berder",
@@ -143,6 +146,14 @@ Example shape:
 
 Use `jq`, `node`, or `actions/github-script` inside the workflow to parse `payload.inputs`.
 
+## Permissions and cancellation
+
+- `Run again` is only available to GitHub users.
+- `Cancel run` is available to GitHub users for any active run.
+- Collaborators can only cancel their own active runs.
+- `Cancel run` is only available once the GitHub workflow run exists.
+- Set `cancelable: false` to disable cancellation for an action.
+
 
 ## Examples
 
@@ -154,6 +165,7 @@ actions:
     label: Deploy site
     workflow: pages-cms-action.yml
     ref: current
+    cancelable: false
 ```
 
 ### Collection action
