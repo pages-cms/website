@@ -50,8 +50,9 @@
           ]
         },
         "configuration/components",
-        "configuration/settings",
-        "configuration/collaborators"
+        "configuration/actions",
+        "configuration/collaborators",
+        "configuration/settings"
       ]
     },
     {

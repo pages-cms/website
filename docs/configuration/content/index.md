@@ -15,7 +15,11 @@ Each entry is either:
 
 `group` is navigation-only. It can contain nested `group`, `collection`, and `file` entries, but it does not create its own editor route.
 
+Collections and files can also define `actions`. See [`actions`](/docs/configuration/actions/).
+
 ## Keys
+
+Each `content` entry may use the following keys:
 
 Key | Description
 --- | ---
@@ -32,6 +36,7 @@ Key | Description
 <code class="text-[var(--prism-keyword)]">list</code> | For `type: file`, store the whole file as a top-level array.
 <code class="text-[var(--prism-keyword)]">view</code> | Collection list settings for fields, sorting, search, and tree mode. [Read more about `view`](/docs/configuration/content/view/)
 <code class="text-[var(--prism-keyword)]">commit</code> | Per-entry commit settings. [See `settings`](/docs/configuration/settings/).
+<code class="text-[var(--prism-keyword)]">actions</code> | Adds collection or file action buttons. [See `actions`](/docs/configuration/actions/).
 <code class="text-[var(--prism-keyword)]">items</code> | Child entries inside a `group`.
 
 <span class="text-sm text-muted-foreground">*: Required</span>
@@ -51,6 +56,16 @@ content:
         type: string
       - name: body
         type: rich-text
+    actions:
+      - name: rebuild-posts
+        label: Rebuild posts
+        scope: collection
+        workflow: pages-cms-collection-action.yml
+
+      - name: preview-post
+        label: Preview
+        scope: entry
+        workflow: pages-cms-entry-action.yml
 ```
 
 ### Single file
@@ -66,6 +81,10 @@ content:
         type: string
       - name: description
         type: text
+    actions:
+      - name: validate-config
+        label: Validate config
+        workflow: pages-cms-file-action.yml
 ```
 
 ### Root arrays in single files

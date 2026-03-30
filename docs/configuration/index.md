@@ -19,6 +19,7 @@ Key | Description
 <code class="text-[var(--prism-keyword)]">content</code> | Defines editable collections and files. [See `content`](/docs/configuration/content/).
 <code class="text-[var(--prism-keyword)]">components</code> | Reuses shared field definitions. [See `components`](/docs/configuration/components/).
 <code class="text-[var(--prism-keyword)]">settings</code> | Sets repository-wide behavior such as merge mode and commit templates. [See `settings`](/docs/configuration/settings/).
+<code class="text-[var(--prism-keyword)]">actions</code> | Adds repository-level GitHub Actions buttons. [See `actions`](/docs/configuration/actions/).
 
 ## Read order
 
@@ -28,6 +29,7 @@ Start with this order:
 2. Define `content`.
 3. Add `components` if fields repeat.
 4. Add `settings` if you need global behavior.
+5. Add `actions` if you want custom workflow buttons.
 
 ## Minimal example
 
@@ -72,4 +74,8 @@ content:
         type: text
       - name: url
         type: string
+actions:
+  - name: deploy-site
+    label: Deploy site
+    workflow: pages-cms-action.yml
 ```

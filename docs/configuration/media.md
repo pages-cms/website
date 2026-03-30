@@ -16,6 +16,8 @@ Use it to answer two questions:
 1. Where should uploaded files be saved in the repository?
 2. What public path should be written into content?
 
+Media sources can also define `actions`. See [`actions`](/docs/configuration/actions/).
+
 ## Value
 
 You can define `media` as:
@@ -60,6 +62,10 @@ media:
     output: /media/images
     rename: true
     extensions: [png, jpg, webp]
+    actions:
+      - name: optimize-images
+        label: Optimize images
+        workflow: pages-cms-media-action.yml
   - name: docs
     label: Documents
     input: media/docs
@@ -79,6 +85,7 @@ Key | Description
 <code class="text-[var(--prism-keyword)]">categories</code> | Category-based extension sets. Values: `image`, `document`, `video`, `audio`, `compressed`, `code`, `font`, `spreadsheet`.
 <code class="text-[var(--prism-keyword)]">rename</code> | If `true`, uploads get a random filename plus their original extension.
 <code class="text-[var(--prism-keyword)]">commit</code> | Per-media commit settings. [See `settings.commit`](#/docs/configuration/settings/) .
+<code class="text-[var(--prism-keyword)]">actions</code> | Adds media action buttons. [See `actions`](/docs/configuration/actions/).
 
 <span class="text-sm text-muted-foreground">*: Required</span>
 <span class="text-sm text-muted-foreground">**: Required with multiple sources</span>
@@ -105,6 +112,10 @@ media:
 <div class="flex flex-wrap gap-2 my-6">
   <a href="/docs/configuration/content/" class="badge-outline">
     Content
+    {% lucide "arrow-right" %}
+  </a>
+  <a href="/docs/configuration/actions/" class="badge-outline">
+    Actions
     {% lucide "arrow-right" %}
   </a>
   <a href="/docs/configuration/fields/image/" class="badge-outline">
