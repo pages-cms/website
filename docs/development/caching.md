@@ -10,7 +10,8 @@ Pages CMS uses GitHub as the source of truth and a DB cache for fast reads.
 | Layer | Scope | Purpose |
 | --- | --- | --- |
 | `config` table | Per `owner/repo/branch` | Stores parsed `.pages.yml` and its SHA. |
-| `cache_file` table | Per folder path | Stores collection/media directory listings and file metadata. |
+| `cache_file` table | Per file or directory row | Stores collection/media listings, file metadata, and cached content. |
+| `cache_file_meta` table | Per branch and per folder scope | Tracks cache state (`ok`, `syncing`, `error`) for branch and folder caches. |
 | `cache_permission` table | Per user/repo | Caches access checks used by file cache endpoints. |
 | In-memory TTL caches | Per server process | Short-lived branch HEAD and repository metadata lookups. |
 
@@ -25,18 +26,19 @@ This bootstrap-on-miss guarantees first-open repos still load config even before
 
 ## Collection and media lifecycle
 
-1. Request checks cache row for the requested folder.
-2. On cache miss, Pages CMS fetches from GitHub and writes cache before responding.
-3. On cache hit, stale-while-revalidate logic can run async reconcile using branch HEAD + per-file SHA checks.
-4. Create/update/delete/rename operations update cache rows directly after successful GitHub writes.
+1. Requests read cache by folder path.
+2. Pages CMS uses `cache_file_meta` to decide whether that folder cache is trusted.
+3. If folder cache is missing, stale, syncing, or invalid, Pages CMS fetches from GitHub and refreshes the folder cache.
+4. Successful refresh marks the folder cache `ok`, including valid empty folders.
+5. Direct writes and webhook updates keep folder cache rows and folder meta in sync.
 
-This keeps normal navigation fast and makes writes visible immediately.
+This keeps normal navigation fast while avoiding partial or transient folder cache states.
 
 ## Staleness behavior
 
-- **Backend cache** uses DB rows plus TTL and reconcile logic.
+- **Backend cache** uses DB rows plus folder-level cache state.
 - **Client state** (for example current config in layout/provider) is in-memory for the current session and may lag external edits until refresh or polling updates.
-- Background reconcile does not block user navigation; stale data can be served while refresh runs.
+- Background reconcile may refresh cache after the response, but folder cache is only trusted when its state is valid.
 
 ## Webhook push behavior
 
