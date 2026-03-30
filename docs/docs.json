@@ -45,6 +45,7 @@
             "configuration/content",
             "configuration/content/editors",
             "configuration/content/filename",
+            "configuration/content/list",
             "configuration/content/fields",
             "configuration/content/view"
           ]

@@ -27,17 +27,17 @@ Key | Description
 <code class="text-[var(--prism-keyword)]">label</code> | UI label (e.g. `"Blog posts"`).
 <code class="text-[var(--prism-keyword)]">type</code> <span class="text-muted-foreground">*</span> | Values: `collection`, `file`, `group`.
 <code class="text-[var(--prism-keyword)]">path</code> <span class="text-muted-foreground">*</span> | Folder for collections or file path for single files (e.g. `"content/posts"`, `"data/site.yml"`). Not used by `group`.
-<code class="text-[var(--prism-keyword)]">fields</code> | Field definitions shown in the editor. Fields support options like `required`, `hidden`, and `readonly`. Read more about: [`fields`](/docs/configuration/content/fields/), [editors](/docs/configuration/content/editors/)
-<code class="text-[var(--prism-keyword)]">filename</code> | Collection filename template or object config. [Read more about `filename`](/docs/configuration/content/filename/)
+<code class="text-[var(--prism-keyword)]">fields</code> | Field definitions shown in the editor (e.g. `[{ name: "title", type: "string" }]`). Fields support options like `required`, `hidden`, and `readonly`. Read more about: [`fields`](/docs/configuration/content/fields/), [editors](/docs/configuration/content/editors/)
+<code class="text-[var(--prism-keyword)]">filename</code> | Collection filename template or object config (e.g. `"{primary}.md"` or `{ template: "{year}-{month}-{day}-{primary}.md", field: create }`). [Read more about `filename`](/docs/configuration/content/filename/)
 <code class="text-[var(--prism-keyword)]">exclude</code> | Files to ignore in a collection (e.g. `["README.md"]`).
 <code class="text-[var(--prism-keyword)]">format</code> | File format. Values include `yaml-frontmatter`, `json-frontmatter`, `toml-frontmatter`, `yaml`, `json`, `toml`, `datagrid`, `code`, `raw`. [Read more about editors](/docs/configuration/content/editors/)
 <code class="text-[var(--prism-keyword)]">delimiters</code> | Custom frontmatter delimiters (e.g. `"+++"`, `["<!--", "-->"]`).
-<code class="text-[var(--prism-keyword)]">subfolders</code> | Enables or disables nested folders in collections.
-<code class="text-[var(--prism-keyword)]">list</code> | For `type: file`, store the whole file as a top-level array.
-<code class="text-[var(--prism-keyword)]">view</code> | Collection list settings for fields, sorting, search, and tree mode. [Read more about `view`](/docs/configuration/content/view/)
-<code class="text-[var(--prism-keyword)]">commit</code> | Per-entry commit settings. [See `settings`](/docs/configuration/settings/).
-<code class="text-[var(--prism-keyword)]">actions</code> | Adds collection or file action buttons. [See `actions`](/docs/configuration/actions/).
-<code class="text-[var(--prism-keyword)]">items</code> | Child entries inside a `group`.
+<code class="text-[var(--prism-keyword)]">subfolders</code> | Values: `true`, `false`. Enables or disables nested folders in collections.
+<code class="text-[var(--prism-keyword)]">list</code> | Repeat a field as an array, or for `type: file`, store the whole file as a top-level array. [Read more about `list`](/docs/configuration/content/list/)
+<code class="text-[var(--prism-keyword)]">view</code> | Collection list settings for fields, sorting, search, and tree mode (e.g. `{ primary: "title", sort: "date", order: "desc" }`). [Read more about `view`](/docs/configuration/content/view/)
+<code class="text-[var(--prism-keyword)]">commit</code> | Per-entry commit settings (e.g. `{ identity: "user" }`). [See `settings`](/docs/configuration/settings/).
+<code class="text-[var(--prism-keyword)]">actions</code> | Adds collection or file action buttons (e.g. `[{ name: "preview", label: "Preview", workflow: "pages-cms-file-action.yml" }]`). [See `actions`](/docs/configuration/actions/).
+<code class="text-[var(--prism-keyword)]">items</code> | Child entries inside a `group` (e.g. nested `group`, `collection`, or `file` entries).
 
 <span class="text-sm text-muted-foreground">*: Required</span>
 
@@ -85,27 +85,6 @@ content:
       - name: validate-config
         label: Validate config
         workflow: pages-cms-file-action.yml
-```
-
-### Root arrays in single files
-
-If a file stores a top-level array, set `list: true`.
-
-```yaml
-content:
-  - name: authors
-    label: Authors
-    type: file
-    path: data/authors.json
-    format: json
-    list: true
-    fields:
-      - name: name
-        type: string
-      - name: email
-        type: string
-      - name: avatar
-        type: image
 ```
 
 ### Nested groups
