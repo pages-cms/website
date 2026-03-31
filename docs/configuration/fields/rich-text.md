@@ -15,7 +15,7 @@ Key | Description
 <code class="text-[var(--prism-keyword)]">path</code> | Default image folder (e.g. `"blog"`).
 <code class="text-[var(--prism-keyword)]">extensions</code> | Allowed image extensions (e.g. `["png", "webp"]`).
 <code class="text-[var(--prism-keyword)]">categories</code> | Allowed image categories. Values: `image`.
-<code class="text-[var(--prism-keyword)]">rename</code> | If `true`, uploaded images get a random filename plus the original extension.
+<code class="text-[var(--prism-keyword)]">rename</code> | Controls upload renaming. Use `false` to keep the original filename, `true` or `safe` to slugify it, or `random` for a generated name.
 
 ## Examples
 

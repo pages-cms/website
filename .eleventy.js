@@ -79,6 +79,7 @@ export default function eleventyConfigFile(eleventyConfig) {
   registerLlmExports(eleventyConfig, {
     getSiteUrl: () => siteUrl,
     getSiteTitle: () => siteTitle,
+    getSiteDescription: () => site?.description || "",
   });
 
   return {

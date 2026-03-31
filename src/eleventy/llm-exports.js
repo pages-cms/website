@@ -126,10 +126,17 @@ export const registerLlmExports = (eleventyConfig, options) => {
       }),
     );
 
-    const llmsLines = [`# ${siteTitle}`, "", "## Docs", ""];
+    const llmsLines = [`# ${siteTitle}`, ""];
+    const about = options.getSiteDescription?.()?.trim();
+    if (about) {
+      llmsLines.push("## About", "", about, "");
+    }
+    llmsLines.push("## Docs", "");
     menu.forEach((group) => {
       if (group?.type !== "group") return;
-      llmsLines.push(`### ${group.label || "Docs"}`, "");
+      const sectionLabel = group.label?.trim();
+      if (!sectionLabel) return;
+      llmsLines.push(`### ${sectionLabel}`, "");
 
       const addSlug = (slug) => {
         const doc = docsBySlug.get(slug);

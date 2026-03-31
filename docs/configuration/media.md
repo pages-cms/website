@@ -46,7 +46,7 @@ media:
 media:
   input: src/media
   output: /media
-  rename: true
+  rename: random
   categories: [image]
 ```
 
@@ -60,7 +60,7 @@ media:
     label: Images
     input: media/images
     output: /media/images
-    rename: true
+    rename: safe
     extensions: [png, jpg, webp]
     actions:
       - name: optimize-images
@@ -83,7 +83,7 @@ Key | Description
 <code class="text-[var(--prism-keyword)]">output</code> <span class="text-muted-foreground">*</span> | Public path written into content (e.g. `"/media"`).
 <code class="text-[var(--prism-keyword)]">extensions</code> | Allowed extensions (e.g. `["png", "webp"]`).
 <code class="text-[var(--prism-keyword)]">categories</code> | Category-based extension sets. Values: `image`, `document`, `video`, `audio`, `compressed`, `code`, `font`, `spreadsheet`.
-<code class="text-[var(--prism-keyword)]">rename</code> | If `true`, uploads get a random filename plus their original extension.
+<code class="text-[var(--prism-keyword)]">rename</code> | Controls upload renaming. Use `false` to keep the original filename (default behavior), `true` or `safe` to slugify it, or `random` for a generated name.
 <code class="text-[var(--prism-keyword)]">commit</code> | Per-media commit settings. [See `settings.commit`](#/docs/configuration/settings/) .
 <code class="text-[var(--prism-keyword)]">actions</code> | Adds media action buttons. [See `actions`](/docs/configuration/actions/).
 
