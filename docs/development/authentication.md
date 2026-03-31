@@ -37,12 +37,12 @@ The fallback check matches:
 
 When Pages CMS writes with a GitHub user token, GitHub handles attribution normally.
 
-When Pages CMS writes with the GitHub App installation token, it still sets committer metadata from the current user:
+When Pages CMS writes with the GitHub App installation token, the default behavior is to omit explicit committer metadata:
 
-- `name`: user name, or email if name is missing,
-- `email`: user email.
+- with `settings.commit.identity: app` or no setting, GitHub uses the authenticated app/installation identity for the write,
+- with `settings.commit.identity: user`, Pages CMS sends the current user's name and email as committer metadata when available.
 
-That is why collaborator edits still show the collaborator's name and email in commit metadata.
+Per-schema overrides are also available through `content[].commit.identity` and `media[].commit.identity`.
 
 ## Routes that require a GitHub user
 

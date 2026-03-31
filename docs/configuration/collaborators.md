@@ -31,12 +31,14 @@ Those actions stay limited to GitHub users with repository access.
 
 Collaborator writes use the GitHub App installation token for the target repository.
 
-The commit is still written with the collaborator's name and email as committer metadata.
+By default, Pages CMS does not send the collaborator's name and email as committer metadata.
 
 That means:
 
 - the write is authorized by the GitHub App,
-- the commit still identifies the collaborator in the commit details.
+- the commit uses the authenticated app/installation identity unless commit identity is explicitly set to `user`.
+
+If you want collaborator writes to include the collaborator's name and email as committer metadata, set `settings.commit.identity: user` or override a specific schema with `commit.identity: user`.
 
 ## Migration
 

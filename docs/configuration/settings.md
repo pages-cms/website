@@ -11,62 +11,42 @@ Typical uses:
 
 - hide admin pages,
 - preserve unmanaged keys when saving structured content,
-- define default commit messages.
+- define default commit messages,
+- choose commit identity behavior.
 
 ## Keys
 
 Key | Description
 --- | ---
 <code class="text-[var(--prism-keyword)]">hide</code> | If `true`, hides the Settings page in the UI.
-<code class="text-[var(--prism-keyword)]">content.merge</code> | Controls how structured content is written back to disk. [See `Content merge`](#content-merge).
-<code class="text-[var(--prism-keyword)]">commit.templates</code> | Global commit message templates. [See `Commit templates`](#commit-templates).
+<code class="text-[var(--prism-keyword)]">content</code> | Controls how structured content is saved. [See `Content`](#content).
+<code class="text-[var(--prism-keyword)]">commit</code> | Controls commit settings. [See `Commit`](#commit).
 
-## Content merge
+## Content
 
-`settings.content.merge` controls what happens when Pages CMS saves a structured file.
+For now, `settings.content` only supports `merge`.
 
-### `false` (default)
+Value | Behavior
+--- | ---
+`false` | Default. Rewrite the file from the configured schema only. Anything outside the submitted editor output is removed.
+`true` | Merge the submitted fields into the existing file before saving. Keys outside the schema are preserved unless the editor overwrites them.
 
-Rewrite the file from the configured schema only.
+## Commit
 
-Anything outside the submitted editor output is removed.
+### Commit templates
 
-Use this when Pages CMS fully owns the file.
+`settings.commit.templates` defines the default commit message format for content and media changes.
 
-### `true`
+Key | Default value
+--- | ---
+`create` | `Create {path} (via Pages CMS)`
+`update` | `Update {path} (via Pages CMS)`
+`delete` | `Delete {path} (via Pages CMS)`
+`rename` | `Rename {oldPath} to {newPath} (via Pages CMS)`
 
-Merge the submitted fields into the existing file before saving.
+`content[].commit.templates` and `media[].commit.templates` override these global templates.
 
-Keys outside the schema are preserved unless the editor overwrites them.
-
-Use this when developers still manage part of the file directly in Git.
-
-## Commit templates
-
-Use `settings.commit.templates` to define the default commit message format for content and media changes.
-
-```yaml
-settings:
-  commit:
-    templates:
-      create: "content(create): {path}"
-      update: "content(update): {path}"
-      delete: "content(delete): {path}"
-      rename: "content(rename): {oldPath} -> {newPath}"
-```
-
-Per-entry templates in `content[].commit.templates` and `media[].commit.templates` override these global templates.
-
-### Keys
-
-Key | Description | Default value
---- | --- | ---
-<code class="text-[var(--prism-keyword)]">create</code> | Commit message for new files. | `Create {path} (via Pages CMS)`
-<code class="text-[var(--prism-keyword)]">update</code> | Commit message for edited files. | `Update {path} (via Pages CMS)`
-<code class="text-[var(--prism-keyword)]">delete</code> | Commit message for deleted files. | `Delete {path} (via Pages CMS)`
-<code class="text-[var(--prism-keyword)]">rename</code> | Commit message for renamed files. | `Rename {oldPath} to {newPath} (via Pages CMS)`
-
-### Tokens
+Within these templates, you can use any of the following tokens:
 
 Token | Description
 --- | ---
@@ -87,11 +67,45 @@ Token | Description
 
 Prefer `{userName}` and `{userEmail}` in new templates. `{user}` remains available as a legacy fallback.
 
-## Simple example
+### Commit identity
+
+`settings.commit.identity` controls whether Pages CMS sends explicit committer metadata on writes.
+
+Value | Behavior
+--- | ---
+`app` | Default. Do not send explicit committer metadata. GitHub uses the authenticated writer identity for the request.
+`user` | Send the current user's name and email as committer metadata when available.
+
+`content[].commit.identity` and `media[].commit.identity` override the global setting for a specific schema.
+
+## Examples
+
+### Global commit templates and identity
 
 ```yaml
 settings:
-  hide: true
-  content:
-    merge: true
+  commit:
+    identity: app
+    templates:
+      create: "content(create): {path}"
+      update: "content(update): {path}"
+      delete: "content(delete): {path}"
+      rename: "content(rename): {oldPath} -> {newPath}"
+```
+
+### Global default with a media override
+
+```yaml
+settings:
+  commit:
+    identity: app
+
+media:
+  - name: assets
+    input: public/uploads
+    output: /uploads
+    commit:
+      identity: user
+      templates:
+        update: "media(update): {path} by {userEmail}"
 ```
