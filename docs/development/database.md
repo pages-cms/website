@@ -1,13 +1,19 @@
 ---
 title: Database
-description: Migrations, operational scripts, and upgrade-related database maintenance.
+description: Migrations, operational scripts, and database maintenance for Pages CMS.
 ---
 
-Pages CMS stores app state in PostgreSQL (auth, collaborators, cache, and settings metadata).
+Pages CMS stores app state in PostgreSQL: auth data, collaborators, parsed config, and cache metadata. Content itself stays in GitHub.
 
 ## Migrations
 
-Run migrations with:
+Generate a migration when the schema changes:
+
+```bash
+npm run db:generate
+```
+
+Apply migrations with:
 
 ```bash
 npm run db:migrate
@@ -21,17 +27,30 @@ Use manual `npm run db:migrate` when:
 - deploying on platforms where `postbuild` is skipped,
 - applying migrations before switching traffic to a new deployment.
 
+## Cache-related tables
+
+| Table | Purpose |
+| --- | --- |
+| `config` | Parsed `.pages.yml` plus its SHA. |
+| `cache_file` | Cached collection/media rows. |
+| `cache_file_meta` | Branch and folder snapshot state. |
+| `cache_permission` | Cached repo permission checks. |
+
 ## Database scripts
 
 | Script | Purpose | Typical use |
 | --- | --- | --- |
-| `npm run db:clear-cache` | Clears cache tables used for repository/config/permission caching. | Run once after 1.x -> 2.x upgrade, or when cache state is known stale/corrupt. |
+| `npm run db:clear-cache` | Clears cache tables used for repository/config/permission caching. | Safe when cache state is stale or corrupted. GitHub remains the source of truth. |
 | `npm run db:collaborators:export -- --output=collaborators.csv` | Exports collaborators to CSV. | Move collaborators to a new deployment/database. |
 | `npm run db:collaborators:import -- --input=collaborators.csv` | Imports collaborators from CSV. | Restore/migrate collaborator assignments. |
 
+## Operational note
+
+After cache-logic upgrades, it can be worth running `npm run db:clear-cache` once so old cached rows do not survive into the new behavior.
+
 <div class="flex flex-wrap gap-2 my-6">
-  <a href="/docs/guides/upgrading-to-2/" class="badge-outline">
-    Upgrading to 2.x
+  <a href="/docs/development/caching/" class="badge-outline">
+    Caching
     {% lucide "arrow-right" %}
   </a>
   <a href="/docs/guides/migrating-collaborators/" class="badge-outline">

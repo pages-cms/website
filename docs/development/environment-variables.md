@@ -34,14 +34,16 @@ Variable | Description
 
 Variable | Description
 --- | ---
-`CACHE_CHECK_MIN` | Cache reconcile interval in minutes. Default `5`.
+`CACHE_CHECK_MIN` | Branch cache reconcile interval in minutes. Default `5`.
 `CONFIG_CHECK_MIN` | Config sync check interval in minutes. Default `5`.
-`FILE_TTL_MIN` | File cache TTL in minutes. Default `1440`.
+`FILE_TTL_MIN` | File cache TTL in minutes. Default `1440`. Use `-1` to disable expiry.
 `PERMISSIONS_TTL_MIN` | Permission cache TTL in minutes. Default `60`.
 `BRANCH_HEAD_TTL_MS` | Branch HEAD cache TTL in milliseconds. Default `15000`.
 `REPO_META_TTL_MS` | Repository metadata cache TTL in milliseconds. Default `15000`.
 `WEBHOOK_PUSH_INCREMENTAL_MAX_FILES` | Max changed-file count for incremental webhook processing. Default `120`.
 `WEBHOOK_PUSH_SCOPED_INVALIDATION_MAX_FILES` | Max changed-file count for scoped invalidation fallback before full branch invalidation. Default `800`.
+
+Only these canonical names are supported.
 
 ## Generate secrets
 
