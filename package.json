@@ -11,7 +11,9 @@
     "css": "npx tailwindcss -i ./src/css/styles.css -o ./assets/styles.css --minify",
     "clean": "node --input-type=module -e \"import fs from 'node:fs'; fs.rmSync('_site', { recursive: true, force: true });\"",
     "build": "npm run clean &&  npm run css && npx @11ty/eleventy",
-    "dev": "concurrently \"npx @11ty/eleventy --serve\" \"npx tailwindcss -i ./src/css/styles.css -o ./assets/styles.css --watch\""
+    "dev": "concurrently \"npx @11ty/eleventy --serve\" \"npx tailwindcss -i ./src/css/styles.css -o ./assets/styles.css --watch\"",
+    "deploy": "npm run build && wrangler deploy",
+    "preview": "npm run build && wrangler dev"
   },
   "dependencies": {
     "@11ty/eleventy": "^3.1.2",
@@ -31,6 +33,7 @@
     "alpinejs": "^3.15.8",
     "basecoat-css": "^0.3.7",
     "concurrently": "^9.2.0",
-    "htmx.org": "^2.0.8"
+    "htmx.org": "^2.0.8",
+    "wrangler": "^4.79.0"
   }
 }
