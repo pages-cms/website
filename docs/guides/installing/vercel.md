@@ -16,6 +16,11 @@ You will need a `DATABASE_URL`.
       <code>DATABASE_URL</code>. Direct connections can cause connectivity issues on some
       hosting providers.
     </p>
+    <p>
+      On Vercel with a pooled Supabase connection string, set
+      <code>POSTGRES_MAX_CONNECTIONS=1</code>. The limit is per Vercel instance, so higher
+      values can exhaust database connections quickly.
+    </p>
   </section>
 </div>
 
@@ -59,6 +64,7 @@ Use the GitHub App environment variables from the previous step, plus:
 
 ```bash
 DATABASE_URL=postgresql://...
+POSTGRES_MAX_CONNECTIONS=1
 BETTER_AUTH_SECRET=your-random-secret
 CRYPTO_KEY=your-random-secret
 BASE_URL=https://cms.example.com
