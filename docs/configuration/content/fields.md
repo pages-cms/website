@@ -15,12 +15,36 @@ Key | Description
 <code class="text-[var(--prism-keyword)]">label</code> | UI label for the field.
 <code class="text-[var(--prism-keyword)]">type</code> <span class="text-muted-foreground">*</span> | Field type.
 <code class="text-[var(--prism-keyword)]">required</code> | Marks the field as required.
+<code class="text-[var(--prism-keyword)]">pattern</code> | Regex validation for supported field types.
 <code class="text-[var(--prism-keyword)]">hidden</code> | Hides the field from the editor.
 <code class="text-[var(--prism-keyword)]">readonly</code> | Shows the field value but prevents editing it. Inherited by nested object, block, and list fields.
 <code class="text-[var(--prism-keyword)]">description</code> | Helper text shown below the field.
 <code class="text-[var(--prism-keyword)]">options</code> | Field-specific options. See each field page for details.
 
 <span class="text-sm text-muted-foreground">*: Required</span>
+
+## `pattern`
+
+`pattern` validates a field value against a regex.
+
+Currently, it is supported by:
+
+- `string`
+- `text`
+
+You can use either a string:
+
+```yaml
+pattern: "^[a-z0-9-]+$"
+```
+
+Or an object with a custom message:
+
+```yaml
+pattern:
+  regex: "^[A-Z]{3}-\\d{4}$"
+  message: "Use format ABC-1234"
+```
 
 ## `body` is a special key
 
@@ -80,4 +104,32 @@ fields:
         type: string
       - name: email
         type: string
+```
+
+### String field with pattern
+
+```yaml
+fields:
+  - name: slug
+    type: string
+    required: true
+    pattern: "^[a-z0-9-]+$"
+    options:
+      minlength: 3
+      maxlength: 80
+```
+
+### Text field with custom pattern message
+
+```yaml
+fields:
+  - name: summary
+    type: text
+    required: true
+    pattern:
+      regex: "^(?s).{20,500}$"
+      message: "Summary must be between 20 and 500 characters"
+    options:
+      minlength: 20
+      maxlength: 500
 ```
