@@ -12,8 +12,9 @@ These keys apply to all field types unless noted otherwise.
 Key | Description
 --- | ---
 <code class="text-[var(--prism-keyword)]">name</code> <span class="text-muted-foreground">*</span> | Field key used in stored data.
-<code class="text-[var(--prism-keyword)]">label</code> | UI label for the field.
-<code class="text-[var(--prism-keyword)]">type</code> <span class="text-muted-foreground">*</span> | Field type.
+<code class="text-[var(--prism-keyword)]">label</code> | UI label for the field. Set `false` to hide it.
+<code class="text-[var(--prism-keyword)]">type</code> <span class="text-muted-foreground">*</span> | Field type. Use `type` or `component`.
+<code class="text-[var(--prism-keyword)]">component</code> | Reuse a field definition from `components`. Use `component` or `type`.
 <code class="text-[var(--prism-keyword)]">required</code> | Marks the field as required.
 <code class="text-[var(--prism-keyword)]">pattern</code> | Regex validation for supported field types.
 <code class="text-[var(--prism-keyword)]">hidden</code> | Hides the field from the editor.
@@ -44,6 +45,38 @@ Or an object with a custom message:
 pattern:
   regex: "^[A-Z]{3}-\\d{4}$"
   message: "Use format ABC-1234"
+```
+
+## `component`
+
+Use `component` to reference a reusable field definition from [`components`](/docs/configuration/components/).
+
+A field must use exactly one of:
+
+- `type`
+- `component`
+
+Example:
+
+```yaml
+components:
+  seo:
+    type: object
+    label: SEO
+    fields:
+      - name: title
+        type: string
+      - name: description
+        type: text
+
+content:
+  - name: pages
+    type: collection
+    path: content/pages
+    fields:
+      - name: seo
+        component: seo
+        label: Meta
 ```
 
 ## `body` is a special key
