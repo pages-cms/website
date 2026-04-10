@@ -21,6 +21,8 @@ Variable | Description
 
 Variable | Description
 --- | ---
+`BASE_URL` | Canonical public URL for the app. Required in production.
+`ADMIN_EMAILS` | Comma-separated allowlist for admin panel access.
 `EMAIL_PROVIDER` | `resend` or `smtp`.
 `EMAIL_FROM` | Sender address for auth and invitation emails.
 `RESEND_API_KEY` | Required when using Resend.
@@ -57,3 +59,4 @@ openssl rand -base64 32
 - `GITHUB_APP_NAME` must be the app slug, not the display name.
 - `BASE_URL` is required in production. In development, it defaults to `http://localhost:3000`.
 - `BASE_URL`, callback URL, setup URL, and webhook URL must all point to the same app instance.
+- Use one canonical production URL only. Do not mix a custom domain and a `*.netlify.app` URL for the same install.

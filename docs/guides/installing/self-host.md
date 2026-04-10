@@ -28,7 +28,10 @@ DATABASE_URL=postgresql://...
 BETTER_AUTH_SECRET=your-random-secret
 CRYPTO_KEY=your-random-secret
 BASE_URL=https://cms.example.com
+ADMIN_EMAILS=admin@example.com
 ```
+
+`ADMIN_EMAILS` is optional and controls access to the admin panel.
 
 You can generate secrets with:
 
